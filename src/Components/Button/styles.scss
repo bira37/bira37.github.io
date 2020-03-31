@@ -1,0 +1,30 @@
+.button {
+  background-color: rgb(66, 70, 82);
+  color: #b5cbb7;
+  height: 5em;
+  width: 15em;
+  border: none;
+  border-radius: 0.5em;
+  text-align: center;
+}
+
+.centered {
+  display: flex;
+  justify-content: center;
+}
+
+.toggleMessage {
+  background-color: rgb(66, 70, 82);
+  border-radius: 0.5em;
+  color: #b5cbb7;
+  margin: 0.5em;
+  padding: 0.5em;
+  font-size: 3.5em;
+}
+
+.imgStyle {
+  margin: -0.3em 0;
+  padding: -0.5em 0;
+  height: 1.5em;
+  width: 1.5em;
+}
