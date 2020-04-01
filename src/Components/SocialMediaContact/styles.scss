@@ -4,15 +4,6 @@
   text-align: center;
 }
 
-.linkStyle {
-  color: $textColor;
-  transition: color 0.5s ease 0s;
-
-  .linkWrapper:hover & {
-    color: $hoverColor;
-  }
-}
-
 .noUnderscore {
   text-decoration: none;
   cursor: default;

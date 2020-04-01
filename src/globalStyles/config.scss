@@ -10,3 +10,12 @@ $pageContentTitleFontSize: 1.2rem;
   vertical-align: middle;
   padding-right: 1rem;
 }
+
+.linkStyle {
+  color: $textColor;
+  transition: color 0.5s ease 0s;
+
+  .linkWrapper:hover & {
+    color: $hoverColor;
+  }
+}

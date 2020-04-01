@@ -66,7 +66,7 @@ const webpackCommonConfig = {
   module: {
     rules: [
       {
-        test: /\.(png|jpg|jpeg)$/i,
+        test: /\.(png|jpg|jpeg|svg)$/i,
         use: [fileLoader]
       }
     ]
