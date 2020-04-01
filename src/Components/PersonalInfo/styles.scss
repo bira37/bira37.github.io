@@ -1,0 +1,33 @@
+@import "../../globalStyles/variables.scss";
+
+.imageStyle {
+  max-width: 75%;
+  max-height: 75%;
+  border-radius: 50%;
+}
+
+.infoFormatter {
+  text-align: center;
+  margin: 0;
+}
+
+.contentStyle {
+  color: white;
+  position: fixed;
+  width: $personalInfoWidth;
+  list-style-type: none;
+  padding: 0;
+  padding-right: 2em;
+
+  li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1.25em;
+  }
+
+  li:first-child {
+    padding-top: $topPadding;
+    margin-top: 0;
+  }
+}

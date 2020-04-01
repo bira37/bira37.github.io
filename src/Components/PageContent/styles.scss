@@ -1,0 +1,9 @@
+@import "../../globalStyles/variables.scss";
+
+.contentStyle {
+  margin-left: $personalInfoWidth;
+  padding-left: 2em;
+  padding-top: $topPadding;
+  color: white;
+  border-left: $borderStyle;
+}

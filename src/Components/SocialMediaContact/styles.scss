@@ -1,0 +1,23 @@
+.contentStyle {
+  text-align: center;
+}
+
+.linkStyle {
+  color: white;
+  transition: color 0.5s ease 0s;
+
+  .linkWrapper:hover & {
+    color: yellow;
+    transition: color 0.5s ease 0s;
+  }
+}
+
+.noUnderscore {
+  text-decoration: none;
+  cursor: default;
+}
+
+.fakeIconStyle {
+  height: 2.5em;
+  width: 2.5em;
+}
