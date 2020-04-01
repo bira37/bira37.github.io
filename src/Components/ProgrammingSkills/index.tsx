@@ -24,7 +24,7 @@ const ProgrammingSkills = (): JSX.Element => {
         <span className={s.reactIconAlign}>
           <FaLaptopCode />
         </span>
-        Coding Skills
+        Programming Skills
       </h2>
       <StackList
         stackList={[

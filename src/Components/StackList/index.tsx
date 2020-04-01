@@ -13,7 +13,7 @@ interface StackListProps {
 
 const StackList = ({ stackList }: StackListProps): JSX.Element => {
   return (
-    <div className={s.contentStyle}>
+    <div className={s.itemList}>
       {stackList.map((stack) => {
         return (
           <span className={`${s.itemStyle} ${s.linkWrapper}`} key={stack.name}>
