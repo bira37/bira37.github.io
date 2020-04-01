@@ -1,13 +1,14 @@
+@import "../../globalStyles/config.scss";
+
 .pageDivision {
   display: flex;
   flex-direction: row;
   list-style-type: none;
   flex-wrap: nowrap;
-  justify-content: space-between;
   align-items: stretch;
   align-content: stretch;
   padding: 0;
   margin: 0;
-  padding-left: 3em;
-  padding-right: 3em;
+  padding-left: $pageHorizontalPadding;
+  padding-right: $pageHorizontalPadding;
 }

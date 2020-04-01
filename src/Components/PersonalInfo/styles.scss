@@ -1,4 +1,4 @@
-@import "../../globalStyles/variables.scss";
+@import "../../globalStyles/config.scss";
 
 .imageStyle {
   max-width: 75%;
@@ -12,18 +12,18 @@
 }
 
 .contentStyle {
-  color: white;
+  color: $textColor;
   position: fixed;
   width: $personalInfoWidth;
   list-style-type: none;
   padding: 0;
-  padding-right: 2em;
+  padding-right: 2rem;
 
   li {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 1.25em;
+    margin-top: 1.25rem;
   }
 
   li:first-child {

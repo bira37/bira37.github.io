@@ -1,14 +1,15 @@
+@import "../../globalStyles/config.scss";
+
 .contentStyle {
   text-align: center;
 }
 
 .linkStyle {
-  color: white;
+  color: $textColor;
   transition: color 0.5s ease 0s;
 
   .linkWrapper:hover & {
-    color: yellow;
-    transition: color 0.5s ease 0s;
+    color: $hoverColor;
   }
 }
 
@@ -18,6 +19,6 @@
 }
 
 .fakeIconStyle {
-  height: 2.5em;
-  width: 2.5em;
+  height: 2.5rem;
+  width: 2.5rem;
 }
