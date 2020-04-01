@@ -14,13 +14,13 @@ const GeneralSkills = (): JSX.Element => {
       </h2>
       <SkillList
         skillList={[
-          "Teamwork",
           "Problem Solving",
+          "Teamwork",
           "Algorithms",
           "Data Structures",
           "Adaptability",
-          "Curiosity",
-          "Persistence"
+          "Persistence",
+          "Curiosity"
         ]}
       />
     </div>

@@ -79,6 +79,7 @@
     "@typescript-eslint/quotes": ["error", "double"],
     "@typescript-eslint/semi": ["error", "always"],
     "react/display-name": "off",
+    "react/no-unescaped-entities": "off",
     "import/order": [
       "error",
       {
