@@ -4,7 +4,7 @@ import s from "./styles.scss";
 
 const About = (): JSX.Element => {
   return (
-    <div className={s.contentStyle}>
+    <div id="about" className={s.contentStyle}>
       <h2>
         <span className={s.reactIconAlign}>
           <TiPencil />

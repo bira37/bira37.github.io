@@ -4,7 +4,7 @@ import s from "./styles.scss";
 
 const Projects = (): JSX.Element => {
   return (
-    <div className={s.contentStyle}>
+    <div id="projects" className={s.contentStyle}>
       <h2>
         <span className={s.reactIconAlign}>
           <FaFolder />

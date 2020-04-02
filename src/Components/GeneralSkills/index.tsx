@@ -5,7 +5,7 @@ import s from "./styles.scss";
 
 const GeneralSkills = (): JSX.Element => {
   return (
-    <div className={s.contentStyle}>
+    <div id="general-skills" className={s.contentStyle}>
       <h2>
         <span className={s.reactIconAlign}>
           <FaRegCheckSquare />
