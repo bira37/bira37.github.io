@@ -18,6 +18,12 @@ $pageContentTitleFontSize: 1.2rem;
   }
 }
 
+@mixin list-md-breakpoint {
+  @media (min-width: 876px) {
+    @content;
+  }
+}
+
 .reactIconAlign {
   vertical-align: middle;
   padding-right: 1rem;
@@ -38,4 +44,5 @@ $pageContentTitleFontSize: 1.2rem;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: space-between;
 }

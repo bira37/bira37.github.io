@@ -2,10 +2,10 @@
 
 .itemStyle {
   margin: 0.5rem;
-  flex: 0 1 40%;
+  flex: 0 1 45%;
 }
 
-@include medium-screen {
+@include list-md-breakpoint {
   .itemStyle {
     margin: 0.5rem;
     flex: 0 1 30%;

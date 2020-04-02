@@ -47,6 +47,12 @@ const ProgrammingSkills = (): JSX.Element => {
             invertColor: true
           },
           {
+            name: "C++",
+            icon: null,
+            fakeIcon: cppIcon,
+            invertColor: false
+          },
+          {
             name: "PostgreSQL",
             icon: DiPostgresql,
             fakeIcon: null,
@@ -56,12 +62,6 @@ const ProgrammingSkills = (): JSX.Element => {
             name: "Python",
             icon: FaPython,
             fakeIcon: null,
-            invertColor: false
-          },
-          {
-            name: "C++",
-            icon: null,
-            fakeIcon: cppIcon,
             invertColor: false
           },
           {
