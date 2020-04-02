@@ -2,7 +2,14 @@
 
 .itemStyle {
   margin: 0.5rem;
-  flex: 0 1 45%;
+  flex: 0 1 100%;
+}
+
+@include list-sm-breakpoint {
+  .itemStyle {
+    margin: 0.5rem;
+    flex: 0 1 45%;
+  }
 }
 
 @include list-md-breakpoint {
