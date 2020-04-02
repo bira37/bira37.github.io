@@ -40,7 +40,7 @@ const PersonalInfo = (): JSX.Element => {
           <li>
             <InfoContainer
               link="mailto:ubiratanneto37@gmail.com"
-              name="E-mail"
+              name="Email"
               icon={MdMailOutline}
               fakeIcon={null}
               eraseUnderscore={false}
