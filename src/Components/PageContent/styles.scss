@@ -1,10 +1,15 @@
 @import "../../globalStyles/config.scss";
 
 .contentStyle {
-  margin-left: $personalInfoWidth;
   min-height: 100vh;
-  padding-left: 2rem;
   padding-top: $topPadding;
   color: $textColor;
-  border-left: $borderStyle;
+}
+
+@include medium-screen {
+  .contentStyle {
+    margin-left: $personalInfoWidth;
+    padding-left: 2rem;
+    border-left: $borderStyle;
+  }
 }

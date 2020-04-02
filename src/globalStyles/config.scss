@@ -6,6 +6,18 @@ $hoverColor: #ff0;
 $pageHorizontalPadding: 3rem;
 $pageContentTitleFontSize: 1.2rem;
 
+@mixin medium-screen {
+  @media (min-width: 768px) {
+    @content;
+  }
+}
+
+@mixin big-screen {
+  @media (min-width: 1176px) {
+    @content;
+  }
+}
+
 .reactIconAlign {
   vertical-align: middle;
   padding-right: 1rem;

@@ -2,7 +2,21 @@
 
 .itemStyle {
   margin: 0.5rem;
-  flex: 0 1 30%;
+  flex: 0 1 100%;
+}
+
+@include medium-screen {
+  .itemStyle {
+    margin: 0.5rem;
+    flex: 0 1 40%;
+  }
+}
+
+@include big-screen {
+  .itemStyle {
+    margin: 0.5rem;
+    flex: 0 1 30%;
+  }
 }
 
 .underline {

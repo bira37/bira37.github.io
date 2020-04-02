@@ -2,13 +2,23 @@
 
 .pageDivision {
   display: flex;
-  flex-direction: row;
   list-style-type: none;
-  flex-wrap: nowrap;
-  align-items: stretch;
-  align-content: stretch;
+  flex-direction: column;
   padding: 0;
+  padding: 0 2rem;
   margin: 0;
-  padding-left: $pageHorizontalPadding;
-  padding-right: $pageHorizontalPadding;
+  margin-bottom: 5rem;
+}
+
+@include medium-screen {
+  .pageDivision {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    align-content: stretch;
+    padding: 0;
+    margin: 0;
+    padding-left: $pageHorizontalPadding;
+    padding-right: $pageHorizontalPadding;
+  }
 }

@@ -1,8 +1,8 @@
 @import "../../globalStyles/config.scss";
 
 .imageStyle {
-  max-width: 75%;
-  max-height: 75%;
+  max-width: 25%;
+  max-height: 25%;
   border-radius: 50%;
 }
 
@@ -13,11 +13,12 @@
 
 .contentStyle {
   color: $textColor;
-  position: fixed;
-  width: $personalInfoWidth;
   list-style-type: none;
-  padding: 0;
-  padding-right: 2rem;
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
   li {
     display: flex;
@@ -29,5 +30,34 @@
   li:first-child {
     padding-top: $topPadding;
     margin-top: 0;
+  }
+}
+
+@include medium-screen {
+  .imageStyle {
+    max-width: 75%;
+    max-height: 75%;
+    border-radius: 50%;
+  }
+
+  .contentStyle {
+    color: $textColor;
+    position: fixed;
+    width: $personalInfoWidth;
+    list-style-type: none;
+    padding: 0;
+    padding-right: 2rem;
+
+    li {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 1.25rem;
+    }
+
+    li:first-child {
+      padding-top: $topPadding;
+      margin-top: 0;
+    }
   }
 }

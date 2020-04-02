@@ -5,12 +5,12 @@ import { TiPencil } from "react-icons/ti";
 import s from "./styles.scss";
 
 const Navigation = (): JSX.Element | null => {
-  const [displayElement, setDisplayElement] = useState(window.innerWidth < 1128);
+  const [displayElement, setDisplayElement] = useState(window.innerWidth < 768);
 
   useEffect(() => {
     const handleResize = (): void => {
       console.log(window.innerWidth);
-      setDisplayElement(window.innerWidth < 1128);
+      setDisplayElement(window.innerWidth < 768);
     };
 
     window.addEventListener("resize", handleResize);
