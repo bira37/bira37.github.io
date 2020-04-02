@@ -1,0 +1,17 @@
+@import "../../globalStyles/config.scss";
+
+.contentStyle {
+  font-size: $pageContentTitleFontSize;
+
+  ul {
+    list-style-type: disc;
+
+    li {
+      padding-bottom: 1rem;
+    }
+  }
+}
+
+.itemTitle {
+  color: $textColor;
+}
