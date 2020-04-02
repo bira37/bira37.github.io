@@ -1,6 +1,0 @@
-node_modules
-*.js
-*.json
-.cache-loader
-dist
-src/assets
