@@ -30,6 +30,12 @@ $pageContentTitleFontSize: 1.2rem;
   }
 }
 
+@mixin small-screen {
+  @media (min-width: 320px) {
+    @content;
+  }
+}
+
 .reactIconAlign {
   vertical-align: middle;
   padding-right: 1rem;

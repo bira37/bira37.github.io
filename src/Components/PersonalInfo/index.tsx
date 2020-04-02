@@ -36,31 +36,35 @@ const PersonalInfo = (): JSX.Element => {
         />
       </li>
       <li>
-        <SocialMediaContact
-          link="mailto:ubiratanneto37@gmail.com"
-          name="E-mail"
-          icon={MdMailOutline}
-          fakeIcon={null}
-          eraseUnderscore={false}
-        />
-      </li>
-      <li>
-        <SocialMediaContact
-          link="https://www.linkedin.com/in/bira37/?locale=en_US"
-          name="LinkedIn"
-          icon={FaLinkedin}
-          fakeIcon={null}
-          eraseUnderscore={false}
-        />
-      </li>
-      <li>
-        <SocialMediaContact
-          link="https://github.com/bira37"
-          name="GitHub"
-          icon={GoMarkGithub}
-          fakeIcon={null}
-          eraseUnderscore={false}
-        />
+        <ul className={s.socialMedia}>
+          <li>
+            <SocialMediaContact
+              link="mailto:ubiratanneto37@gmail.com"
+              name="E-mail"
+              icon={MdMailOutline}
+              fakeIcon={null}
+              eraseUnderscore={false}
+            />
+          </li>
+          <li>
+            <SocialMediaContact
+              link="https://www.linkedin.com/in/bira37/?locale=en_US"
+              name="LinkedIn"
+              icon={FaLinkedin}
+              fakeIcon={null}
+              eraseUnderscore={false}
+            />
+          </li>
+          <li>
+            <SocialMediaContact
+              link="https://github.com/bira37"
+              name="GitHub"
+              icon={GoMarkGithub}
+              fakeIcon={null}
+              eraseUnderscore={false}
+            />
+          </li>
+        </ul>
       </li>
     </ul>
   );
