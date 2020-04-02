@@ -38,7 +38,7 @@ const fileLoader = {
   loader: "file-loader"
 };
 
-const appTitle = "React App Template";
+const appTitle = "Ubiratan Neto | Homepage";
 
 const webpackCommonConfig = {
   context: path.resolve(__dirname, "src"),
