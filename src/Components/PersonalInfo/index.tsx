@@ -5,7 +5,7 @@ import { MdComputer } from "react-icons/md";
 import { MdMailOutline } from "react-icons/md";
 import diplomaIcon from "../../assets/images/diploma-icon.png";
 import profileImage from "../../assets/images/profile.jpeg";
-import SocialMediaContact from "../SocialMediaContact/index";
+import InfoContainer from "../InfoContainer/index";
 import s from "./styles.scss";
 
 const PersonalInfo = (): JSX.Element => {
@@ -18,7 +18,7 @@ const PersonalInfo = (): JSX.Element => {
         <p className={s.infoFormatter}>Ubiratan Neto</p>
       </li>
       <li>
-        <SocialMediaContact
+        <InfoContainer
           link=""
           name="Bachelor of Computer Science"
           icon={null}
@@ -27,7 +27,7 @@ const PersonalInfo = (): JSX.Element => {
         />
       </li>
       <li>
-        <SocialMediaContact
+        <InfoContainer
           link=""
           name="Backend Developer"
           icon={MdComputer}
@@ -38,7 +38,7 @@ const PersonalInfo = (): JSX.Element => {
       <li>
         <ul className={s.socialMedia}>
           <li>
-            <SocialMediaContact
+            <InfoContainer
               link="mailto:ubiratanneto37@gmail.com"
               name="E-mail"
               icon={MdMailOutline}
@@ -47,7 +47,7 @@ const PersonalInfo = (): JSX.Element => {
             />
           </li>
           <li>
-            <SocialMediaContact
+            <InfoContainer
               link="https://www.linkedin.com/in/bira37/?locale=en_US"
               name="LinkedIn"
               icon={FaLinkedin}
@@ -56,7 +56,7 @@ const PersonalInfo = (): JSX.Element => {
             />
           </li>
           <li>
-            <SocialMediaContact
+            <InfoContainer
               link="https://github.com/bira37"
               name="GitHub"
               icon={GoMarkGithub}

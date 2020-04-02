@@ -2,7 +2,7 @@ import React from "react";
 import { IconType } from "react-icons/lib/cjs";
 import s from "./styles.scss";
 
-interface SocialMediaContactProps {
+interface InfoContainerProps {
   link: string;
   name: string;
   eraseUnderscore: boolean;
@@ -10,7 +10,7 @@ interface SocialMediaContactProps {
   fakeIcon: any;
 }
 
-const SocialMediaContact = (props: SocialMediaContactProps): JSX.Element => {
+const InfoContainer = (props: InfoContainerProps): JSX.Element => {
   return (
     <div className={s.contentStyle}>
       <div className={s.linkWrapper}>
@@ -35,4 +35,4 @@ const SocialMediaContact = (props: SocialMediaContactProps): JSX.Element => {
   );
 };
 
-export default SocialMediaContact;
+export default InfoContainer;
