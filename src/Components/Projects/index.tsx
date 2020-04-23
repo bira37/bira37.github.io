@@ -31,11 +31,10 @@ const Projects = (): JSX.Element => {
             rel="noopener noreferrer"
             className={`${s.itemTitle} ${s.linkStyle}`}
           >
-            Competitive Programming Study Guide For C++ Users
+            Competitive Programming Guide
           </a>
           : Guide created in order to index a large amount of content related to competitive
-          programming in one place. It has links to tutorials, sites to practice, other
-          complementary guides and tools (Currently working to reformulate the layout).
+          programming in one place. It has links to well known tutorials and sites to practice.
         </li>
         <li className={s.linkWrapper}>
           <a
