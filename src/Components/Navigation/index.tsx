@@ -9,7 +9,6 @@ const Navigation = (): JSX.Element | null => {
 
   useEffect(() => {
     const handleResize = (): void => {
-      console.log(window.innerWidth);
       setDisplayElement(window.innerWidth < 768);
     };
 
