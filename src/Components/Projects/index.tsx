@@ -14,15 +14,15 @@ const Projects = (): JSX.Element => {
       <ul>
         <li className={s.linkWrapper}>
           <a
-            href="https://github.com/bira37/cp-solutions-library"
+            href="https://github.com/bira37/problem-solutions"
             target="_blank"
             rel="noopener noreferrer"
             className={`${s.itemTitle} ${s.linkStyle}`}
           >
-            Competitive Programming Solutions' Library
+            Programming Problem's Solutions
           </a>
-          : A Github Repository containing solutions for more than 1000 problems on competitive
-          programming that can be found at many contest websites.
+          : A Github Repository containing solutions for more than 1000 programming problems from
+          competitive programming and interview questions that can be found at many websites.
         </li>
         <li className={s.linkWrapper}>
           <a
