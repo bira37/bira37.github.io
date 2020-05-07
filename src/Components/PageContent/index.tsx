@@ -1,5 +1,6 @@
 import React from "react";
 import About from "../About/index";
+import CompetitiveProgramming from "../CompetitiveProgramming/index";
 import GeneralSkills from "../GeneralSkills/index";
 import ProgrammingSkills from "../ProgrammingSkills/index";
 import Projects from "../Projects/index";
@@ -11,6 +12,7 @@ const PageContent = (): JSX.Element => {
       <About />
       <ProgrammingSkills />
       <GeneralSkills />
+      <CompetitiveProgramming />
       <Projects />
     </div>
   );

@@ -8,6 +8,7 @@ interface StackListProps {
     icon: IconType | null;
     fakeIcon: any;
     invertColor: boolean;
+    link?: string;
   }[];
 }
 
@@ -28,7 +29,7 @@ const StackList = ({ stackList }: StackListProps): JSX.Element => {
                 alt={stack.name}
               />
             )}
-            <a href={void 0} className={s.linkStyle}>
+            <a href={stack.link ?? void 0} className={`${s.linkStyle} ${s.noUnderscore}`}>
               {stack.name}
             </a>
           </span>

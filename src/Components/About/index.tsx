@@ -14,9 +14,9 @@ const About = (): JSX.Element => {
       <p>Hello, my name is Ubiratan, and I love programming.</p>
       <p>
         The first time I wrote a line of code was at college. Up to that point I didn't have much
-        contact with technology, aside from playing online games and sometimes opening my router
-        settings following some crazy tutorial to play on a private server. I was fascinated and
-        couldn't wait to learn more about that.
+        contact with programming andtechnology, aside from playing online games and sometimes
+        opening my router settings following some crazy tutorial to play something. I was fascinated
+        and couldn't wait to learn more about that.
       </p>
       <p>
         I started with Pascal and C, to learn the fundamentals about algorithms and logic. After
@@ -31,8 +31,8 @@ const About = (): JSX.Element => {
         Currently, I hold a Bachelor's degree in Computer Science and started to discover the web
         development ecosystem. I am a Backend Developer, working with Node, TypeScript, Postgres,
         GitLab and Docker. I am looking to improve my skills on the field, and also pursuing more
-        advanced knowledge on Frontend techologies, such as HTML, CSS, React and Webpack. My goal is
-        to always improve myself and make even better applications.
+        advanced knowledge on Frontend technologies. My goal is to always improve myself and write
+        even better code.
       </p>
     </div>
   );

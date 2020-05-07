@@ -1,0 +1,43 @@
+@import "../../globalStyles/config.scss";
+
+.contentStyle {
+  font-size: $pageContentTitleFontSize;
+
+  ul {
+    list-style-type: disc;
+
+    li {
+      padding-bottom: 1rem;
+    }
+  }
+}
+
+.itemTitle {
+  color: $textColor;
+}
+
+.biggerIcon {
+  padding-bottom: 0.5rem;
+  height: 2.5rem;
+  width: 2.5rem;
+}
+
+.biggestIcon {
+  padding-bottom: 0.5rem;
+  height: 3rem;
+  width: 3rem;
+}
+
+.invertColor {
+  filter: invert(100%);
+}
+
+.noUnderscore {
+  text-decoration: none;
+}
+
+.itemColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

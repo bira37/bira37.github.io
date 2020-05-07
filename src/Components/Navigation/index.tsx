@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaFolder, FaLaptopCode, FaRegCheckSquare } from "react-icons/fa";
+import { GiBalloons } from "react-icons/gi";
 import { IoIosArrowUp } from "react-icons/io";
 import { TiPencil } from "react-icons/ti";
 import s from "./styles.scss";
@@ -30,6 +31,11 @@ const Navigation = (): JSX.Element | null => {
       <span className={s.linkWrapper}>
         <a href="#general-skills">
           <FaRegCheckSquare className={`${s.iconLink} ${s.linkStyle}`} />
+        </a>
+      </span>
+      <span className={s.linkWrapper}>
+        <a href="#competitive-programming">
+          <GiBalloons className={`${s.iconLink} ${s.linkStyle}`} />
         </a>
       </span>
       <span className={s.linkWrapper}>
