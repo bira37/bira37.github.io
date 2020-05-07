@@ -26,6 +26,19 @@ const Projects = (): JSX.Element => {
         </li>
         <li className={s.linkWrapper}>
           <a
+            href="https://github.com/bira37/cp-lib"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`${s.itemTitle} ${s.linkStyle}`}
+          >
+            Competitive Programming Library
+          </a>
+          : In this repository I share my implementations of several complex algorithms and data
+          structures commonly used in competitive programming. They are divided into categories and
+          all of them were implemented in C++.
+        </li>
+        <li className={s.linkWrapper}>
+          <a
             href="https://bira37.github.io/cp-guide"
             target="_blank"
             rel="noopener noreferrer"
