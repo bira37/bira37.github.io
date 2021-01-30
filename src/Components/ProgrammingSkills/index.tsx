@@ -1,17 +1,10 @@
+import { SiCsharp } from "@react-icons/all-files/si/SiCsharp";
+import { SiDotNet } from "@react-icons/all-files/si/SiDotNet";
+import { SiGo } from "@react-icons/all-files/si/SiGo";
+import { SiKubernetes } from "@react-icons/all-files/si/SiKubernetes";
 import React from "react";
-import { DiJavascript1, DiPostgresql } from "react-icons/di";
-import {
-  FaCss3Alt,
-  FaGitAlt,
-  FaGithub,
-  FaLaptopCode,
-  FaNodeJs,
-  FaNpm,
-  FaPython,
-  FaReact,
-  FaSass
-} from "react-icons/fa";
-import { TiHtml5 } from "react-icons/ti";
+import { DiMongodb, DiPostgresql } from "react-icons/di";
+import { FaDocker, FaGithub, FaLaptopCode, FaNodeJs, FaPython } from "react-icons/fa";
 import cppIcon from "../../assets/images/cpp-icon.png";
 import tsIcon from "../../assets/images/typescript-icon.svg";
 import StackList from "../StackList/index";
@@ -24,18 +17,12 @@ const ProgrammingSkills = (): JSX.Element => {
         <span className={s.reactIconAlign}>
           <FaLaptopCode />
         </span>
-        Programming Skills
+        Tech Skills
       </h2>
       <StackList
         stackList={[
           {
-            name: "JavaScript",
-            icon: DiJavascript1,
-            fakeIcon: null,
-            invertColor: false
-          },
-          {
-            name: "Node",
+            name: "NodeJS",
             icon: FaNodeJs,
             fakeIcon: null,
             invertColor: false
@@ -65,44 +52,44 @@ const ProgrammingSkills = (): JSX.Element => {
             invertColor: false
           },
           {
-            name: "Git",
-            icon: FaGitAlt,
-            fakeIcon: null,
-            invertColor: false
-          },
-          {
             name: "GitHub",
             icon: FaGithub,
             fakeIcon: null,
             invertColor: false
           },
           {
-            name: "NPM",
-            icon: FaNpm,
+            name: "C#",
+            icon: SiCsharp,
             fakeIcon: null,
             invertColor: false
           },
           {
-            name: "HTML",
-            icon: TiHtml5,
+            name: ".NET",
+            icon: SiDotNet,
             fakeIcon: null,
             invertColor: false
           },
           {
-            name: "CSS",
-            icon: FaCss3Alt,
+            name: "Go",
+            icon: SiGo,
             fakeIcon: null,
             invertColor: false
           },
           {
-            name: "SASS",
-            icon: FaSass,
+            name: "Kubernetes",
+            icon: SiKubernetes,
             fakeIcon: null,
             invertColor: false
           },
           {
-            name: "React",
-            icon: FaReact,
+            name: "Docker",
+            icon: FaDocker,
+            fakeIcon: null,
+            invertColor: false
+          },
+          {
+            name: "MongoDB",
+            icon: DiMongodb,
             fakeIcon: null,
             invertColor: false
           }

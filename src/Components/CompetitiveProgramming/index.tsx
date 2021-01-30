@@ -16,11 +16,10 @@ const CompetitiveProgramming = (): JSX.Element => {
       </h2>
       <p>
         Since 2016, I've been an active member of the competitive programming community, taking part
-        on a large number of contests, regionally and globally, and achieving great results. I list
-        all my achievements on my LinkedIn profile. Even though I can no longer participate on most
-        of the competitions, due to several factors, I'm still active on some of the largest online
-        contest platforms and communities. You can check my profile on each of them clicking on the
-        links below:
+        on a large number of contests, regionally and globally. Even though I can no longer
+        participate on most of the competitions, due to several factors, I'm still active on some of
+        the largest online contest platforms and communities. You can check my profile on each of
+        them clicking on the links below:
       </p>
       <div className={s.itemList}>
         <span className={`${s.itemStyle} ${s.linkWrapper} ${s.itemColumn}`} key="cf">

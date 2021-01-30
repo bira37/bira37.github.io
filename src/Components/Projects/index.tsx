@@ -9,19 +9,19 @@ const Projects = (): JSX.Element => {
         <span className={s.reactIconAlign}>
           <FaFolder />
         </span>
-        Projects
+        Projects / Repositories
       </h2>
       <ul>
         <li className={s.linkWrapper}>
           <a
-            href="https://github.com/bira37/problem-solutions"
+            href="https://github.com/bira37/problem-solving"
             target="_blank"
             rel="noopener noreferrer"
             className={`${s.itemTitle} ${s.linkStyle}`}
           >
-            Programming Problem's Solutions
+            Problem Solving
           </a>
-          : A Github Repository containing solutions for more than 1000 programming problems from
+          : A Github Repository containing solutions for almost 1500 programming problems from
           competitive programming and interview questions that can be found at many websites.
         </li>
         <li className={s.linkWrapper}>
@@ -36,18 +36,6 @@ const Projects = (): JSX.Element => {
           : In this repository I share my implementations of several complex algorithms and data
           structures commonly used in competitive programming. They are divided into categories and
           all of them were implemented in C++.
-        </li>
-        <li className={s.linkWrapper}>
-          <a
-            href="https://bira37.github.io/cp-guide"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`${s.itemTitle} ${s.linkStyle}`}
-          >
-            Competitive Programming Guide
-          </a>
-          : Guide created in order to index a large amount of content related to competitive
-          programming in one place. It has links to well known tutorials and sites to practice.
         </li>
         <li className={s.linkWrapper}>
           <a
