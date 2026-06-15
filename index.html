@@ -61,6 +61,8 @@ li a { font-weight: 600; }
   <li id="repo2"></li>
   <li id="repo3"></li>
   <li id="automa1"></li>
+  <li id="automa2"></li>
+  <li id="automa3"></li>
 </ul>
 
 <script>
@@ -73,7 +75,9 @@ const t = {
     repo1: `<a href="https://github.com/bira37/problem-solving">Problem Solving</a> &mdash; solutions for almost 1500 problems from competitive programming and interview questions, collected from several judges.`,
     repo2: `<a href="https://github.com/bira37/cp-lib">Competitive Programming Library</a> &mdash; my implementations of common algorithms and data structures used in CP, organized by category, all written in C++.`,
     repo3: `<a href="https://github.com/bira37/TCC">Ear Detection Using Convolutional Neural Networks</a> &mdash; applying ML to ear detection on colored images, with a comparison against other ear detection methods from recent years.`,
-    automa1: `<a href="istanbul/">Solo Automa — Istanbul (Big Box)</a> &mdash; fan-made app to play Istanbul solo, based on kamarashev's unofficial rules (BGG).`
+    automa1: `<a href="istanbul-unofficial-automa/">Solo Automa — Istanbul</a> &mdash; fan-made app to play Istanbul solo, based on kamarashev's unofficial rules (BGG).`,
+    automa2: `<a href="clank-unofficial-automa/">Solo Automa — Clank! Catacombs</a> &mdash; fan-made app to play Clank! Catacombs solo, based on the unofficial Laura (Lines J. Hutter) and Rival Thief (dbott) automas (BGG).`,
+    automa3: `<a href="agricola-unofficial-automa/">Solo Automa — Agricola</a> &mdash; fan-made app to play Agricola solo, based on A.W.'s unofficial Machina Agricola bot (BGG).`
   },
   pt: {
     role1: "Bacharel em Ciência da Computação",
@@ -83,7 +87,9 @@ const t = {
     repo1: `<a href="https://github.com/bira37/problem-solving">Problem Solving</a> &mdash; soluções para quase 1500 problemas de programação competitiva e questões de entrevista, reunidos de vários juízes.`,
     repo2: `<a href="https://github.com/bira37/cp-lib">Competitive Programming Library</a> &mdash; minhas implementações de algoritmos e estruturas de dados comuns em programação competitiva, organizados por categoria, todos em C++.`,
     repo3: `<a href="https://github.com/bira37/TCC">Ear Detection Using Convolutional Neural Networks</a> &mdash; aplicação de machine learning para detecção de orelhas em imagens coloridas, com comparação a outros métodos recentes.`,
-    automa1: `<a href="istanbul/">Automa Solo — Istanbul (Big Box)</a> &mdash; app fan-made pra jogar Istanbul no modo solo, baseado nas regras não-oficiais do kamarashev (BGG).`
+    automa1: `<a href="istanbul-unofficial-automa/">Automa Solo — Istanbul</a> &mdash; app fan-made pra jogar Istanbul no modo solo, baseado nas regras não-oficiais do kamarashev (BGG).`,
+    automa2: `<a href="clank-unofficial-automa/">Automa Solo — Clank! Catacombs</a> &mdash; app fan-made pra jogar Clank! Catacombs no modo solo, baseado nos automas não-oficiais Laura (Lines J. Hutter) e Rival Thief (dbott) (BGG).`,
+    automa3: `<a href="agricola-unofficial-automa/">Automa Solo — Agricola</a> &mdash; app fan-made pra jogar Agricola no modo solo, baseado no bot não-oficial Machina Agricola do A.W. (BGG).`
   }
 };
 
@@ -98,6 +104,8 @@ function setLang(lang) {
   document.getElementById("repo2").innerHTML = d.repo2;
   document.getElementById("repo3").innerHTML = d.repo3;
   document.getElementById("automa1").innerHTML = d.automa1;
+  document.getElementById("automa2").innerHTML = d.automa2;
+  document.getElementById("automa3").innerHTML = d.automa3;
   document.getElementById("set-pt").classList.toggle("active", lang === "pt");
   document.getElementById("set-en").classList.toggle("active", lang === "en");
   localStorage.setItem("lang", lang);
