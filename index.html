@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ubiratan Neto</title>
+<style>
+body {
+  max-width: 680px;
+  margin: 48px auto;
+  padding: 0 20px;
+  background: #15171c;
+  color: #c9cdd3;
+  font: 16px/1.6 system-ui, sans-serif;
+}
+a { color: #7aa2f7; text-decoration: none; }
+a:hover { text-decoration: underline; }
+.lang { text-align: right; font-size: .85rem; margin: 0 0 28px; }
+.lang a { color: #7d828b; cursor: pointer; }
+.lang a.active { color: #c9cdd3; font-weight: 600; }
+header { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+header img { width: 84px; height: 84px; border-radius: 50%; }
+h1 { font-size: 1.6rem; margin: 0 0 4px; }
+h2 { font-size: 1.05rem; margin: 2.4rem 0 .6rem; color: #e6e8eb; }
+.role { color: #7d828b; margin: 0; }
+.links { margin-top: 10px; }
+.links a, .cp a { margin-right: 16px; }
+p { color: #b1b6bd; }
+ul { padding-left: 18px; }
+li { margin-bottom: 12px; }
+li a { font-weight: 600; }
+</style>
+</head>
+<body>
+
+<p class="lang"><a id="set-pt">PT</a> · <a id="set-en">EN</a></p>
+
+<header>
+  <img src="profile.jpeg" alt="">
+  <div>
+    <h1>Ubiratan Neto</h1>
+    <p class="role" id="role1">Bachelor of Computer Science</p>
+    <p class="role" id="role2">Software Engineer - Backend</p>
+    <p class="role" id="work">Loja Integrada · Pagali</p>
+    <p class="links">
+      <a href="mailto:ubiratanneto37@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/bira37/">LinkedIn</a>
+      <a href="https://github.com/bira37">GitHub</a>
+    </p>
+    <p class="links cp">
+      <a href="https://codeforces.com/profile/bira37">Codeforces</a>
+      <a href="https://www.codechef.com/users/bira37">Codechef</a>
+      <a href="https://atcoder.jp/users/bira37">AtCoder</a>
+    </p>
+  </div>
+</header>
+
+<h2 id="works-h">Projects &amp; hobbies</h2>
+<ul>
+  <li id="repo1"></li>
+  <li id="repo2"></li>
+  <li id="repo3"></li>
+  <li id="automa1"></li>
+</ul>
+
+<script>
+const t = {
+  en: {
+    role1: "Bachelor of Computer Science",
+    role2: "Software Engineer - Backend",
+    work: "Loja Integrada · Pagali",
+    worksH: "Projects & hobbies",
+    repo1: `<a href="https://github.com/bira37/problem-solving">Problem Solving</a> &mdash; solutions for almost 1500 problems from competitive programming and interview questions, collected from several judges.`,
+    repo2: `<a href="https://github.com/bira37/cp-lib">Competitive Programming Library</a> &mdash; my implementations of common algorithms and data structures used in CP, organized by category, all written in C++.`,
+    repo3: `<a href="https://github.com/bira37/TCC">Ear Detection Using Convolutional Neural Networks</a> &mdash; applying ML to ear detection on colored images, with a comparison against other ear detection methods from recent years.`,
+    automa1: `<a href="istanbul/">Solo Automa — Istanbul (Big Box)</a> &mdash; fan-made app to play Istanbul solo, based on kamarashev's unofficial rules (BGG).`
+  },
+  pt: {
+    role1: "Bacharel em Ciência da Computação",
+    role2: "Engenheiro de Software - Backend",
+    work: "Loja Integrada · Pagali",
+    worksH: "Projetos & hobbies",
+    repo1: `<a href="https://github.com/bira37/problem-solving">Problem Solving</a> &mdash; soluções para quase 1500 problemas de programação competitiva e questões de entrevista, reunidos de vários juízes.`,
+    repo2: `<a href="https://github.com/bira37/cp-lib">Competitive Programming Library</a> &mdash; minhas implementações de algoritmos e estruturas de dados comuns em programação competitiva, organizados por categoria, todos em C++.`,
+    repo3: `<a href="https://github.com/bira37/TCC">Ear Detection Using Convolutional Neural Networks</a> &mdash; aplicação de machine learning para detecção de orelhas em imagens coloridas, com comparação a outros métodos recentes.`,
+    automa1: `<a href="istanbul/">Automa Solo — Istanbul (Big Box)</a> &mdash; app fan-made pra jogar Istanbul no modo solo, baseado nas regras não-oficiais do kamarashev (BGG).`
+  }
+};
+
+function setLang(lang) {
+  const d = t[lang];
+  document.documentElement.lang = lang === "pt" ? "pt-br" : "en";
+  document.getElementById("role1").textContent = d.role1;
+  document.getElementById("role2").textContent = d.role2;
+  document.getElementById("work").textContent = d.work;
+  document.getElementById("works-h").textContent = d.worksH;
+  document.getElementById("repo1").innerHTML = d.repo1;
+  document.getElementById("repo2").innerHTML = d.repo2;
+  document.getElementById("repo3").innerHTML = d.repo3;
+  document.getElementById("automa1").innerHTML = d.automa1;
+  document.getElementById("set-pt").classList.toggle("active", lang === "pt");
+  document.getElementById("set-en").classList.toggle("active", lang === "en");
+  localStorage.setItem("lang", lang);
+}
+
+document.getElementById("set-pt").onclick = () => setLang("pt");
+document.getElementById("set-en").onclick = () => setLang("en");
+
+const saved = localStorage.getItem("lang");
+setLang(saved || (navigator.language.startsWith("pt") ? "pt" : "en"));
+</script>
+
+</body>
+</html>

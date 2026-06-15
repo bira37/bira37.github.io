@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Laura · Clank! Catacombs Automa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   LAURA — solo automa companion for Clank! Catacombs
+   Single-file HTML/CSS/JS. Mobile-first. PT/EN.
+   Palette: catacomb abyss + spectral teal (Laura the ghost) + treasure gold
+   ============================================================ */
+:root{
+  --abyss:#0c0a12;
+  --crypt:#161320;
+  --crypt2:#1f1a2e;
+  --edge:#2c2640;
+  --edge2:#3a3253;
+  --spectre:#46e0c8;
+  --spectre-dim:#2a9d8f;
+  --spectre-glow:rgba(70,224,200,.35);
+  --gold:#e3b04b;
+  --bone:#ece6d6;
+  --ash:#948da6;
+  --blood:#d64b43;
+  --blood-dim:#7e2f2b;
+  --radius:14px;
+  --shadow:0 10px 30px rgba(0,0,0,.45);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:
+    radial-gradient(120% 80% at 50% -10%, #1a1430 0%, var(--abyss) 55%),
+    var(--abyss);
+  color:var(--bone);
+  font-family:'Inter',system-ui,sans-serif;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  min-height:100dvh;
+  padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+.wrap{max-width:520px;margin:0 auto;padding:20px 18px 48px;min-height:100dvh;display:flex;flex-direction:column}
+h1,h2,h3,.display{font-family:'Cinzel',serif;letter-spacing:.02em}
+button{font-family:inherit;cursor:pointer;color:inherit;border:none;background:none}
+button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--spectre);outline-offset:2px;border-radius:8px}
+input{font-family:inherit}
+
+/* ---------- top bar ---------- */
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:12px}
+.brand{display:flex;align-items:baseline;gap:10px;min-width:0}
+.brand .name{font-family:'Cinzel',serif;font-weight:900;font-size:1.5rem;color:var(--bone);text-shadow:0 0 18px var(--spectre-glow)}
+.brand .sub{font-size:.72rem;color:var(--ash);text-transform:uppercase;letter-spacing:.12em;white-space:nowrap}
+.toolbtns{display:flex;gap:8px;align-items:center;flex-shrink:0}
+.lang{display:inline-flex;border:1px solid var(--edge);border-radius:999px;overflow:hidden}
+.lang button{padding:5px 11px;font-size:.74rem;font-weight:700;color:var(--ash);letter-spacing:.05em}
+.lang button[aria-pressed="true"]{background:var(--spectre);color:#06231e}
+.iconbtn{width:36px;height:36px;border:1px solid var(--edge);border-radius:10px;display:grid;place-items:center;color:var(--ash);font-size:1rem;background:var(--crypt)}
+.iconbtn:hover{color:var(--bone);border-color:var(--edge2)}
+
+/* ---------- setup ---------- */
+#setup{flex:1;display:flex;flex-direction:column;justify-content:center;text-align:center;gap:22px;padding:10px 4px 0}
+.hero-name{font-family:'Cinzel',serif;font-weight:900;font-size:3.4rem;line-height:.95;color:var(--bone);text-shadow:0 0 40px var(--spectre-glow);position:relative}
+.hero-name::after{content:"";position:absolute;left:50%;bottom:-14px;transform:translateX(-50%);width:64px;height:2px;background:linear-gradient(90deg,transparent,var(--spectre),transparent)}
+.hero-tag{font-size:.82rem;color:var(--spectre);letter-spacing:.04em;margin-top:10px;max-width:30ch;margin-left:auto;margin-right:auto}
+.intro{color:var(--ash);font-size:.95rem;max-width:38ch;margin:0 auto}
+.intro b{color:var(--bone);font-weight:600}
+.setup-card{background:var(--crypt);border:1px solid var(--edge);border-radius:var(--radius);padding:16px 16px;text-align:left}
+.setup-card h3{font-size:.78rem;text-transform:uppercase;letter-spacing:.14em;color:var(--spectre);margin-bottom:8px}
+.setup-card ul{list-style:none;font-size:.86rem;color:var(--ash);display:flex;flex-direction:column;gap:6px}
+.setup-card li::before{content:"›";color:var(--spectre);margin-right:8px;font-weight:700}
+.setup-card li b{color:var(--bone)}
+
+/* ---------- primary button ---------- */
+.btn-primary{
+  width:100%;padding:16px;border-radius:var(--radius);
+  background:linear-gradient(180deg,var(--spectre),var(--spectre-dim));
+  color:#06231e;font-family:'Cinzel',serif;font-weight:700;font-size:1.05rem;letter-spacing:.04em;
+  box-shadow:0 8px 24px var(--spectre-glow);transition:transform .12s ease,box-shadow .12s ease;
+}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 12px 30px var(--spectre-glow)}
+.btn-primary:active{transform:translateY(0)}
+.btn-primary[disabled]{opacity:.45;cursor:not-allowed;box-shadow:none}
+.btn-ghost{width:100%;padding:13px;border:1px solid var(--edge);border-radius:12px;color:var(--ash);font-weight:600;font-size:.9rem;background:var(--crypt)}
+.btn-ghost:hover{color:var(--bone);border-color:var(--edge2)}
+
+/* ---------- game: status ---------- */
+#game{flex:1;display:flex;flex-direction:column;gap:16px}
+.turncount{font-size:.74rem;color:var(--ash);letter-spacing:.1em;text-transform:uppercase;text-align:center}
+
+/* health / escape meter — the signature element */
+.meter{background:var(--crypt);border:1px solid var(--edge);border-radius:var(--radius);padding:14px 16px}
+.meter .lab{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.meter .lab span{font-size:.74rem;text-transform:uppercase;letter-spacing:.12em;color:var(--ash)}
+.meter .lab .val{font-family:'Cinzel',serif;font-weight:700;color:var(--bone);font-size:.95rem;letter-spacing:0}
+.pips{display:flex;gap:5px}
+.pip{flex:1;height:14px;border-radius:4px;background:#241f33;border:1px solid var(--edge);transition:background .25s ease,box-shadow .25s ease}
+.pip.on{background:linear-gradient(180deg,var(--spectre),var(--spectre-dim));border-color:var(--spectre);box-shadow:0 0 10px var(--spectre-glow)}
+.pip.crit.on{background:linear-gradient(180deg,var(--blood),var(--blood-dim));border-color:var(--blood);box-shadow:0 0 10px rgba(214,75,67,.4)}
+.escaped-badge{margin-top:12px;padding:10px;border-radius:10px;background:rgba(70,224,200,.1);border:1px solid var(--spectre-dim);color:var(--spectre);font-size:.82rem;text-align:center;display:none}
+.escaped .escaped-badge{display:block;animation:fadein .4s ease}
+
+/* stat row */
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:var(--crypt);border:1px solid var(--edge);border-radius:12px;padding:12px 14px}
+.stat .k{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ash);margin-bottom:6px}
+.stepper{display:flex;align-items:center;gap:10px}
+.stepper .num{font-family:'Cinzel',serif;font-weight:700;font-size:1.5rem;color:var(--gold);min-width:1.6ch;text-align:center}
+.stepper.teal .num{color:var(--spectre)}
+.stepper .pm{width:30px;height:30px;border:1px solid var(--edge);border-radius:8px;color:var(--ash);font-size:1.1rem;line-height:1;display:grid;place-items:center;background:var(--crypt2)}
+.stepper .pm:hover{color:var(--bone);border-color:var(--edge2)}
+.stat.tap{display:flex;flex-direction:column;align-items:flex-start;gap:5px;text-align:left;width:100%;position:relative;cursor:pointer}
+.stat.tap:hover{border-color:var(--edge2)}
+.stat .num{font-family:'Cinzel',serif;font-weight:700;font-size:1.5rem;color:var(--gold);line-height:1}
+.stat.tap.teal .num{color:var(--spectre)}
+.stat .edit{position:absolute;top:11px;right:12px;font-size:.8rem;color:var(--ash);opacity:.55}
+.stat.tap:hover .edit{opacity:1;color:var(--bone)}
+.infobtn{position:absolute;top:10px;right:12px;width:22px;height:22px;border-radius:50%;border:1px solid var(--edge2);color:var(--ash);font-size:.75rem;font-weight:700;display:grid;place-items:center;background:var(--abyss);font-family:'Cinzel',serif}
+.infobtn:hover{color:var(--bone);border-color:var(--spectre-dim)}
+.infolist{list-style:none;display:flex;flex-direction:column;gap:11px;margin:8px 0 16px}
+.infolist li{font-size:.88rem;color:var(--ash);padding-left:14px;position:relative;line-height:1.5}
+.infolist li::before{content:"›";position:absolute;left:0;color:var(--spectre);font-weight:700}
+.infolist li b{color:var(--bone)}
+.score-big{position:relative;background:linear-gradient(180deg,var(--crypt2),var(--crypt));border:1px solid var(--edge2);border-radius:12px;padding:14px;text-align:center}
+.score-big .k{font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;color:var(--ash)}
+.score-big .v{font-family:'Cinzel',serif;font-weight:900;font-size:2.4rem;color:var(--gold);text-shadow:0 0 24px rgba(227,176,75,.25);line-height:1.1}
+
+/* secondary controls */
+.secondary{display:flex;flex-direction:column;gap:10px;margin-top:2px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mini{padding:11px;border:1px solid var(--edge);border-radius:11px;background:var(--crypt);color:var(--ash);font-size:.82rem;font-weight:600;text-align:center}
+.mini:hover{color:var(--bone);border-color:var(--edge2)}
+.mini.danger{border-color:var(--blood-dim);color:#e8857e}
+.mini.danger:hover{border-color:var(--blood);color:#fff}
+
+/* ---------- overlay (turn sheet / score) ---------- */
+.overlay{position:fixed;inset:0;background:rgba(6,4,12,.78);backdrop-filter:blur(3px);display:flex;align-items:flex-end;justify-content:center;z-index:50;padding:0}
+.sheet{background:var(--crypt);border:1px solid var(--edge2);border-top-left-radius:20px;border-top-right-radius:20px;width:100%;max-width:520px;max-height:92dvh;overflow-y:auto;box-shadow:var(--shadow);animation:slideup .28s cubic-bezier(.2,.8,.2,1);padding:6px 18px calc(20px + env(safe-area-inset-bottom))}
+.sheet .grip{width:40px;height:4px;border-radius:2px;background:var(--edge2);margin:10px auto 14px}
+.sheet h2{font-size:1.25rem;color:var(--bone);margin-bottom:2px;display:flex;align-items:center;gap:10px}
+.cardno{font-family:'Cinzel',serif;font-weight:700;font-size:.72rem;color:var(--spectre);border:1px solid var(--spectre-dim);border-radius:999px;padding:3px 10px;letter-spacing:.05em}
+.di-note{font-size:.74rem;color:var(--ash);margin:8px 0 14px}
+.di-note b{color:var(--gold)}
+
+.steps{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.step{display:flex;gap:12px;background:var(--crypt2);border:1px solid var(--edge);border-radius:12px;padding:12px 13px}
+.step .n{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--abyss);border:1px solid var(--edge2);display:grid;place-items:center;font-family:'Cinzel',serif;font-weight:700;font-size:.8rem;color:var(--spectre)}
+.step .body{flex:1;min-width:0}
+.step .txt{font-size:.92rem;color:var(--bone)}
+.step .hint{font-size:.78rem;color:var(--ash);margin-top:5px}
+.step .txt .auto{color:var(--spectre-dim);font-style:italic;font-size:.86em}
+.step.accent-clank{border-left:3px solid var(--blood)}
+.step.accent-clank.minus{border-left-color:var(--spectre)}
+.step.accent-loot{border-left:3px solid var(--gold)}
+.step.accent-card{border-left:3px solid var(--spectre-dim)}
+.step .quick{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}
+.chip{padding:6px 11px;border:1px solid var(--edge2);border-radius:999px;font-size:.76rem;font-weight:600;color:var(--ash);background:var(--abyss)}
+.chip[aria-pressed="true"]{background:var(--gold);color:#231a05;border-color:var(--gold)}
+.chip.teal[aria-pressed="true"]{background:var(--spectre);color:#06231e;border-color:var(--spectre)}
+.inlineval{display:flex;align-items:center;gap:8px;margin-top:9px}
+.inlineval label{font-size:.78rem;color:var(--ash)}
+.inlineval input{width:72px;padding:7px 9px;background:var(--abyss);border:1px solid var(--edge2);border-radius:8px;color:var(--bone);font-weight:600;text-align:center;font-size:.95rem}
+.refresh{background:rgba(214,75,67,.08);border:1px solid var(--blood-dim);border-radius:12px;padding:12px 13px;margin-bottom:16px}
+.refresh .t{font-size:.74rem;text-transform:uppercase;letter-spacing:.1em;color:#e8857e;margin-bottom:6px;font-weight:700}
+.refresh .d{font-size:.84rem;color:var(--bone)}
+
+/* score sheet */
+.ledger{display:flex;flex-direction:column;gap:1px;background:var(--edge);border:1px solid var(--edge);border-radius:12px;overflow:hidden;margin-bottom:14px}
+.ledger .li{display:flex;justify-content:space-between;align-items:center;background:var(--crypt2);padding:11px 14px}
+.ledger .li .k{color:var(--ash);font-size:.88rem}
+.ledger .li .v{font-family:'Cinzel',serif;font-weight:700;color:var(--bone)}
+.ledger .li.total{background:var(--crypt);border-top:1px solid var(--edge2)}
+.ledger .li.total .k{color:var(--bone);font-weight:600}
+.ledger .li.total .v{color:var(--gold);font-size:1.3rem}
+.ledger .li.tapli{cursor:pointer}
+.ledger .li.tapli:hover{background:var(--crypt)}
+.ledger .li.tapli .v::after{content:" ✎";color:var(--ash);font-size:.8em}
+.versus{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.versus .ipt{display:flex;justify-content:space-between;align-items:center;background:var(--crypt2);border:1px solid var(--edge);border-radius:12px;padding:12px 14px}
+.versus .ipt label{color:var(--bone);font-size:.92rem}
+.versus .ipt input{width:90px;padding:8px;background:var(--abyss);border:1px solid var(--edge2);border-radius:8px;color:var(--gold);font-family:'Cinzel',serif;font-weight:700;text-align:center;font-size:1.05rem}
+.result{text-align:center;font-family:'Cinzel',serif;font-weight:900;font-size:1.5rem;padding:14px;border-radius:12px;margin-bottom:14px}
+.result.win{color:var(--spectre);background:rgba(70,224,200,.1);border:1px solid var(--spectre-dim)}
+.result.lose{color:#e8857e;background:rgba(214,75,67,.08);border:1px solid var(--blood-dim)}
+.result.tie{color:var(--gold);background:rgba(227,176,75,.08);border:1px solid var(--gold)}
+.compare{background:rgba(70,224,200,.07);border:1px solid var(--spectre-dim);border-radius:12px;padding:13px 14px;font-size:.86rem;color:var(--bone);line-height:1.55;margin-bottom:16px}
+.compare b{color:var(--spectre)}
+
+/* footer / credits */
+.credits{margin-top:auto;padding-top:24px;text-align:center;font-size:.72rem;color:var(--ash);line-height:1.7}
+.credits a{color:var(--spectre-dim);text-decoration:none}
+.credits a:hover{color:var(--spectre)}
+.credits .sep{opacity:.4;margin:0 6px}
+
+.flag{font-size:.74rem;color:#e8857e;background:rgba(214,75,67,.07);border:1px solid var(--blood-dim);border-radius:10px;padding:10px 12px;margin-bottom:6px}
+
+#select,#setupAdv{flex:1;display:flex;flex-direction:column;justify-content:center;text-align:center;gap:18px;padding:10px 4px 0}
+#gameAdv{flex:1;display:flex;flex-direction:column;gap:16px}
+.botcard{display:block;width:100%;text-align:left;background:var(--crypt);border:1px solid var(--edge);border-radius:var(--radius);padding:18px;transition:border-color .15s,transform .12s}
+.botcard:hover{border-color:var(--spectre-dim);transform:translateY(-1px)}
+.botcard .botname{font-family:'Cinzel',serif;font-weight:700;font-size:1.4rem;color:var(--bone)}
+.botcard .botdesc{font-size:.86rem;color:var(--ash);margin-top:6px;line-height:1.5}
+.botcard .botmeta{font-size:.72rem;color:var(--spectre);margin-top:10px;letter-spacing:.04em;text-transform:uppercase}
+.changebot{align-self:flex-start;color:var(--ash);font-size:.82rem;font-weight:600;padding:4px 0}
+.changebot:hover{color:var(--spectre)}
+.changebot::before{content:"‹ "}
+.diffs{display:flex;flex-direction:column;gap:10px}
+.diffbtn{display:block;width:100%;text-align:left;background:var(--crypt2);border:1px solid var(--edge);border-radius:12px;padding:13px 14px;transition:border-color .15s}
+.diffbtn:hover{border-color:var(--spectre)}
+.diffbtn .dn{font-family:'Cinzel',serif;font-weight:700;color:var(--bone);font-size:1.05rem}
+.diffbtn .dd{font-size:.75rem;color:var(--ash);margin-top:4px}
+.advref{background:var(--crypt2);border:1px solid var(--edge);border-radius:12px;padding:12px 13px;margin-bottom:12px}
+.advref .t{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--spectre);margin-bottom:8px;font-weight:700}
+.actiongrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.actbtn{padding:11px 8px;border:1px solid var(--edge2);border-radius:10px;background:var(--crypt2);color:var(--bone);font-size:.82rem;font-weight:600;text-align:center}
+.actbtn:hover{border-color:var(--spectre)}
+.actbtn.wide{grid-column:1/-1}
+.dnote{font-size:.74rem;color:var(--ash);line-height:1.6;margin:12px 2px 0;padding-top:12px;border-top:1px solid var(--edge)}
+.dnote b{color:var(--bone)}
+.prow{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--crypt2);border:1px solid var(--edge);border-radius:10px;padding:10px 12px;margin-bottom:7px}
+.prow:hover{border-color:var(--spectre)}
+.prow:disabled{opacity:.32;cursor:not-allowed}
+.prow .pn{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:var(--abyss);border:1px solid var(--edge2);display:grid;place-items:center;font-family:'Cinzel',serif;font-weight:700;font-size:.72rem;color:var(--spectre)}
+.prow .pl{font-size:.9rem;color:var(--bone);font-weight:600}
+.d8result{background:rgba(70,224,200,.07);border:1px solid var(--spectre-dim);border-radius:10px;padding:11px;margin:4px 0 12px;font-size:.86rem;color:var(--bone);line-height:1.5}
+.d8result b{color:var(--spectre)}
+.modepill{display:inline-block;font-size:.66rem;font-weight:700;letter-spacing:.05em;padding:3px 9px;border-radius:999px;border:1px solid var(--spectre-dim);color:var(--spectre);text-transform:uppercase}
+@keyframes slideup{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@keyframes fadein{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+@media (min-width:520px){.overlay{align-items:center;padding:20px}.sheet{border-radius:20px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <div class="brand">
+      <span class="name">Laura</span>
+      <span class="sub" data-i="brandSub"></span>
+    </div>
+    <div class="toolbtns">
+      <div class="lang" role="group" aria-label="Language">
+        <button data-lang="pt" aria-pressed="true">PT</button>
+        <button data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <button class="iconbtn" id="menuBtn" title="Menu" aria-label="Menu" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></button>
+    </div>
+  </div>
+
+  <!-- ============ BOT SELECT ============ -->
+  <section id="select">
+    <div>
+      <div class="hero-name">Catacombs</div>
+      <div class="hero-tag" data-i="selectTag"></div>
+    </div>
+    <p class="intro" data-i="selectIntro"></p>
+    <button class="botcard" id="pickLaura">
+      <div class="botname">Laura</div>
+      <div class="botdesc" data-i="lauraDesc"></div>
+      <div class="botmeta" data-i="lauraMeta"></div>
+    </button>
+    <button class="botcard" id="pickAdv">
+      <div class="botname" data-i="advName"></div>
+      <div class="botdesc" data-i="advDesc"></div>
+      <div class="botmeta" data-i="advMeta"></div>
+    </button>
+  </section>
+
+  <!-- ============ SETUP ============ -->
+  <section id="setup">
+    <button class="changebot" id="changeBotLaura" data-i="changeBot"></button>
+    <div>
+      <div class="hero-name">Laura</div>
+      <div class="hero-tag" data-i="tag"></div>
+    </div>
+    <p class="intro" data-i="intro"></p>
+    <div class="setup-card">
+      <h3 data-i="setupTitle"></h3>
+      <ul>
+        <li data-i="setup1"></li>
+        <li data-i="setup2"></li>
+        <li data-i="setup3"></li>
+        <li data-i="setup4"></li>
+      </ul>
+    </div>
+    <button class="btn-primary" id="continueBtn" data-i="continueGame" hidden></button>
+    <button class="btn-primary" id="startBtn" data-i="startGame"></button>
+  </section>
+
+  <!-- ============ GAME ============ -->
+  <section id="game" hidden>
+    <div class="turncount" id="turncount"></div>
+
+    <div class="meter" id="healthMeter">
+      <div class="lab">
+        <span data-i="health"></span>
+        <span class="val" id="healthVal">0 / 10</span>
+      </div>
+      <div class="pips" id="pips"></div>
+      <div class="escaped-badge" id="escapedBadge"></div>
+    </div>
+
+    <div class="score-big">
+      <button class="infobtn" id="infoBtn" aria-label="Info">?</button>
+      <div class="k" data-i="lauraScore"></div>
+      <div class="v" id="scoreBig">0</div>
+    </div>
+
+    <div class="stats">
+      <button class="stat tap" data-stat="gold"><span class="k" data-i="gold"></span><span class="num" id="goldNum">0</span><span class="edit">✎</span></button>
+      <button class="stat tap teal" data-stat="idols"><span class="k" data-i="idols"></span><span class="num" id="idolsNum">0</span><span class="edit">✎</span></button>
+      <button class="stat tap" data-stat="artifact"><span class="k" data-i="artifact"></span><span class="num" id="artifactNum">0</span><span class="edit">✎</span></button>
+      <button class="stat tap" data-stat="loot"><span class="k" data-i="loot"></span><span class="num" id="lootNum">0</span><span class="edit">✎</span></button>
+    </div>
+
+    <button class="btn-primary" id="turnBtn" data-i="lauraTurn"></button>
+
+    <div class="secondary">
+      <button class="mini" id="dragonBtn" data-i="dragonAttack"></button>
+      <div class="row2">
+        <button class="mini danger" id="escBtn" data-i="youEscaped"></button>
+        <button class="mini danger" id="koBtn" data-i="youKO"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ADVANCED SETUP ============ -->
+  <section id="setupAdv" hidden>
+    <button class="changebot" id="changeBotAdv" data-i="changeBot"></button>
+    <div>
+      <div class="hero-name" data-i="advName"></div>
+      <div class="hero-tag" data-i="advTag"></div>
+    </div>
+    <p class="intro" data-i="advSetupIntro"></p>
+    <button class="btn-primary" id="continueAdvBtn" data-i="continueGame" hidden></button>
+    <div class="setup-card">
+      <h3 data-i="advDiffTitle"></h3>
+      <div class="diffs" id="diffs"></div>
+      <p class="dnote" data-i="diffMultNote"></p>
+    </div>
+    <div class="setup-card">
+      <h3 data-i="setupTitle"></h3>
+      <ul>
+        <li data-i="advSetup1"></li>
+        <li data-i="advSetup2"></li>
+        <li data-i="advSetup3"></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ ADVANCED GAME ============ -->
+  <section id="gameAdv" hidden>
+    <div class="turncount"><span id="advTurnCount"></span> · <span id="advModeLabel"></span></div>
+    <div class="meter" id="advHealthMeter">
+      <div class="lab"><span data-i="advHealth"></span><span class="val" id="advHealthVal">0 / 10</span></div>
+      <div class="pips" id="advPips"></div>
+      <div class="escaped-badge" id="advEscapedBadge"></div>
+    </div>
+    <div class="score-big">
+      <button class="infobtn" id="advInfoBtn" aria-label="Info">?</button>
+      <div class="k" data-i="botScore"></div>
+      <div class="v" id="advScoreBig">0</div>
+    </div>
+    <div class="stats">
+      <button class="stat tap" data-stat="lockpicks"><span class="k" data-i="lockpicks"></span><span class="num" id="advLockNum">0</span><span class="edit">✎</span></button>
+      <button class="stat tap teal" data-stat="idols"><span class="k" data-i="idols"></span><span class="num" id="advIdolNum">0</span><span class="edit">✎</span></button>
+      <button class="stat tap" data-stat="artifact"><span class="k" data-i="artifact"></span><span class="num" id="advArtNum">0</span><span class="edit">✎</span></button>
+      <button class="stat tap" data-stat="gold"><span class="k" data-i="gold"></span><span class="num" id="advGoldNum">0</span><span class="edit">✎</span></button>
+    </div>
+    <button class="btn-primary" id="advTurnBtn" data-i="botTurn"></button>
+    <div class="secondary">
+      <button class="mini" id="advDragonBtn" data-i="dragonAttack"></button>
+      <div class="row2">
+        <button class="mini danger" id="advEscBtn" data-i="youEscaped"></button>
+        <button class="mini danger" id="advKoBtn" data-i="youKO"></button>
+      </div>
+    </div>
+  </section>
+
+  <div class="credits" id="credits"></div>
+</div>
+
+<!-- ============ TURN OVERLAY ============ -->
+<div class="overlay" id="overlay" hidden>
+  <div class="sheet" id="turnSheet"></div>
+</div>
+<!-- ============ DRAGON OVERLAY ============ -->
+<div class="overlay" id="dragonOverlay" hidden>
+  <div class="sheet" id="dragonSheet"></div>
+</div>
+<!-- ============ SCORE OVERLAY ============ -->
+<div class="overlay" id="scoreOverlay" hidden>
+  <div class="sheet" id="scoreSheet"></div>
+</div>
+<!-- ============ ADJUST OVERLAY ============ -->
+<div class="overlay" id="adjustOverlay" hidden><div class="sheet" id="adjustSheet"></div></div>
+<!-- ============ INFO OVERLAY ============ -->
+<div class="overlay" id="infoOverlay" hidden><div class="sheet" id="infoSheet"></div></div>
+
+<script>
+"use strict";
+/* ============================================================
+   ⚠️ VERIFY THIS BLOCK FIRST — Laura's 8 AI cards.
+   Reconstructed from the card images in ClankLauraSoloV4.pdf
+   (OCR'd / ambiguous), adapted for Catacombs per the BGG
+   community (Jakob/Christian/Stijn). Each card lists its
+   actions top→bottom plus its Decision Icon number (di).
+   Expansion-area icons are ignored (base game only).
+   Edit freely — the engine reads straight from here.
+   ============================================================ */
+const CARDS = {
+  1: { di:3, actions:[ {t:'clank',n:1},
+        {t:'gainCard', pr:['reduceClank','heal','highestPoints','highestSkill'], tie:'leftmost'} ] },
+  2: { di:2, actions:[ {t:'minorSecret'},
+        {t:'gainCard', pr:['reduceClank','heal','highestPoints','highestSkill'], tie:'rightmost'} ] },
+  3: { di:3, actions:[ {t:'minorSecret'}, {t:'clank',n:1},
+        {t:'gainCard', pr:['cheapestMonster','lowestSkill'], tie:'leftmost'} ] },
+  4: { di:4, actions:[ {t:'minorSecret'}, {t:'clank',n:2},
+        {t:'gainCardDI', dir:'left'}, {t:'gainCardDI', dir:'right'} ] },
+  5: { di:4, actions:[ {t:'heal'}, {t:'gold'},
+        {t:'gainCardDI', dir:'left'}, {t:'gainCardDI', dir:'right'} ] },
+  6: { di:1, actions:[ {t:'clank',n:3}, {t:'artifact'},
+        {t:'gainCard', pr:['highestPoints','highestSkill'], tie:'leftmost'} ] },
+  7: { di:1, actions:[ {t:'minorSecret'}, {t:'removeClank',n:2}, {t:'market'},
+        {t:'gainCard', pr:['highestPoints','highestSkill'], tie:'rightmost'} ] },
+  8: { di:2, actions:[ {t:'majorSecret'}, {t:'clankToYou',n:3}, {t:'market'},
+        {t:'gainSecretTome'} ] },
+};
+const DECK_FACEDOWN = [1,2,3,4,5];
+const DECK_FACEUP   = [6,7,8];
+const ESCAPE_AT = 10;      // full health meter → Laura escapes
+const POST_ESCAPE_CUBES = 4; // simple mode
+
+/* ============================================================
+   i18n
+   ============================================================ */
+const T = {
+  pt:{
+    brandSub:"Automa solo",
+    tag:"Adaptação da Laura original para Clank! Catacombs",
+    intro:"Um oponente solo não-oficial para <b>Clank! Catacombs</b>. A Laura é um fantasma: não percorre a masmorra, mas acumula espólios e despeja Clank! como qualquer rival. Você joga o jogo físico; o app conduz os turnos dela.",
+    setupTitle:"Preparação",
+    setup1:"Monte uma partida de <b>2 jogadores</b>.",
+    setup2:"<b>Você começa</b> (3 Clank!), a Laura coloca 2 Clank!.",
+    setup3:"A Laura <b>não</b> tem baralho inicial — o app é o baralho de IA dela.",
+    setup4:"Dificuldade <b>simples</b>: pós-escape, saca 4 cubos.",
+    startGame:"Iniciar partida",
+    continueGame:"Continuar partida",
+    lauraTurn:"Turno da Laura",
+    lauraTurnEscaped:"Turno da Laura (saque de 4 cubos)",
+    health:"Vida da Laura",
+    escapedBadge:"A Laura escapou! Ganhou uma Maestria (+20). A cada turno dela, jogue a área de Clank! na bolsa e saque "+POST_ESCAPE_CUBES+" cubos — o dano vai pra você.",
+    lauraScore:"Pontos da Laura",
+    gold:"Ouro",
+    idols:"Ídolos de Macaco",
+    artifact:"Artefato (valor)",
+    loot:"Espólio (cartas/segredos/itens)",
+    dragonAttack:"Registrar Ataque do Dragão",
+    youEscaped:"Você escapou",
+    youKO:"Você foi nocauteado / preso",
+    turnLabel:"Turno",
+    cardLabel:"Carta",
+    diNote:"Decision Icon em vigor: <b>{di}</b> (do topo do descarte de IA).",
+    finishTurn:"Concluir turno",
+    cancel:"Cancelar",
+    refreshTitle:"Fim do turno — reabasteça",
+    refreshDesc:"Reabasteça o Dungeon Row até 6 cartas e resolva efeitos de <b>Revelar</b>. Se uma carta nova mostrar o símbolo de <b>Ataque do Dragão</b>, resolva 1 ataque — depois registre o dano no botão <b>Ataque do Dragão</b>, na tela do jogo.",
+    escapedTurnTitle:"Laura escapou",
+    escapedTurnDesc:"Jogue todos os cubos da área de Clank! na Bolsa do Dragão e saque <b>"+POST_ESCAPE_CUBES+" cubos</b> (ignore a Trilha de Fúria). O dano vai todo pra você. A Laura não saca mais cartas de IA.",
+    dragonTitle:"Ataque do Dragão",
+    dragonDesc:"Quantos cubos da <b>cor do bot</b> saíram da bolsa? (Cubo Ghost branco = todos tomam 1 — conte aqui também.)",
+    dragonAdd:"Adicionar dano",
+    pointsLabel:"Pontos:",
+    adjustCurrent:"Atual",
+    adjustAmount:"Quantidade",
+    adjustAdd:"Adicionar",
+    adjustRemove:"Remover",
+    close:"Fechar",
+    infoHTML:`<h2>Como a pontuação funciona</h2><ul class="infolist"><li><b>Automático:</b> o Ouro (quando a Laura ganha Ouro numa ação) e a Maestria +20 (quando ela escapa).</li><li><b>Você digita no turno da Laura:</b> o valor em pontos de cada carta que ela ganha, dos segredos, dos itens de mercado e do Artefato. O app abre um campo no próprio turno — o número fica no <b>canto superior direito</b> da carta.</li><li><b>Ídolos:</b> marque no turno com o botão "Saiu Poção…" (cada um vale 5).</li><li><b>Correção manual:</b> toque em qualquer valor (Ouro, Ídolos, Artefato, Espólio) pra digitar um número e somar ou remover.</li><li><b>Cartas de pontuação variável:</b> (ex.: pontos por Ídolo/Prisioneiro) não têm valor fixo — deixe 0 no turno e resolva no <b>fim do jogo</b>, somando no Espólio pelo estado final da Laura. (Ela não pega Prisioneiros, então "por Prisioneiro" vale 0.)</li></ul>`,
+    // actions
+    a_clank:(n)=>`Laura faz <b>+${n} Clank!</b> — coloque ${n} cubo${n>1?'s':''} da Laura na área de Clank!.`,
+    a_removeClank:(n)=>`Laura <b>remove ${n} Clank!</b> da área de Clank! (se houver).`,
+    a_clankToYou:(n)=>`<b>Você ganha ${n} Clank!</b> — coloque ${n} dos seus cubos na área de Clank!.`,
+    a_gold:()=>`Laura ganha <b>5 de Ouro</b>. <span class="auto">(somado automaticamente)</span>`,
+    a_heal:()=>`Laura <b>cura 1 de dano</b>. <span class="auto">(aplicado automaticamente)</span>`,
+    a_minorSecret:()=>`Saque <b>1 Pequeno Segredo aleatório</b> do supply para a Laura (ela guarda só para pontuar).`,
+    a_minorSecret_hint:"Se for <b>Poção de Rapidez</b> ou <b>Poção de Força</b> → a Laura também pega 1 Ídolo de Macaco. Se for <b>Ovo de Dragão</b> → +1 Fúria.",
+    chip_egg:"Saiu Ovo de Dragão (+Fúria)",
+    chip_potion:"Saiu Poção Rapidez/Força (+Ídolo)",
+    a_majorSecret:()=>`Saque <b>1 Grande Segredo aleatório</b> do supply para a Laura (só pontuação).`,
+    a_artifact:(di)=>`Laura pega o Artefato de <b>${di<=2?'maior valor':'2º maior valor'}</b> disponível (no supply ou já numa peça) e <b>avança a Fúria +1</b>.`,
+    a_artifact_lab:"Valor do Artefato:",
+    a_market:()=>`Laura pega o <b>1º item disponível</b> na ordem: Mochila → Coroa → Amuleto de Sangue → Kit de Ladrão. Não paga nada.`,
+    a_gainCard:(list,side)=>`Laura ganha <b>1 carta</b> do Dungeon Row. Prioridade: ${list}. Empate: pegue a carta mais à <b>${side}</b>.`,
+    a_gainCardDI:(di,dir)=>`Conte <b>${di}</b> carta${di>1?'s':''} no Dungeon Row a partir da <b>${dir}</b>; a Laura pega essa carta.`,
+    a_gainSecretTome:()=>`Laura ganha <b>1 Tomo Secreto</b> da Reserva.`,
+    a_gainCard_hint:"Digite o valor da carta (canto superior direito) — o app soma no Espólio.",
+    pr_reduceClank:"cartas com −Clank!",
+    pr_heal:"cartas com ícone de Cura",
+    pr_highestPoints:"maior valor em pontos",
+    pr_highestSkill:"maior custo de Habilidade",
+    pr_lowestSkill:"menor custo de Habilidade",
+    pr_cheapestMonster:"Monstro mais barato (menos Espadas; sem recompensa)",
+    side_leftmost:"esquerda",
+    side_rightmost:"direita",
+    dir_left:"esquerda",
+    dir_right:"direita",
+    // score
+    scoreTitle:"Fim de jogo",
+    yourScore:"Seus pontos",
+    win:"Você venceu!",
+    lose:"A Laura venceu",
+    tie:"Empate (desempata o Artefato mais valioso)",
+    li_gold:"Ouro",
+    li_idols:"Ídolos de Macaco",
+    li_artifact:"Artefato",
+    li_mastery:"Maestria",
+    li_loot:"Espólio (cartas/segredos/itens)",
+    li_tomes:"Tomos Secretos",
+    li_total:"Total da Laura",
+    li_totalAdv:"Total do Ladrão Rival",
+    compareNoteAdv:"Conte os seus pontos normalmente (Artefato + tokens + Ouro + valor das cartas) e compare com o total do Ladrão Rival acima. Quem tiver mais pontos vence. Em caso de empate, ganha quem tiver o <b>Artefato mais valioso</b>.",
+    newGame:"Nova partida",
+    compareNote:"Conte os seus pontos normalmente (Artefato + tokens + Ouro + valor das cartas) e compare com o total da Laura acima. Quem tiver mais pontos vence. Em caso de empate, ganha quem tiver o <b>Artefato mais valioso</b>.",
+    scoreNote:"Toque numa linha pra ajustar. Cartas de pontuação variável (ex.: X por Ídolo) você resolve agora, pelo estado final da Laura, e soma no Espólio.",
+    confirmRestart:"Reiniciar a partida? O progresso da Laura será perdido.",
+    selectTag:"Escolha seu oponente solo",
+    selectIntro:"Dois automas para jogar Clank! Catacombs sozinho:",
+    lauraDesc:"Leve e elegante. Um fantasma que acumula espólio e despeja Clank!, sem percorrer a masmorra. O app conduz quase tudo.",
+    lauraMeta:"Simples · dificuldade única",
+    advName:"Ladrão Rival",
+    advDesc:"Imersivo. Um oponente que percorre a masmorra de verdade — você o guia pelo tabuleiro. Mais presente, mais trabalhoso.",
+    advMeta:"Avançado · 3 dificuldades",
+    advTag:"Bot que percorre a masmorra · variante da comunidade (dbott)",
+    advSetupIntro:"Você guia o bot pelo tabuleiro respondendo o que ele alcança; o app cuida das regras, do estado e da pontuação. Sem rastrear peças.",
+    advDiffTitle:"Dificuldade",
+    advSetup1:"Use <b>todas as 6 peças safe</b> na preparação.",
+    advSetup2:"O bot já começa com as Gazuas e o Tomo da dificuldade (o app conta).",
+    advSetup3:"O bot escapa pela Cripta como um jogador — fim de jogo nativo.",
+    changeBot:"Trocar bot",
+    botScore:"Pontos do bot",
+    botTurn:"Turno do bot",
+    botTurnEscaped:"Turno do bot (saque de 6 cubos)",
+    advHealth:"Vida do bot",
+    lockpicks:"Gazuas",
+    escapedShort:"Escapou",
+    diff_thief:"Ladrão",
+    diff_master:"Mestre Ladrão",
+    diff_lord:"Senhor da Masmorra",
+    diff_thief_d:"3 Gazuas · até 2 Tomos por turno · cartas-lixo ×1",
+    diff_master_d:"4 Gazuas · até 3 Tomos · cartas-lixo ×2",
+    diff_lord_d:"5 Gazuas · 1 Tomo inicial · até 4 · usa Acquire · cartas-lixo ×3",
+    diffMultNote:"<b>cartas-lixo ×N</b>: multiplicador que vale <b>só</b> pras cartas zero-value (monstros/dispositivos) e pros Pequenos Segredos não usados. Como o bot <b>não joga</b> as cartas que pega (não derrota monstros nem usa dispositivos — só acumula pra pontuar), elas valeriam 0 <b>pra ele</b>; o multiplicador é o quanto ele converte essa pilha em pontos. Ouro, Artefato, Ídolos (×5), Tomos (×7) e cartas com pontos valem o mesmo em toda dificuldade.",
+    modeSearching:"Procurando Artefato",
+    modeReturning:"Voltando à Cripta",
+    advEscapedBadge:"O bot escapou! Ganhou uma Maestria (+20). A cada turno dele, jogue a área de Clank! na bolsa e saque 6 cubos — o dano vai pra você.",
+    advEscapedTurnDesc:"Jogue a área de Clank! na Bolsa do Dragão e saque <b>6 cubos</b> (ignore a Fúria). O dano vai todo pra você. O bot já escapou.",
+    a1Title:"Ação 1 — Mover para uma sala",
+    a1Ref:"Prioridade: Artefato › Ídolo › Mercado (Amuleto se 5+ dano) › Cura (5+) › Baú › Biblioteca › Prisão › Mercado › Pequeno Segredo › Santuário › Cura › Ouro.",
+    a1Instr:"Mova o bot pela prioridade (olhando o tabuleiro) e toque no que ele ganhar. Itens em cinza ele não pode usar agora.",
+    a2Title:"Ação 2 — Carta / Ouro / Clank!",
+    a1Step:"Ação 1 de 2 — Mover para uma sala",
+    a2Step:"Ação 2 de 2 — Comprar do Dungeon Row",
+    a1Explain:"O bot entra em <b>uma</b> sala e pega a recompensa dela. Decida em 2 perguntas:<br><br><b>1) A peça onde o bot está ainda tem alguma sala de recompensa que ele NÃO visitou?</b><br>• <b>Sim</b> → ele <b>fica na peça</b>. Entre essas salas, entra na de maior prioridade (lista abaixo) e pega a recompensa. Acabou o movimento.<br>• <b>Não</b> (já visitou todas) → ele <b>sai da peça</b>. Vá pra pergunta 2.<br><br><b>2) Pra qual peça ele vai?</b> (logo abaixo, muda conforme o modo). Ao chegar na peça nova, ele entra na sala de maior prioridade dela.",
+    a1OnTile:"<b>1) Ficou na peça atual?</b> Toque na sala de recompensa onde ele entrou (de cima = maior prioridade). Em cinza = ele não pode usar agora.",
+    a1Leave:"<b>2) Saiu da peça (só quando esgotou as recompensas da peça atual):</b>",
+    a1Searching:"Procurando o Artefato: 1º vai pra peça vizinha com <b>Artefato</b>; senão, vizinha com <b>Ídolo</b> (se ainda quiser um); senão, <b>descobre peça nova</b>. (Na peça inicial, visite as 2 salas seguras antes de sair.) Se a peça de destino não tem recompensa, use “sala sem recompensa”.",
+    a1Returning:"Voltando pra Cripta: ele dá <b>um passo rumo à Cripta</b> (rota mais curta pelas peças na mesa) e entra na sala de maior prioridade onde parar. Sem recompensa na sala? Use “sala sem recompensa”. Chegou na Cripta → escapa.",
+    a1Pick:"Toque na recompensa da sala onde o bot entrou. Em cinza = ele não pode usar agora.",
+    a1NoReward:"Sala sem recompensa (só mover) →",
+    closeTurn:"Fechar (não conta turno)",
+    a2Explain:"Na Ação 2, o bot compra do Dungeon Row. As 6 cartas são numeradas <b>1 a 6, da esquerda pra direita</b>. O app já rolou o d8 (resultado abaixo): <b>1–6</b> = a carta naquela posição; <b>7</b> = Tomo Secreto; <b>8</b> = Ouro. Adicione o Clank! indicado na área.",
+    a2NoEffect:"O bot <b>só compra a carta e guarda pra pontuar</b> — ele não usa nenhum efeito (monstro, dispositivo ou Adquirir).",
+    a2Acquire:"Se a carta tiver um <b>efeito de Adquirir</b> que o bot usa (ex.: +Clank a cada oponente, libertar prisioneiro, Teleporte/Botas → repetir a ação), aplique-o como nas regras do bot. As demais cartas ele só guarda pra pontuar.",
+    act_healHi:"Curar (5+ dano)",
+    rollD8:"Rolar o d8 (o app sorteia)",
+    act_artifact:"Artefato",
+    act_idol:"Ídolo de Macaco",
+    act_heal:"Curar 1",
+    act_chest:"Baú (−Gazua)",
+    act_library:"Biblioteca → Tomo (−Gazua)",
+    act_prison:"Prisão (−Gazua)",
+    act_crown:"Mercado: Coroa",
+    act_amulet:"Mercado: Amuleto",
+    act_kit:"Mercado: Kit de Ladrão",
+    act_minor:"Pequeno Segredo",
+    act_wayshrine:"Santuário",
+    act_gold:"Ouro",
+    act_discover:"Descobrir peça nova",
+    act_crypt:"Chegou na Cripta → Escapar",
+    discoverNote:"Compre a peça do topo e gire-a para <b>{rot}°</b> (sentido horário, a partir da arte em pé). Encaixe-a ao lado da peça atual do bot no <b>primeiro lugar livre</b>, nesta ordem: <b>{order}</b> — pule o lado só se já tiver uma peça ali. O bot entra na peça nova; depois toque na sala de recompensa de maior prioridade dela (ou “sala sem recompensa”, se não tiver nenhuma).",
+    ord_n:"norte (cima)",
+    ord_e:"leste (direita)",
+    ord_s:"sul (baixo)",
+    ord_w:"oeste (esquerda)",
+    p_artifact:"Valor do Artefato:",
+    p_gold:"Quanto Ouro?",
+    p_chest:"Pontos do Grande Segredo (Greater Skill Boost = 5):",
+    p_library:"Pontos do Tomo Secreto:",
+    p_tome:"Pontos do Tomo Secreto:",
+    p_prison:"Pontos dos 2 Prisioneiros (resolva os efeitos):",
+    p_card:"Pontos da carta:",
+    p_cardTitle:"A carta pontua?",
+    isZero:"Zero-value (monstro/dispositivo)",
+    hasPoints:"Tem pontos…",
+    crownWhich:"Qual Coroa?",
+    crown10:"10 pts (vale 3)",
+    crown9:"9 pts (vale 2)",
+    crown8:"8 pts (vale 1)",
+    minorWhich:"Qual Pequeno Segredo?",
+    ms_egg:"Ovo de Dragão (+Fúria, 3 pts)",
+    ms_lock:"Gazua (+1)",
+    ms_heal:"Poção de Cura (curar 1)",
+    ms_treasure:"Tesouro (+2 Ouro)",
+    ms_other:"Outro (guardar p/ pontos)",
+    rollLead:"Sorteei <b>{r}</b> (de 1 a 8).",
+    tomeLimitLead:"Sorteei <b>7</b>, mas o bot já está no limite de Tomos — sorteei de novo e saiu <b>{r}</b>.",
+    out_card:"O bot compra a <b>{r}ª carta</b> do Dungeon Row (contando da esquerda).<br>Depois, mova <b>1 Clank!</b> do bot para a área.",
+    out_cardGold:"Como o bot está com 5+ de dano, em vez da carta ele ganha <b>1 Ouro</b>.<br>Mova <b>1 Clank!</b> do bot para a área.",
+    out_tome:"O bot ganha <b>1 Tomo Secreto</b> (vale 7 pontos).",
+    out_gold:"O bot ganha <b>{g} de Ouro</b>.",
+    cardScoreQ:"Vá ao Dungeon Row e veja a <b>{r}ª carta</b> (da esquerda). Ela dá pontos no fim do jogo?",
+    tomeScoreQ:"O bot pegou <b>1 Tomo Secreto</b>. Veja o Tomo e registre os pontos dele.",
+    regTome:"Registrar pontos do Tomo",
+    advScoreNote:"Toque numa linha pra ajustar. Pontos por carta zero-value e Pequeno Segredo não usado já entram pela dificuldade. Cartas de valor variável: resolva pelo estado final do bot e some em 'Cartas com pontos'.",
+    li_zero:"Cartas zero-value",
+    li_cards:"Cartas com pontos",
+    li_minor:"Pequenos Segredos não usados",
+    advInfoHTML:`<h2>Pontuação do bot</h2><ul class="infolist"><li><b>Automático:</b> Ouro, Ídolos (×5), Maestria (+20 ao escapar), e os multiplicadores de dificuldade pras cartas zero-value e Pequenos Segredos não usados.</li><li><b>Você digita:</b> valor dos Artefatos, cartas com pontos, Tomos, Coroa, Grandes Segredos e Prisioneiros — o app pergunta na hora.</li><li><b>Ação 1:</b> mova o bot pela prioridade (olhando o tabuleiro) e toque no que ele ganhar.</li><li><b>Ação 2:</b> o app rola o d8 (o Catacombs não tem d8) e resolve.</li></ul>`,
+    creditsHTML:'Automa <b>Laura</b> por <a href="https://boardgamegeek.com/user/Lines42" target="_blank" rel="noopener">Lines J. Hutter</a> · adaptação p/ Catacombs pela comunidade BGG (Jakob, Christian, Stijn)<br><b>Ladrão Rival</b> (IA de navegação) por <a href="https://boardgamegeek.com/filepage/250882/clank-catacombs-ai-for-solo-play-fan-made" target="_blank" rel="noopener">dbott</a><span class="sep">·</span><i>Clank! Catacombs</i> © Dire Wolf Digital<br>App não-oficial por <a href="https://github.com/bira37" target="_blank" rel="noopener">bira37</a>',
+  },
+  en:{
+    brandSub:"Solo automa",
+    tag:"The original Laura automa, adapted for Clank! Catacombs",
+    intro:"An unofficial solo opponent for <b>Clank! Catacombs</b>. Laura is a ghost: she never walks the dungeon, but she hoards loot and dumps Clank! like any rival. You play the physical game; the app runs her turns.",
+    setupTitle:"Setup",
+    setup1:"Set up a <b>2-player</b> game.",
+    setup2:"<b>You go first</b> (3 Clank!), Laura places 2 Clank!.",
+    setup3:"Laura gets <b>no</b> starting deck — the app is her AI deck.",
+    setup4:"<b>Simple</b> difficulty: after escaping, draw 4 cubes.",
+    startGame:"Start game",
+    continueGame:"Continue game",
+    lauraTurn:"Laura's turn",
+    lauraTurnEscaped:"Laura's turn (4-cube draw)",
+    health:"Laura's health",
+    escapedBadge:"Laura escaped! She gained a Mastery (+20). On each of her turns, put the Clank! area in the bag and draw "+POST_ESCAPE_CUBES+" cubes — the damage goes to you.",
+    lauraScore:"Laura's score",
+    gold:"Gold",
+    idols:"Monkey Idols",
+    artifact:"Artifact (value)",
+    loot:"Loot (cards/secrets/items)",
+    dragonAttack:"Log a Dragon Attack",
+    youEscaped:"You escaped",
+    youKO:"You were knocked out / stuck",
+    turnLabel:"Turn",
+    cardLabel:"Card",
+    diNote:"Decision Icon in effect: <b>{di}</b> (top of the AI discard pile).",
+    finishTurn:"Finish turn",
+    cancel:"Cancel",
+    refreshTitle:"End of turn — refresh",
+    refreshDesc:"Refill the Dungeon Row to 6 cards and resolve <b>Arrive</b> effects. If a new card shows the <b>Dragon Attack</b> symbol, resolve one attack — then log the damage with the <b>Dragon Attack</b> button on the game screen.",
+    escapedTurnTitle:"Laura escaped",
+    escapedTurnDesc:"Put all cubes from the Clank! area into the Dragon Bag and draw <b>"+POST_ESCAPE_CUBES+" cubes</b> (ignore the Rage Track). All damage goes to you. Laura draws no more AI cards.",
+    dragonTitle:"Dragon Attack",
+    dragonDesc:"How many cubes of the <b>bot's color</b> were drawn? (White ghost cube = everyone takes 1 — count it here too.)",
+    dragonAdd:"Add damage",
+    pointsLabel:"Points:",
+    adjustCurrent:"Current",
+    adjustAmount:"Amount",
+    adjustAdd:"Add",
+    adjustRemove:"Remove",
+    close:"Close",
+    infoHTML:`<h2>How scoring works</h2><ul class="infolist"><li><b>Automatic:</b> Gold (when Laura gains Gold in an action) and the +20 Mastery (when she escapes).</li><li><b>You type on Laura's turn:</b> the point value of each card she gains, of secrets, of market items, and of the Artifact. The app opens a field right in the turn — the number is in the <b>top-right corner</b> of the card.</li><li><b>Idols:</b> mark them on the turn with the "It was a … Potion" button (each is worth 5).</li><li><b>Manual fix:</b> tap any value (Gold, Idols, Artifact, Loot) to type a number and add or remove.</li><li><b>Variable-scoring cards:</b> (e.g. points per Idol/Prisoner) have no fixed value — leave them at 0 during the turn and resolve at <b>game end</b>, adding to Loot from Laura's final state. (She never takes Prisoners, so "per Prisoner" scores 0.)</li></ul>`,
+    a_clank:(n)=>`Laura makes <b>+${n} Clank!</b> — place ${n} of Laura's cube${n>1?'s':''} in the Clank! area.`,
+    a_removeClank:(n)=>`Laura <b>removes ${n} Clank!</b> from the Clank! area (if any).`,
+    a_clankToYou:(n)=>`<b>You gain ${n} Clank!</b> — place ${n} of your cubes in the Clank! area.`,
+    a_gold:()=>`Laura gains <b>5 Gold</b>. <span class="auto">(added automatically)</span>`,
+    a_heal:()=>`Laura <b>heals 1 damage</b>. <span class="auto">(applied automatically)</span>`,
+    a_minorSecret:()=>`Draw <b>1 random Minor Secret</b> from the supply for Laura (she keeps it for scoring).`,
+    a_minorSecret_hint:"If it's a <b>Potion of Swiftness</b> or <b>Potion of Strength</b> → Laura also takes a Monkey Idol. If it's a <b>Dragon Egg</b> → +1 Rage.",
+    chip_egg:"It was a Dragon Egg (+Rage)",
+    chip_potion:"It was a Swiftness/Strength Potion (+Idol)",
+    a_majorSecret:()=>`Draw <b>1 random Major Secret</b> from the supply for Laura (scoring only).`,
+    a_artifact:(di)=>`Laura takes the <b>${di<=2?'highest-value':'2nd-highest'}</b> Artifact available (in the supply or already on a tile) and <b>advances Rage +1</b>.`,
+    a_artifact_lab:"Artifact value:",
+    a_market:()=>`Laura takes the <b>first available item</b> in order: Backpack → Crown → Blood Amulet → Burglar's Kit. She pays nothing.`,
+    a_gainCard:(list,side)=>`Laura gains <b>1 card</b> from the Dungeon Row. Priority: ${list}. Tie: take the <b>${side}</b> card.`,
+    a_gainCardDI:(di,dir)=>`Count <b>${di}</b> card${di>1?'s':''} into the Dungeon Row from the <b>${dir}</b>; Laura takes that card.`,
+    a_gainSecretTome:()=>`Laura gains <b>1 Secret Tome</b> from the Reserve.`,
+    a_gainCard_hint:"Type the card's value (top-right corner) — the app adds it to Loot.",
+    pr_reduceClank:"cards with −Clank!",
+    pr_heal:"cards with a Heal icon",
+    pr_highestPoints:"highest point value",
+    pr_highestSkill:"highest Skill cost",
+    pr_lowestSkill:"lowest Skill cost",
+    pr_cheapestMonster:"cheapest Monster (fewest Swords; no reward)",
+    side_leftmost:"left",
+    side_rightmost:"right",
+    dir_left:"left",
+    dir_right:"right",
+    scoreTitle:"Game over",
+    yourScore:"Your score",
+    win:"You win!",
+    lose:"Laura wins",
+    tie:"Tie (most valuable Artifact breaks it)",
+    li_gold:"Gold",
+    li_idols:"Monkey Idols",
+    li_artifact:"Artifact",
+    li_mastery:"Mastery",
+    li_loot:"Loot (cards/secrets/items)",
+    li_tomes:"Secret Tomes",
+    li_total:"Laura's total",
+    li_totalAdv:"Rival Thief's total",
+    compareNoteAdv:"Count your own points normally (Artifact + tokens + Gold + card values) and compare with the Rival Thief's total above. Most points wins. On a tie, the <b>most valuable Artifact</b> wins.",
+    newGame:"New game",
+    compareNote:"Count your own points normally (Artifact + tokens + Gold + card values) and compare with Laura's total above. Most points wins. On a tie, the <b>most valuable Artifact</b> wins.",
+    scoreNote:"Tap a row to adjust. Variable-scoring cards (e.g. X per Idol) are resolved now, from Laura's final state, and added to Loot.",
+    confirmRestart:"Restart the game? Laura's progress will be lost.",
+    selectTag:"Choose your solo opponent",
+    selectIntro:"Two automas for playing Clank! Catacombs solo:",
+    lauraDesc:"Light and elegant. A ghost that hoards loot and dumps Clank! without walking the dungeon. The app runs almost everything.",
+    lauraMeta:"Simple · single difficulty",
+    advName:"Rival Thief",
+    advDesc:"Immersive. An opponent that actually navigates the dungeon — you guide it on the board. More present, more hands-on.",
+    advMeta:"Advanced · 3 difficulties",
+    advTag:"Dungeon-navigating bot · community variant (dbott)",
+    advSetupIntro:"You guide the bot on the board by answering what it can reach; the app handles the rules, state, and scoring. No tile tracking.",
+    advDiffTitle:"Difficulty",
+    advSetup1:"Use <b>all 6 safe tiles</b> in setup.",
+    advSetup2:"The bot starts with the difficulty's Lockpicks and Tome (the app counts).",
+    advSetup3:"The bot escapes via the Crypt like a player — native end-game.",
+    changeBot:"Change bot",
+    botScore:"Bot's score",
+    botTurn:"Bot's turn",
+    botTurnEscaped:"Bot's turn (6-cube draw)",
+    advHealth:"Bot's health",
+    lockpicks:"Lockpicks",
+    escapedShort:"Escaped",
+    diff_thief:"Thief",
+    diff_master:"Master Thief",
+    diff_lord:"Dungeon Lord",
+    diff_thief_d:"3 Lockpicks · up to 2 Tomes/turn · junk cards ×1",
+    diff_master_d:"4 Lockpicks · up to 3 Tomes · junk cards ×2",
+    diff_lord_d:"5 Lockpicks · 1 starting Tome · up to 4 · uses Acquire · junk cards ×3",
+    diffMultNote:"<b>junk cards ×N</b>: a multiplier that applies <b>only</b> to zero-value cards (monsters/devices) and unused Minor Secrets. Since the bot <b>doesn't play</b> the cards it takes (it doesn't fight monsters or use devices — it just hoards them for scoring), they'd be worth 0 <b>to it</b>; the multiplier is how much it turns that pile into points. Gold, Artifact, Idols (×5), Tomes (×7) and scoring cards are the same on every difficulty.",
+    modeSearching:"Searching for Artifact",
+    modeReturning:"Returning to Crypt",
+    advEscapedBadge:"The bot escaped! It gained a Mastery (+20). On each of its turns, put the Clank! area in the bag and draw 6 cubes — the damage goes to you.",
+    advEscapedTurnDesc:"Put the Clank! area in the Dragon Bag and draw <b>6 cubes</b> (ignore Rage). All damage goes to you. The bot has escaped.",
+    a1Title:"Action 1 — Move to a room",
+    a1Ref:"Priority: Artifact › Idol › Market (Amulet if 5+ dmg) › Heal (5+) › Chest › Library › Prison › Market › Minor Secret › Wayshrine › Heal › Gold.",
+    a1Instr:"Move the bot by priority (looking at the board) and tap what it gains. Greyed items it can't use right now.",
+    a2Title:"Action 2 — Card / Gold / Clank!",
+    a1Step:"Action 1 of 2 — Move to a room",
+    a2Step:"Action 2 of 2 — Draw from the Dungeon Row",
+    a1Explain:"The bot enters <b>one</b> room and takes its reward. Decide with 2 questions:<br><br><b>1) Does the tile the bot is on still have a reward room it has NOT visited?</b><br>• <b>Yes</b> → it <b>stays on the tile</b>. Among those rooms, it enters the highest-priority one (list below) and takes the reward. Move done.<br>• <b>No</b> (visited them all) → it <b>leaves the tile</b>. Go to question 2.<br><br><b>2) Which tile does it go to?</b> (below — depends on the mode). On the new tile it enters its highest-priority reward room.",
+    a1OnTile:"<b>1) Staying on the current tile?</b> Tap the reward room it entered (top = highest priority). Greyed = it can't use that now.",
+    a1Leave:"<b>2) Left the tile (only when the current tile's rewards are exhausted):</b>",
+    a1Searching:"Searching for the Artifact: 1st go to a neighboring tile with an <b>Artifact</b>; else a neighbor with a <b>Monkey Idol</b> (if it still wants one); else <b>discover a new tile</b>. (On the starting tile, visit both safe rooms before leaving.) If the destination tile has no reward, use “room with no reward”.",
+    a1Returning:"Returning to the Crypt: it takes <b>one step toward the Crypt</b> (shortest path through tiles on the table) and enters the highest-priority room where it lands. No reward there? Use “room with no reward”. Reaches the Crypt → it escapes.",
+    a1Pick:"Tap the reward of the room the bot entered. Greyed = it can't use that now.",
+    a1NoReward:"Room with no reward (just move) →",
+    closeTurn:"Close (doesn't count as a turn)",
+    a2Explain:"In Action 2, the bot draws from the Dungeon Row. The 6 cards are numbered <b>1–6, left to right</b>. The app already rolled the d8 (result below): <b>1–6</b> = the card at that position; <b>7</b> = Secret Tome; <b>8</b> = Gold. Add the indicated Clank! to the area.",
+    a2NoEffect:"The bot <b>just takes the card and keeps it for scoring</b> — it uses no effects (monster, device, or Acquire).",
+    a2Acquire:"If the card has an <b>Acquire effect</b> the bot uses (e.g. +Clank to each opponent, free a prisoner, Teleport/Boots → repeat the action), apply it as in the bot's rules. All other cards are just kept for scoring.",
+    act_healHi:"Heal (5+ dmg)",
+    rollD8:"Roll the d8 (app rolls it)",
+    act_artifact:"Artifact",
+    act_idol:"Monkey Idol",
+    act_heal:"Heal 1",
+    act_chest:"Chest (−Lockpick)",
+    act_library:"Library → Tome (−Lockpick)",
+    act_prison:"Prison (−Lockpick)",
+    act_crown:"Market: Crown",
+    act_amulet:"Market: Amulet",
+    act_kit:"Market: Burglar's Kit",
+    act_minor:"Minor Secret",
+    act_wayshrine:"Wayshrine",
+    act_gold:"Gold",
+    act_discover:"Discover new tile",
+    act_crypt:"Reached the Crypt → Escape",
+    discoverNote:"Draw the top tile and rotate it to <b>{rot}°</b> (clockwise, from the art upright). Fit it beside the bot's current tile in the <b>first free spot</b>, in this order: <b>{order}</b> — skip a side only if a tile is already there. The bot enters the new tile; then tap its highest-priority reward room (or “room with no reward” if it has none).",
+    ord_n:"north (up)",
+    ord_e:"east (right)",
+    ord_s:"south (down)",
+    ord_w:"west (left)",
+    p_artifact:"Artifact value:",
+    p_gold:"How much Gold?",
+    p_chest:"Major Secret points (Greater Skill Boost = 5):",
+    p_library:"Secret Tome points:",
+    p_tome:"Secret Tome points:",
+    p_prison:"Points for the 2 Prisoners (resolve effects):",
+    p_card:"Card points:",
+    p_cardTitle:"Does the card score?",
+    isZero:"Zero-value (monster/device)",
+    hasPoints:"It scores…",
+    crownWhich:"Which Crown?",
+    crown10:"10 pts (worth 3)",
+    crown9:"9 pts (worth 2)",
+    crown8:"8 pts (worth 1)",
+    minorWhich:"Which Minor Secret?",
+    ms_egg:"Dragon Egg (+Rage, 3 pts)",
+    ms_lock:"Lockpick (+1)",
+    ms_heal:"Potion of Healing (heal 1)",
+    ms_treasure:"Treasure (+2 Gold)",
+    ms_other:"Other (keep for points)",
+    rollLead:"Rolled <b>{r}</b> (out of 1–8).",
+    tomeLimitLead:"Rolled <b>7</b>, but the bot is already at its Tome limit — rolled again and got <b>{r}</b>.",
+    out_card:"The bot takes the card in <b>position {r}</b> of the Dungeon Row (from the left).<br>Then move <b>1 Clank!</b> from the bot to the area.",
+    out_cardGold:"Since the bot is at 5+ damage, it gains <b>1 Gold</b> instead of the card.<br>Move <b>1 Clank!</b> from the bot to the area.",
+    out_tome:"The bot gains <b>1 Secret Tome</b> (worth 7 points).",
+    out_gold:"The bot gains <b>{g} Gold</b>.",
+    cardScoreQ:"Go to the Dungeon Row and look at the card in <b>position {r}</b> (from the left). Does it score points at game end?",
+    tomeScoreQ:"The bot took <b>1 Secret Tome</b>. Look at the Tome and record its points.",
+    regTome:"Enter the Tome's points",
+    advScoreNote:"Tap a row to adjust. Zero-value cards and unused Minor Secrets already use the difficulty multiplier. Variable-scoring cards: resolve from the bot's final state and add to 'Scoring cards'.",
+    li_zero:"Zero-value cards",
+    li_cards:"Scoring cards",
+    li_minor:"Unused Minor Secrets",
+    advInfoHTML:`<h2>Bot scoring</h2><ul class="infolist"><li><b>Automatic:</b> Gold, Idols (×5), Mastery (+20 on escape), and the difficulty multipliers for zero-value cards and unused Minor Secrets.</li><li><b>You type:</b> Artifact value, scoring cards, Tomes, Crown, Major Secrets and Prisoners — the app asks at the time.</li><li><b>Action 1:</b> move the bot by priority (looking at the board) and tap what it gains.</li><li><b>Action 2:</b> the app rolls the d8 (Catacombs has no d8) and resolves it.</li></ul>`,
+    creditsHTML:'<b>Laura</b> automa by <a href="https://boardgamegeek.com/user/Lines42" target="_blank" rel="noopener">Lines J. Hutter</a> · Catacombs adaptation by the BGG community (Jakob, Christian, Stijn)<br><b>Rival Thief</b> (navigating AI) by <a href="https://boardgamegeek.com/filepage/250882/clank-catacombs-ai-for-solo-play-fan-made" target="_blank" rel="noopener">dbott</a><span class="sep">·</span><i>Clank! Catacombs</i> © Dire Wolf Digital<br>Unofficial app by <a href="https://github.com/bira37" target="_blank" rel="noopener">bira37</a>',
+  }
+};
+
+/* ============================================================
+   state + persistence
+   ============================================================ */
+const KEY="laura_catacombs_v1";
+let state=null, pendingTurn=null, adjustReopen=false, advTurn=null;
+
+function t(k){ return T[state?.lang||'pt'][k]; }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+function load(){ try{ const r=localStorage.getItem(KEY); return r?JSON.parse(r):null; }catch(e){ return null; } }
+function randInt(max){ // unbiased integer in 0..max-1, crypto-backed; Math.random only as fallback
+  if(max<=1) return 0;
+  const g=(typeof crypto!=='undefined' && crypto.getRandomValues) ? crypto : null;
+  if(g){
+    const limit=Math.floor(0x100000000/max)*max; // rejection sampling avoids modulo bias
+    const buf=new Uint32Array(1); let x;
+    do{ g.getRandomValues(buf); x=buf[0]; }while(x>=limit);
+    return x%max;
+  }
+  return Math.floor(Math.random()*max);
+}
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=randInt(i+1); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+function detectLang(){ return (navigator.language||'').toLowerCase().startsWith('pt')?'pt':'en'; }
+
+function newGame(){
+  const lang = state?.lang || detectLang();
+  state={
+    lang, bot:'laura', started:true, gameOver:false, atMenu:false,
+    deck: shuffle(DECK_FACEDOWN),
+    discard: shuffle(DECK_FACEUP),
+    rage:0, damage:0, escaped:false, mastery:false,
+    gold:0, idols:0, artifact:0, loot:0,
+    turn:0, yourScore:0,
+  };
+  pendingTurn=null; save(); render();
+}
+
+function currentDI(){ return state.discard.length ? CARDS[state.discard[state.discard.length-1]].di : 1; }
+
+/* ============================================================
+   rendering
+   ============================================================ */
+function applyI18n(){
+  document.documentElement.lang = state.lang;
+  document.querySelectorAll('[data-i]').forEach(el=>{ el.innerHTML = t(el.dataset.i); });
+  document.getElementById('credits').innerHTML = t('creditsHTML');
+  document.querySelectorAll('.lang button').forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.lang===state.lang)));
+  document.querySelector('.brand .name').textContent = !state.bot ? 'Catacombs' : (state.bot==='advanced' ? t('advName') : 'Laura');
+  // turn button label depends on escaped
+  document.getElementById('turnBtn').textContent = state.escaped ? t('lauraTurnEscaped') : t('lauraTurn');
+}
+
+function totalScore(){
+  return state.gold + state.artifact + state.idols*5 + (state.mastery?20:0) + state.loot;
+}
+
+function renderSetup(){
+  const resumable = state && state.started && !state.gameOver;
+  const cont=document.getElementById('continueBtn'), start=document.getElementById('startBtn');
+  cont.hidden = !resumable;
+  if(resumable){ start.classList.remove('btn-primary'); start.classList.add('btn-ghost'); start.textContent=t('newGame'); }
+  else { start.classList.add('btn-primary'); start.classList.remove('btn-ghost'); start.textContent=t('startGame'); }
+}
+
+function render(){
+  applyI18n();
+  const bot = state && state.bot;
+  const inGameL = bot==='laura' && state.started && !state.atMenu;
+  const inGameA = bot==='advanced' && state.started && !state.atMenu;
+  document.getElementById('select').hidden = !!bot;
+  document.getElementById('setup').hidden = !(bot==='laura' && !inGameL);
+  document.getElementById('game').hidden = !inGameL;
+  document.getElementById('setupAdv').hidden = !(bot==='advanced' && !inGameA);
+  document.getElementById('gameAdv').hidden = !inGameA;
+  document.getElementById('menuBtn').hidden = !(inGameL||inGameA);
+  if(bot==='laura' && !inGameL){ renderSetup(); return; }
+  if(bot==='advanced' && !inGameA){ renderSetupAdv(); return; }
+  if(inGameL){ renderLauraGame(); return; }
+  if(inGameA){ renderAdv(); return; }
+}
+
+function renderLauraGame(){
+  document.getElementById('turncount').textContent = `${t('turnLabel')} ${state.turn}`;
+  const pips=document.getElementById('pips'); pips.innerHTML='';
+  for(let i=0;i<ESCAPE_AT;i++){
+    const d=document.createElement('div');
+    d.className='pip'+(i>=ESCAPE_AT-3?' crit':'')+(i<state.damage?' on':'');
+    pips.appendChild(d);
+  }
+  document.getElementById('healthVal').textContent = `${state.damage} / ${ESCAPE_AT}`;
+  document.getElementById('healthMeter').classList.toggle('escaped', state.escaped);
+  document.getElementById('escapedBadge').innerHTML = t('escapedBadge');
+  document.getElementById('goldNum').textContent=state.gold;
+  document.getElementById('idolsNum').textContent=state.idols;
+  document.getElementById('artifactNum').textContent=state.artifact;
+  document.getElementById('lootNum').textContent=state.loot;
+  document.getElementById('scoreBig').textContent=totalScore();
+  document.getElementById('turnBtn').textContent = state.escaped ? t('lauraTurnEscaped') : t('lauraTurn');
+}
+
+/* ---- step text builder ---- */
+function priorityList(pr){ return pr.map(k=>t('pr_'+k)).join(' → '); }
+
+function buildSteps(card, di){
+  const out=[];
+  CARDS[card].actions.forEach(act=>{
+    let cls='', txt='', hint='', extra=null, pts=false;
+    switch(act.t){
+      case 'clank': cls='accent-clank'; txt=t('a_clank')(act.n); break;
+      case 'removeClank': cls='accent-clank minus'; txt=t('a_removeClank')(act.n); break;
+      case 'clankToYou': cls='accent-clank'; txt=t('a_clankToYou')(act.n); break;
+      case 'gold': cls='accent-loot'; txt=t('a_gold')(); break;
+      case 'heal': txt=t('a_heal')(); break;
+      case 'minorSecret': cls='accent-loot'; txt=t('a_minorSecret')(); hint=t('a_minorSecret_hint'); extra='secret'; pts=true; break;
+      case 'majorSecret': cls='accent-loot'; txt=t('a_majorSecret')(); pts=true; break;
+      case 'artifact': cls='accent-loot'; txt=t('a_artifact')(di); extra='artifact'; break;
+      case 'market': cls='accent-loot'; txt=t('a_market')(); pts=true; break;
+      case 'gainCard': cls='accent-card'; txt=t('a_gainCard')(priorityList(act.pr), t('side_'+act.tie)); hint=t('a_gainCard_hint'); pts=true; break;
+      case 'gainCardDI': cls='accent-card'; txt=t('a_gainCardDI')(di, t('dir_'+act.dir)); hint=t('a_gainCard_hint'); pts=true; break;
+      case 'gainSecretTome': cls='accent-card'; txt=t('a_gainSecretTome')(); hint=t('a_gainCard_hint'); pts=true; break;
+    }
+    out.push({cls,txt,hint,extra,pts});
+  });
+  return out;
+}
+
+/* ---- take a turn ---- */
+function takeTurn(){
+  if(state.gameOver) return;
+  if(state.escaped){ showEscapedTurn(); return; }
+  if(state.deck.length===0){ state.deck=shuffle(state.discard); state.discard=[]; }
+  const di = currentDI();
+  const card = state.deck[state.deck.length-1]; // peek; pop on finish
+  const steps = buildSteps(card, di);
+  pendingTurn = { card, di, eggRage:false, potionIdol:false, artifactVal:0 };
+
+  let html = `<div class="grip"></div>`;
+  html += `<h2>${t('lauraTurn')} <span class="cardno">${t('cardLabel')} ${card}</span></h2>`;
+  html += `<div class="di-note">${t('diNote').replace('{di}', di)}</div>`;
+  html += `<div class="steps">`;
+  steps.forEach((s,i)=>{
+    html += `<div class="step ${s.cls}"><div class="n">${i+1}</div><div class="body"><div class="txt">${s.txt}</div>`;
+    if(s.hint) html += `<div class="hint">${s.hint}</div>`;
+    if(s.extra==='secret'){
+      html += `<div class="quick">
+        <button class="chip" data-flag="eggRage" aria-pressed="false">${t('chip_egg')}</button>
+        <button class="chip teal" data-flag="potionIdol" aria-pressed="false">${t('chip_potion')}</button>
+      </div>`;
+    }
+    if(s.extra==='artifact'){
+      html += `<div class="inlineval"><label>${t('a_artifact_lab')}</label><input type="number" inputmode="numeric" min="0" id="artifactInput" value="0"></div>`;
+    }
+    if(s.pts){
+      html += `<div class="inlineval"><label>${t('pointsLabel')}</label><input type="number" inputmode="numeric" min="0" data-pts value="0"></div>`;
+    }
+    html += `</div></div>`;
+  });
+  html += `</div>`;
+  html += `<div class="refresh"><div class="t">${t('refreshTitle')}</div><div class="d">${t('refreshDesc')}</div></div>`;
+  html += `<button class="btn-primary" id="finishTurn">${t('finishTurn')}</button>`;
+  html += `<button class="btn-ghost" id="cancelTurn" style="margin-top:10px">${t('cancel')}</button>`;
+
+  const sheet=document.getElementById('turnSheet'); sheet.innerHTML=html;
+  document.getElementById('overlay').hidden=false;
+
+  sheet.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{
+    const f=c.dataset.flag; pendingTurn[f]=!pendingTurn[f]; c.setAttribute('aria-pressed',String(pendingTurn[f]));
+  }));
+  document.getElementById('cancelTurn').addEventListener('click',closeOverlays);
+  document.getElementById('finishTurn').addEventListener('click',finishTurn);
+}
+
+function finishTurn(){
+  const p=pendingTurn; if(!p) return;
+  // commit deck movement
+  state.deck.pop();
+  state.discard.push(p.card);
+  // apply deterministic effects
+  CARDS[p.card].actions.forEach(act=>{
+    if(act.t==='gold') state.gold += 5;
+    if(act.t==='heal') state.damage = Math.max(0, state.damage-1);
+    if(act.t==='artifact'){ state.rage++; }
+  });
+  // artifact value
+  const ai=document.getElementById('artifactInput');
+  if(ai){ const v=parseInt(ai.value,10)||0; if(v>0) state.artifact += v; }
+  // loot points entered during the turn (cards, secrets, market items)
+  document.querySelectorAll('#turnSheet [data-pts]').forEach(i=>{ state.loot += (parseInt(i.value,10)||0); });
+  // secret riders
+  if(p.eggRage) state.rage++;
+  if(p.potionIdol && state.idols<3) state.idols++;
+  state.turn++;
+  pendingTurn=null;
+  closeOverlays(); save(); render();
+}
+
+function showEscapedTurn(){
+  const sheet=document.getElementById('turnSheet');
+  sheet.innerHTML = `<div class="grip"></div>
+    <h2>${t('escapedTurnTitle')}</h2>
+    <div class="refresh" style="margin-top:12px"><div class="d">${t('escapedTurnDesc')}</div></div>
+    <button class="btn-primary" id="finishTurn">${t('finishTurn')}</button>`;
+  document.getElementById('overlay').hidden=false;
+  document.getElementById('finishTurn').addEventListener('click',()=>{ state.turn++; closeOverlays(); save(); render(); });
+}
+
+/* ---- dragon attack ---- */
+function showDragon(){
+  const sheet=document.getElementById('dragonSheet');
+  sheet.innerHTML = `<div class="grip"></div>
+    <h2>${t('dragonTitle')}</h2>
+    <div class="di-note">${t('dragonDesc')}</div>
+    <div class="inlineval" style="margin:6px 0 16px"><label>${t('dragonAttack')}</label><input type="number" inputmode="numeric" min="0" id="dmgInput" value="1"></div>
+    <button class="btn-primary" id="addDmg">${t('dragonAdd')}</button>
+    <button class="btn-ghost" id="cancelDmg" style="margin-top:10px">${t('cancel')}</button>`;
+  document.getElementById('dragonOverlay').hidden=false;
+  document.getElementById('cancelDmg').addEventListener('click',closeOverlays);
+  document.getElementById('addDmg').addEventListener('click',()=>{
+    const v=parseInt(document.getElementById('dmgInput').value,10)||0;
+    state.damage=Math.min(ESCAPE_AT, state.damage+Math.max(0,v));
+    if(state.damage>=ESCAPE_AT && !state.escaped){ state.escaped=true; state.mastery=true; }
+    closeOverlays(); save(); render();
+  });
+}
+
+/* ---- end game ---- */
+function endGame(youEscaped){
+  // you escape before Laura → she's "rescued" (keeps mastery only if she already escaped)
+  // you KO/Depths → Laura gains mastery if she doesn't have one
+  if(!youEscaped && !state.mastery) state.mastery=true;
+  state.gameOver=true; save();
+  showScore();
+}
+
+function showScore(){
+  if(state.bot==='advanced') return showScoreAdv();
+  const sheet=document.getElementById('scoreSheet');
+  const lt=totalScore();
+  let html=`<div class="grip"></div><h2>${t('scoreTitle')}</h2>`;
+  html+=`<div class="ledger" style="margin-top:14px">
+    <div class="li tapli" data-adj="gold"><span class="k">${t('li_gold')}</span><span class="v">${state.gold}</span></div>
+    <div class="li tapli" data-adj="idols"><span class="k">${t('li_idols')} ×${state.idols}</span><span class="v">${state.idols*5}</span></div>
+    <div class="li tapli" data-adj="artifact"><span class="k">${t('li_artifact')}</span><span class="v">${state.artifact}</span></div>
+    <div class="li"><span class="k">${t('li_mastery')}</span><span class="v">${state.mastery?20:0}</span></div>
+    <div class="li tapli" data-adj="loot"><span class="k">${t('li_loot')}</span><span class="v">${state.loot}</span></div>
+    <div class="li total"><span class="k">${t('li_total')}</span><span class="v">${lt}</span></div>
+  </div>`;
+  html+=`<div class="di-note" style="margin-bottom:14px">${t('scoreNote')}</div>`;
+  html+=`<div class="compare">${t('compareNote')}</div>`;
+  html+=`<button class="btn-primary" id="newGameBtn">${t('newGame')}</button>`;
+  sheet.innerHTML=html;
+  document.getElementById('scoreOverlay').hidden=false;
+  sheet.querySelectorAll('.tapli').forEach(el=>el.addEventListener('click',()=>openAdjust(el.dataset.adj, true)));
+  document.getElementById('newGameBtn').addEventListener('click',()=>{ closeOverlays(); newGame(); });
+}
+
+/* ---- adjust a tracked value via a typed amount ---- */
+function openAdjust(key, reopenScore){
+  adjustReopen = !!reopenScore;
+  const names={gold:t('gold'),idols:t('idols'),artifact:t('artifact'),loot:t('loot'),lockpicks:t('lockpicks'),cardPoints:t('li_cards')};
+  const sheet=document.getElementById('adjustSheet');
+  sheet.innerHTML=`<div class="grip"></div>
+    <h2>${names[key]}</h2>
+    <div class="di-note">${t('adjustCurrent')}: <b>${state[key]||0}</b></div>
+    <div class="inlineval" style="margin:6px 0 14px"><label>${t('adjustAmount')}</label><input type="number" inputmode="numeric" id="adjInput" value=""></div>
+    <button class="btn-primary" id="adjAdd">${t('adjustAdd')}</button>
+    <div class="row2" style="margin-top:10px"><button class="mini" id="adjSub">${t('adjustRemove')}</button><button class="mini" id="adjClose">${t('close')}</button></div>`;
+  document.getElementById('adjustOverlay').hidden=false;
+  const inp=document.getElementById('adjInput'); inp.focus();
+  const commit=(newVal)=>{ state[key]=Math.max(0,newVal); closeOverlays(); save(); render(); if(reopenScore) showScore(); };
+  document.getElementById('adjAdd').addEventListener('click',()=>commit((state[key]||0) + (parseInt(inp.value,10)||0)));
+  document.getElementById('adjSub').addEventListener('click',()=>commit((state[key]||0) - Math.abs(parseInt(inp.value,10)||0)));
+  document.getElementById('adjClose').addEventListener('click',()=>{ closeOverlays(); if(reopenScore) showScore(); });
+}
+
+/* ---- scoring explainer ---- */
+function openInfo(){
+  const sheet=document.getElementById('infoSheet');
+  const content = state.bot==='advanced' ? t('advInfoHTML') : t('infoHTML');
+  sheet.innerHTML=`<div class="grip"></div>${content}<button class="btn-primary" id="infoClose">${t('close')}</button>`;
+  document.getElementById('infoOverlay').hidden=false;
+  document.getElementById('infoClose').addEventListener('click',closeOverlays);
+}
+
+function closeOverlays(){
+  ['overlay','dragonOverlay','scoreOverlay','adjustOverlay','infoOverlay'].forEach(id=>document.getElementById(id).hidden=true);
+}
+
+/* ============================================================
+   ADVANCED BOT (dbott's navigating AI) — guided, no tile tracking
+   ============================================================ */
+const ADV_DIFF = {
+  1:{name:'thief',  lockpicks:3, startTome:false, tomeLimit:2, gold8:1, mult:1},
+  2:{name:'master', lockpicks:4, startTome:false, tomeLimit:3, gold8:2, mult:2},
+  3:{name:'lord',   lockpicks:5, startTome:true,  tomeLimit:4, gold8:3, mult:3},
+};
+
+function newGameAdv(diff){
+  const lang = state?.lang || detectLang();
+  const D = ADV_DIFF[diff];
+  state = {
+    lang, bot:'advanced', started:true, gameOver:false, atMenu:false,
+    diff, mode:'searching', turn:0, rage:0,
+    damage:0, lockpicks:D.lockpicks, idols:0, artifact:0, hasArtifact:false,
+    tomesA2: D.startTome?1:0, tomes: D.startTome?1:0, gold:0,
+    hasBloodAmulet:false, hasBurglarsKit:false, hasCrown:false,
+    zeroCards:0, cardPoints:0, minorUnused:0, loot:0, wayshrines:0,
+    mastery:false, escaped:false,
+  };
+  pendingTurn=null; advTurn=null; save(); render();
+}
+
+function advMult(){ return ADV_DIFF[state.diff].mult; }
+function advScore(){
+  return state.gold + state.artifact + state.idols*5 + (state.mastery?20:0)
+    + state.zeroCards*advMult() + state.minorUnused*advMult() + state.cardPoints + (state.tomes||0)*7 + state.loot;
+}
+
+function renderSetupAdv(){
+  const resumable = state.started && !state.gameOver && state.bot==='advanced';
+  document.getElementById('continueAdvBtn').hidden = !resumable;
+  const wrap=document.getElementById('diffs'); wrap.innerHTML='';
+  [1,2,3].forEach(d=>{
+    const D=ADV_DIFF[d];
+    const b=document.createElement('button'); b.className='diffbtn';
+    b.innerHTML=`<div class="dn">${t('diff_'+D.name)}</div><div class="dd">${t('diff_'+D.name+'_d')}</div>`;
+    b.addEventListener('click',()=>newGameAdv(d));
+    wrap.appendChild(b);
+  });
+}
+
+function renderAdv(){
+  document.getElementById('advTurnCount').textContent = `${t('turnLabel')} ${state.turn}`;
+  document.getElementById('advModeLabel').textContent = state.escaped ? t('escapedShort') : (state.mode==='returning'? t('modeReturning') : t('modeSearching'));
+  const pips=document.getElementById('advPips'); pips.innerHTML='';
+  for(let i=0;i<ESCAPE_AT;i++){ const d=document.createElement('div'); d.className='pip'+(i>=ESCAPE_AT-3?' crit':'')+(i<state.damage?' on':''); pips.appendChild(d); }
+  document.getElementById('advHealthVal').textContent=`${state.damage} / ${ESCAPE_AT}`;
+  document.getElementById('advHealthMeter').classList.toggle('escaped', state.escaped);
+  document.getElementById('advEscapedBadge').innerHTML=t('advEscapedBadge');
+  document.getElementById('advLockNum').textContent=state.lockpicks;
+  document.getElementById('advIdolNum').textContent=state.idols;
+  document.getElementById('advArtNum').textContent=state.artifact;
+  document.getElementById('advGoldNum').textContent=state.gold;
+  document.getElementById('advScoreBig').textContent=advScore();
+  document.getElementById('advTurnBtn').textContent = state.escaped ? t('botTurnEscaped') : t('botTurn');
+}
+
+/* ---- generic helpers (reuse the adjust overlay) ---- */
+function numberPrompt(title, cb){
+  adjustReopen=false;
+  const sheet=document.getElementById('adjustSheet');
+  sheet.innerHTML=`<div class="grip"></div><h2>${title}</h2>
+    <div class="inlineval" style="margin:12px 0 14px"><label>${t('pointsLabel')}</label><input type="number" inputmode="numeric" id="npInput" value="0"></div>
+    <button class="btn-primary" id="npOk">OK</button>`;
+  document.getElementById('adjustOverlay').hidden=false;
+  const inp=document.getElementById('npInput'); inp.focus(); inp.select();
+  document.getElementById('npOk').addEventListener('click',()=>{ const v=parseInt(inp.value,10)||0; document.getElementById('adjustOverlay').hidden=true; cb(v); });
+}
+function choiceModal(title, options, note){
+  adjustReopen=false;
+  const sheet=document.getElementById('adjustSheet');
+  let html=`<div class="grip"></div><h2>${title}</h2>`;
+  if(note) html+=`<div class="di-note">${note}</div>`;
+  html+=`<div class="secondary" style="margin-top:10px">`;
+  options.forEach((o,i)=>{ html+=`<button class="btn-ghost" data-ci="${i}">${o.label}</button>`; });
+  html+=`</div>`;
+  sheet.innerHTML=html;
+  document.getElementById('adjustOverlay').hidden=false;
+  sheet.querySelectorAll('[data-ci]').forEach(b=>b.addEventListener('click',()=>{ document.getElementById('adjustOverlay').hidden=true; options[parseInt(b.dataset.ci,10)].cb(); }));
+}
+
+/* ---- advanced turn (stepped, self-explanatory) ---- */
+function takeTurnAdv(){
+  if(state.gameOver) return;
+  if(state.escaped){ showEscapedTurnAdv(); return; }
+  advTurn={ phase:'a1', rolled:false, d8text:'' };
+  renderAdvTurn();
+  document.getElementById('overlay').hidden=false;
+}
+function advActions(){
+  const s=state;
+  return [
+    ['artifact', t('act_artifact'), true],
+    ['idol', t('act_idol'), s.idols < (s.hasArtifact?2:1)],
+    ['amulet', t('act_amulet'), !s.hasBloodAmulet && s.damage>=5],
+    ['healHi', t('act_healHi'), s.damage>=5],
+    ['chest', t('act_chest'), s.lockpicks>0],
+    ['library', t('act_library'), s.lockpicks>0],
+    ['prison', t('act_prison'), s.lockpicks>0],
+    ['crown', t('act_crown'), !s.hasCrown],
+    ['kit', t('act_kit'), !s.hasBurglarsKit && s.lockpicks===0],
+    ['minor', t('act_minor'), true],
+    ['wayshrine', t('act_wayshrine'), true],
+    ['heal', t('act_heal'), s.damage>0],
+    ['gold', t('act_gold'), true],
+  ];
+}
+function renderAdvTurn(){
+  const s=state, sheet=document.getElementById('turnSheet');
+  const mode = s.mode==='returning'? t('modeReturning') : t('modeSearching');
+  let html=`<div class="grip"></div>`;
+  if(advTurn.phase==='a1'){
+    html+=`<h2>${t('a1Step')} <span class="modepill">${mode}</span></h2>`;
+    html+=`<div class="advref"><div style="font-size:.85rem;color:var(--bone);line-height:1.55">${t('a1Explain')}</div></div>`;
+    html+=`<div class="di-note">${t('a1OnTile')}</div>`;
+    advActions().forEach(([k,label,en],i)=>{
+      html+=`<button class="prow" data-act="${k}" ${en?'':'disabled'}><span class="pn">${i+1}</span><span class="pl">${label}</span></button>`;
+    });
+    html+=`<div class="di-note" style="margin-top:14px">${t('a1Leave')}</div>`;
+    html+=`<div class="advref"><div style="font-size:.82rem;color:var(--ash);line-height:1.5">${s.mode==='returning'?t('a1Returning'):t('a1Searching')}</div></div>`;
+    html+=`<div class="actiongrid">`;
+    if(s.mode==='searching') html+=`<button class="actbtn" data-act="discover">${t('act_discover')}</button>`;
+    else html+=`<button class="actbtn" data-act="crypt">${t('act_crypt')}</button>`;
+    html+=`<button class="actbtn" data-act="noreward">${t('a1NoReward')}</button>`;
+    html+=`</div>`;
+    html+=`<button class="btn-ghost" id="cancelTurnAdv" style="margin-top:6px">${t('closeTurn')}</button>`;
+  } else {
+    html+=`<h2>${t('a2Step')}</h2>`;
+    html+=`<div class="advref"><div style="font-size:.85rem;color:var(--bone);line-height:1.55">${t('a2Explain')}</div></div>`;
+    html+=`<div class="di-note">${state.diff===3?t('a2Acquire'):t('a2NoEffect')}</div>`;
+    if(advTurn.d8text) html+=`<div class="d8result">${advTurn.d8text}</div>`;
+    if(advTurn.pending==='card'){
+      html+=`<div class="di-note">${t('cardScoreQ').replace(/\{r\}/g,advTurn.cardR)}</div>`;
+      html+=`<div class="actiongrid">`;
+      html+=`<button class="actbtn" data-card="zero">${t('isZero')}</button>`;
+      html+=`<button class="actbtn" data-card="points">${t('hasPoints')}</button>`;
+      html+=`</div>`;
+    } else if(advTurn.pending==='tome'){
+      html+=`<div class="refresh"><div class="t">${t('refreshTitle')}</div><div class="d">${t('refreshDesc')}</div></div>`;
+      html+=`<button class="btn-primary" id="finishTurnAdv">${t('finishTurn')}</button>`;
+    } else {
+      html+=`<div class="refresh"><div class="t">${t('refreshTitle')}</div><div class="d">${t('refreshDesc')}</div></div>`;
+      html+=`<button class="btn-primary" id="finishTurnAdv">${t('finishTurn')}</button>`;
+    }
+  }
+  sheet.innerHTML=html;
+  sheet.querySelectorAll('[data-act]').forEach(b=>{ if(!b.disabled) b.addEventListener('click',()=>resolveAdv(b.dataset.act)); });
+  sheet.querySelectorAll('[data-card]').forEach(b=>b.addEventListener('click',()=>{
+    const c=b.dataset.card;
+    if(c==='zero'){ state.zeroCards++; advTurn.pending=null; save(); renderAdvTurn(); }
+    else if(c==='points'){ numberPrompt(t('p_card'),v=>{ state.cardPoints+=v; advTurn.pending=null; save(); renderAdvTurn(); }); }
+    else if(c==='tome'){ numberPrompt(t('p_tome'),v=>{ state.cardPoints+=v; advTurn.pending=null; save(); renderAdvTurn(); }); }
+  }));
+  const roll=document.getElementById('rollD8Btn'); if(roll) roll.addEventListener('click',rollD8);
+  const fin=document.getElementById('finishTurnAdv'); if(fin) fin.addEventListener('click',()=>{ state.turn++; advTurn=null; closeOverlays(); save(); render(); });
+  const cl=document.getElementById('cancelTurnAdv'); if(cl) cl.addEventListener('click',()=>{ advTurn=null; closeOverlays(); });
+}
+function resolveAdv(type){
+  const s=state;
+  const adv2=()=>{ advTurn.phase='a2'; rollD8(); };
+  const stay=()=>{ save(); renderAdvTurn(); };
+  switch(type){
+    case 'artifact': numberPrompt(t('p_artifact'),v=>{ s.artifact+=v; s.hasArtifact=true; s.mode='returning'; s.rage++; adv2(); }); break;
+    case 'idol': { const cap=s.hasArtifact?2:1; if(s.idols<cap) s.idols++; adv2(); } break;
+    case 'amulet': s.hasBloodAmulet=true; s.damage=Math.max(0,s.damage-2); adv2(); break;
+    case 'healHi':
+    case 'heal': s.damage=Math.max(0,s.damage-1); adv2(); break;
+    case 'chest': if(s.lockpicks>0)s.lockpicks--; numberPrompt(t('p_chest'),v=>{ s.loot+=v; adv2(); }); break;
+    case 'library': if(s.lockpicks>0)s.lockpicks--; s.tomes=(s.tomes||0)+1; adv2(); break;
+    case 'prison': if(s.lockpicks>0)s.lockpicks--; numberPrompt(t('p_prison'),v=>{ s.loot+=v; adv2(); }); break;
+    case 'crown': choiceModal(t('crownWhich'),[
+        {label:t('crown10'),cb:()=>{s.loot+=3;s.hasCrown=true;adv2();}},
+        {label:t('crown9'),cb:()=>{s.loot+=2;s.hasCrown=true;adv2();}},
+        {label:t('crown8'),cb:()=>{s.loot+=1;s.hasCrown=true;adv2();}},
+      ]); break;
+    case 'kit': s.hasBurglarsKit=true; s.lockpicks+=2; adv2(); break;
+    case 'minor': choiceModal(t('minorWhich'),[
+        {label:t('ms_egg'),cb:()=>{s.rage++;s.loot+=3;adv2();}},
+        {label:t('ms_lock'),cb:()=>{s.lockpicks++;adv2();}},
+        {label:t('ms_heal'),cb:()=>{s.damage=Math.max(0,s.damage-1);adv2();}},
+        {label:t('ms_treasure'),cb:()=>{s.gold+=2;adv2();}},
+        {label:t('ms_other'),cb:()=>{s.minorUnused++;adv2();}},
+      ]); break;
+    case 'wayshrine': s.wayshrines++; s.gold+=s.wayshrines; adv2(); break;
+    case 'gold': numberPrompt(t('p_gold'),v=>{ s.gold+=v; adv2(); }); break;
+    case 'discover': {
+      const rot = [0,90,180,270][randInt(4)];
+      const sides=['n','e','s','w'];
+      for(let i=sides.length-1;i>0;i--){ const j=randInt(i+1); const tmp=sides[i]; sides[i]=sides[j]; sides[j]=tmp; }
+      const order = sides.map(x=>t('ord_'+x)).join(' → ');
+      choiceModal(t('act_discover'),[{label:'OK',cb:stay}], t('discoverNote').replace('{rot}', rot).replace('{order}', order));
+    } break;
+    case 'noreward': adv2(); break;
+    case 'crypt': s.escaped=true; s.mastery=true; s.turn++; advTurn=null; closeOverlays(); save(); render(); break;
+  }
+}
+function resolveCardRoll(r, lead){
+  const s=state;
+  advTurn.rolled=true;
+  if(s.damage>=5 && !s.escaped){ s.gold+=1; advTurn.d8text=lead+'<br>'+t('out_cardGold'); advTurn.pending=null; save(); renderAdvTurn(); }
+  else { advTurn.d8text=lead+'<br>'+t('out_card').replace(/\{r\}/g,r); advTurn.pending='card'; advTurn.cardR=r; save(); renderAdvTurn(); }
+}
+function rollD8(){
+  const s=state, D=ADV_DIFF[s.diff];
+  advTurn.rolled=true; advTurn.pending=null;
+  const r=randInt(8)+1;
+  if(r<=6){ resolveCardRoll(r, t('rollLead').replace('{r}',r)); }
+  else if(r===7){
+    if(s.tomesA2 < D.tomeLimit){ s.tomesA2++; s.tomes=(s.tomes||0)+1; advTurn.d8text=t('rollLead').replace('{r}',7)+'<br>'+t('out_tome'); save(); renderAdvTurn(); }
+    else { let r2; do{ r2=randInt(8)+1; }while(r2===7);
+      const lead=t('tomeLimitLead').replace('{r}',r2);
+      if(r2===8){ s.gold+=D.gold8; advTurn.d8text=lead+'<br>'+t('out_gold').replace('{g}',D.gold8); save(); renderAdvTurn(); }
+      else resolveCardRoll(r2, lead);
+    }
+  } else { s.gold+=D.gold8; advTurn.d8text=t('rollLead').replace('{r}',8)+'<br>'+t('out_gold').replace('{g}',D.gold8); save(); renderAdvTurn(); }
+}
+function showEscapedTurnAdv(){
+  const sheet=document.getElementById('turnSheet');
+  sheet.innerHTML=`<div class="grip"></div><h2>${t('escapedShort')}</h2>
+    <div class="refresh" style="margin-top:12px"><div class="d">${t('advEscapedTurnDesc')}</div></div>
+    <button class="btn-primary" id="finishTurnAdv2">${t('finishTurn')}</button>`;
+  document.getElementById('overlay').hidden=false;
+  document.getElementById('finishTurnAdv2').addEventListener('click',()=>{ state.turn++; closeOverlays(); save(); render(); });
+}
+function showScoreAdv(){
+  const s=state, m=advMult(), sheet=document.getElementById('scoreSheet'), lt=advScore();
+  let html=`<div class="grip"></div><h2>${t('scoreTitle')}</h2>`;
+  html+=`<div class="ledger" style="margin-top:14px">
+    <div class="li tapli" data-adj="gold"><span class="k">${t('li_gold')}</span><span class="v">${s.gold}</span></div>
+    <div class="li tapli" data-adj="idols"><span class="k">${t('li_idols')} ×${s.idols}</span><span class="v">${s.idols*5}</span></div>
+    <div class="li tapli" data-adj="artifact"><span class="k">${t('li_artifact')}</span><span class="v">${s.artifact}</span></div>
+    <div class="li"><span class="k">${t('li_zero')} ×${s.zeroCards} (×${m})</span><span class="v">${s.zeroCards*m}</span></div>
+    <div class="li tapli" data-adj="cardPoints"><span class="k">${t('li_cards')}</span><span class="v">${s.cardPoints}</span></div>
+    <div class="li"><span class="k">${t('li_tomes')} ×${s.tomes||0} (×7)</span><span class="v">${(s.tomes||0)*7}</span></div>
+    <div class="li"><span class="k">${t('li_minor')} ×${s.minorUnused} (×${m})</span><span class="v">${s.minorUnused*m}</span></div>
+    <div class="li tapli" data-adj="loot"><span class="k">${t('li_loot')}</span><span class="v">${s.loot}</span></div>
+    <div class="li"><span class="k">${t('li_mastery')}</span><span class="v">${s.mastery?20:0}</span></div>
+    <div class="li total"><span class="k">${t('li_totalAdv')}</span><span class="v">${lt}</span></div>
+  </div>`;
+  html+=`<div class="di-note" style="margin-bottom:14px">${t('advScoreNote')}</div>`;
+  html+=`<div class="compare">${t('compareNoteAdv')}</div>`;
+  html+=`<button class="btn-primary" id="newGameBtn">${t('newGame')}</button>`;
+  sheet.innerHTML=html;
+  document.getElementById('scoreOverlay').hidden=false;
+  sheet.querySelectorAll('.tapli').forEach(el=>el.addEventListener('click',()=>openAdjust(el.dataset.adj, true)));
+  document.getElementById('newGameBtn').addEventListener('click',()=>{ closeOverlays(); state={lang:state.lang}; save(); render(); });
+}
+
+/* ============================================================
+   events
+   ============================================================ */
+document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>{
+  if(!state) state={lang:b.dataset.lang};
+  state.lang=b.dataset.lang; save(); render();
+}));
+document.getElementById('startBtn').addEventListener('click',newGame);
+document.getElementById('turnBtn').addEventListener('click',takeTurn);
+document.getElementById('dragonBtn').addEventListener('click',showDragon);
+document.getElementById('escBtn').addEventListener('click',()=>endGame(true));
+document.getElementById('koBtn').addEventListener('click',()=>endGame(false));
+document.getElementById('menuBtn').addEventListener('click',()=>{ closeOverlays(); state.atMenu=true; save(); render(); });
+document.getElementById('continueBtn').addEventListener('click',()=>{ state.atMenu=false; save(); render(); });
+document.querySelectorAll('.stat.tap').forEach(b=>b.addEventListener('click',()=>openAdjust(b.dataset.stat)));
+document.getElementById('infoBtn').addEventListener('click',openInfo);
+// --- bot selection + advanced wiring ---
+document.getElementById('pickLaura').addEventListener('click',()=>{ state.bot='laura'; state.started=false; save(); render(); });
+document.getElementById('pickAdv').addEventListener('click',()=>{ state.bot='advanced'; state.started=false; save(); render(); });
+const toSelect=()=>{ state={lang:state.lang}; pendingTurn=null; advTurn=null; save(); render(); };
+document.getElementById('changeBotLaura').addEventListener('click',toSelect);
+document.getElementById('changeBotAdv').addEventListener('click',toSelect);
+document.getElementById('continueAdvBtn').addEventListener('click',()=>{ state.atMenu=false; save(); render(); });
+document.getElementById('advTurnBtn').addEventListener('click',takeTurnAdv);
+document.getElementById('advDragonBtn').addEventListener('click',showDragon);
+document.getElementById('advEscBtn').addEventListener('click',()=>endGame(true));
+document.getElementById('advKoBtn').addEventListener('click',()=>endGame(false));
+document.getElementById('advInfoBtn').addEventListener('click',openInfo);
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{
+  if(e.target!==o) return;
+  if(o.id==='adjustOverlay'){ o.hidden=true; if(adjustReopen) showScore(); return; }
+  if(o.id==='overlay' && advTurn && advTurn.phase==='a2') return;
+  closeOverlays();
+}));
+
+/* ============================================================
+   boot
+   ============================================================ */
+(function(){
+  const saved=load();
+  if(saved){
+    state=saved;
+    if(state.started && !state.bot) state.bot='laura'; // migrate pre-bot-selection saves
+    if(state.started && state.gameOver){ render(); showScore(); }
+    else render();
+  } else { state={lang:detectLang()}; render(); }
+})();
+</script>
+</body>
+</html>

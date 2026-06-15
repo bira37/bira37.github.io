@@ -1,11 +1,6 @@
-# My Personal Page
+# bira37.github.io
 
-### The website was created with:
+My personal homepage, plus a few solo board game automas, hosted on GitHub
+Pages.
 
-- React
-- React Icons
-- TypeScript
-- SASS
-- Webpack
-
-You can access it [here](https://bira37.github.io)
+Live at <https://bira37.github.io>.

@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#7a1f18">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Istanbul · Automa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --parch:#ece3cf; --parch2:#e2d5b8; --parch3:#d8c9a6;
+  --ink:#2c2219; --ink2:#5b4a37; --muted:#897154;
+  --crimson:#9c2b22; --crimson-d:#79201a; --crimson-l:#bb463b;
+  --gold:#b3863a; --gold-l:#d8b76b; --gold-d:#8a6526;
+  --stone:#c9b99a; --line:#bca878;
+  --ruby:#c4242c; --ruby-d:#8e161d; --ruby-hi:#f06b6f;
+  --ok:#4e7a45; --shadow:rgba(53,37,20,.28);
+  --safe-b:env(safe-area-inset-bottom,0px);
+  --safe-t:env(safe-area-inset-top,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  font-family:'Spectral',Georgia,serif; color:var(--ink);
+  background:
+    radial-gradient(120% 80% at 50% -10%, #f3ead7 0%, var(--parch) 42%, var(--parch2) 100%),
+    var(--parch);
+  min-height:100dvh;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+/* subtle paper grain */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  mix-blend-mode:multiply;
+}
+.wrap{position:relative;z-index:1;max-width:560px;margin:0 auto;padding:0 14px calc(20px + var(--safe-b));}
+
+/* ---------- buttons ---------- */
+button{font-family:inherit;cursor:pointer;border:none;color:inherit;background:none}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.5em;
+  font-family:'Cinzel',serif;font-weight:700;letter-spacing:.04em;
+  border-radius:11px;padding:14px 18px;font-size:15px;line-height:1;
+  border:1.5px solid var(--gold-d);
+  background:linear-gradient(#f6efde,#e6d6b4);
+  color:var(--ink);box-shadow:0 2px 0 var(--gold-d),0 5px 10px var(--shadow);
+  transition:transform .08s ease, box-shadow .08s ease, filter .15s;
+  -webkit-user-select:none;user-select:none;
+}
+.btn:active{transform:translateY(2px);box-shadow:0 0 0 var(--gold-d),0 2px 6px var(--shadow)}
+.btn.primary{
+  background:linear-gradient(var(--crimson-l),var(--crimson) 55%,var(--crimson-d));
+  color:#fbeede;border-color:var(--crimson-d);text-shadow:0 1px 1px rgba(0,0,0,.35);
+  box-shadow:0 3px 0 var(--crimson-d),0 7px 16px rgba(94,20,15,.4);
+}
+.btn.primary:active{box-shadow:0 0 0 var(--crimson-d),0 3px 8px rgba(94,20,15,.35)}
+.btn.block{width:100%}
+.btn.lg{padding:18px;font-size:17px}
+.btn.ghost{background:transparent;box-shadow:none;border-color:transparent;color:var(--ink2);font-weight:500;letter-spacing:.02em;font-family:'Spectral',serif}
+.btn:disabled{opacity:.4;pointer-events:none}
+
+/* ---------- header ---------- */
+header{
+  position:sticky;top:0;z-index:20;margin:0 -14px 14px;
+  padding:calc(8px + var(--safe-t)) 16px 10px;
+  background:linear-gradient(var(--crimson-d),#641913);
+  border-bottom:3px solid var(--gold-d);
+  box-shadow:0 4px 14px rgba(60,15,10,.4);
+}
+.hbar{display:flex;align-items:center;justify-content:space-between;gap:8px;max-width:560px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:9px;min-width:0}
+.brand .mk{width:26px;height:26px;flex:none;filter:drop-shadow(0 1px 1px rgba(0,0,0,.4))}
+.brand h1{font-family:'Cinzel',serif;font-weight:900;color:#f7e9d3;font-size:19px;margin:0;letter-spacing:.06em;line-height:1;white-space:nowrap}
+.brand h1 small{display:block;font-size:9.5px;letter-spacing:.32em;color:var(--gold-l);font-weight:500;margin-top:3px}
+.hbtns{display:flex;gap:6px}
+.iconbtn{width:38px;height:38px;border-radius:9px;display:grid;place-items:center;
+  background:rgba(255,240,220,.1);border:1px solid rgba(216,183,107,.4);color:#f3e3c8}
+.iconbtn:active{background:rgba(255,240,220,.22)}
+.iconbtn svg{width:20px;height:20px}
+
+/* round strip under header */
+.roundstrip{max-width:560px;margin:8px auto 0;display:flex;align-items:center;gap:10px}
+.roundstrip .lbl{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.12em;color:#f0dcb8;white-space:nowrap}
+.progress{flex:1;height:7px;border-radius:99px;background:rgba(0,0,0,.28);overflow:hidden;border:1px solid rgba(216,183,107,.3)}
+.progress>i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-l));transition:width .35s ease}
+.pill{font-family:'Cinzel',serif;font-size:10px;font-weight:700;letter-spacing:.06em;color:#5a1812;
+  background:linear-gradient(var(--gold-l),var(--gold));padding:4px 9px;border-radius:99px;white-space:nowrap;box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
+
+/* ---------- panels ---------- */
+.panel{
+  background:linear-gradient(180deg,#f5edda,#eadcbf);
+  border:1.5px solid var(--line);border-radius:16px;
+  box-shadow:0 2px 0 rgba(255,255,255,.5) inset,0 6px 16px var(--shadow);
+  padding:14px;margin-bottom:14px;position:relative;
+}
+.panel::after{content:"";position:absolute;inset:5px;border:1px solid rgba(179,134,58,.28);border-radius:11px;pointer-events:none}
+.panel>*{position:relative}
+
+/* ---------- AI status ---------- */
+.status{display:flex;align-items:center;gap:14px}
+.rubybox{flex:none;text-align:center}
+.rubybox .ttl{font-family:'Cinzel',serif;font-size:9.5px;letter-spacing:.2em;color:var(--muted);margin-bottom:2px}
+.rubycount{display:flex;align-items:center;justify-content:center;gap:6px}
+.rubycount .num{font-family:'Cinzel',serif;font-weight:900;font-size:40px;line-height:.9;color:var(--crimson-d);min-width:42px}
+.adj{display:flex;flex-direction:column;gap:4px}
+.adj button{width:30px;height:24px;border-radius:7px;background:#efe4ca;border:1px solid var(--line);
+  display:grid;place-items:center;color:var(--ink2);font-size:16px;font-weight:700;line-height:1}
+.adj button:active{background:#e4d4b1}
+.chips{flex:1;display:flex;flex-direction:column;gap:7px}
+.chip{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink2)}
+.chip .ic{width:24px;height:24px;flex:none;display:grid;place-items:center}
+.chip .nm{flex:1;font-weight:500}
+.dots{display:flex;gap:4px}
+.dots i{width:13px;height:13px;border-radius:50%;background:#d8c8a6;box-shadow:inset 0 0 0 1.5px var(--line)}
+.dots i.on{background:radial-gradient(circle at 35% 30%,var(--ruby-hi),var(--ruby) 60%,var(--ruby-d));box-shadow:0 1px 2px rgba(120,20,20,.5)}
+.dots i.tile.on{background:radial-gradient(circle at 35% 30%,#7fb6d8,#3b78a6 70%);box-shadow:0 1px 2px rgba(20,60,90,.5)}
+
+.goalflag{margin-top:11px;padding:9px 11px;border-radius:10px;font-size:12.5px;font-weight:600;
+  background:linear-gradient(var(--ok),#3c5f35);color:#eef6e8;text-align:center;display:none;
+  font-family:'Cinzel',serif;letter-spacing:.04em}
+.goalflag.show{display:block;animation:pop .4s}
+
+/* final ruby banner */
+.finalbanner{display:none;margin-bottom:14px;padding:11px 13px;border-radius:13px;
+  background:linear-gradient(100deg,#5a1812,#8e2a20);color:#f7e1c5;border:1.5px solid var(--gold);
+  box-shadow:0 5px 14px rgba(90,24,18,.45);align-items:center;gap:11px}
+.finalbanner.show{display:flex;animation:pop .4s}
+.finalbanner svg{width:26px;height:26px;flex:none}
+.finalbanner b{font-family:'Cinzel',serif;letter-spacing:.04em;display:block;font-size:13px}
+.finalbanner span{font-size:11.5px;opacity:.9}
+
+/* ---------- card stage ---------- */
+.stage{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 0 2px}
+.cardholder{perspective:1400px;width:min(72vw,250px)}
+.card3d{position:relative;width:100%;aspect-ratio:535/748;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,.05,.2,1)}
+.card3d.flipping{animation:flipIn .55s cubic-bezier(.34,1.2,.5,1)}
+@keyframes flipIn{0%{transform:rotateY(-90deg) scale(.9);opacity:.2}60%{opacity:1}100%{transform:rotateY(0) scale(1)}}
+.card3d img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;
+  border-radius:12px;filter:drop-shadow(0 8px 18px rgba(53,37,20,.35));backface-visibility:hidden}
+.cardcap{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.18em;color:var(--muted);margin-top:6px}
+
+/* deck back (pre-flip / tap to flip) */
+.deckback{position:relative;cursor:pointer}
+.deckback::before,.deckback::after{content:"";position:absolute;inset:0;border-radius:12px;
+  background:linear-gradient(var(--crimson),var(--crimson-d));z-index:-1}
+.deckback::before{transform:translate(5px,6px);opacity:.55}
+.deckback::after{transform:translate(2.5px,3px);opacity:.8}
+.deckback img{transition:transform .12s}
+.deckback:active img{transform:scale(.97)}
+
+/* instruction card */
+.instr{margin-top:2px}
+.instr .place{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.placeno{width:42px;height:42px;flex:none;display:grid;place-items:center;border-radius:11px;
+  font-family:'Cinzel',serif;font-weight:900;font-size:20px;color:#fbeede;
+  background:linear-gradient(var(--crimson-l),var(--crimson-d));box-shadow:0 2px 6px rgba(94,20,15,.4);border:1px solid var(--crimson-d)}
+.placeno.mv{background:linear-gradient(#a99873,#7d6a45);border-color:var(--gold-d)}
+.place .nm{min-width:0}
+.place .nm b{font-family:'Cinzel',serif;font-size:17px;font-weight:700;display:block;line-height:1.1;color:var(--ink)}
+.place .nm span{font-size:11.5px;color:var(--muted);font-style:italic}
+.action{font-size:15px;line-height:1.5;color:var(--ink2)}
+.rubywin{display:flex;align-items:center;gap:8px;margin-bottom:9px;padding:8px 11px;border-radius:10px;
+  background:linear-gradient(100deg,#fbe9d4,#f3d2b0);border:1px solid var(--gold);color:var(--crimson-d);
+  font-family:'Cinzel',serif;font-weight:700;font-size:14px;letter-spacing:.02em;animation:pop .45s}
+.rubywin svg{width:22px;height:22px;flex:none}
+.note{margin-top:10px;font-size:12px;color:var(--muted);font-style:italic;line-height:1.4;
+  padding-top:9px;border-top:1px dashed var(--line)}
+
+/* reminder + dice */
+.reminder{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.45;color:var(--ink2)}
+.reminder .rk{flex:none;width:30px;height:30px;border-radius:8px;display:grid;place-items:center;
+  background:#efe4ca;border:1px solid var(--line)}
+.reminder .rk svg{width:18px;height:18px;color:var(--gold-d)}
+.dicerow{display:flex;align-items:center;gap:12px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.dice{display:flex;gap:9px}
+.die{width:46px;height:46px;border-radius:11px;background:linear-gradient(145deg,#fbf4e4,#e7d8ba);
+  border:1.5px solid var(--line);box-shadow:0 2px 5px var(--shadow),inset 0 1px 2px #fff;
+  display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);padding:7px;gap:2px}
+.die.roll{animation:shake .5s}
+.die b{border-radius:50%;background:var(--ink);align-self:center;justify-self:center;width:8px;height:8px;opacity:0}
+.die b.on{opacity:1}
+.dsum{font-family:'Cinzel',serif;font-weight:700;color:var(--ink2);font-size:13px}
+.dsum b{color:var(--crimson-d);font-size:20px}
+@keyframes shake{0%,100%{transform:translateY(0) rotate(0)}25%{transform:translateY(-5px) rotate(-9deg)}50%{transform:translateY(3px) rotate(7deg)}75%{transform:translateY(-2px) rotate(-4deg)}}
+
+/* bottom actions */
+.actions{display:flex;gap:10px;margin-bottom:12px}
+.actions .btn{flex:1}
+
+/* collapsible rules */
+details.rules{margin-bottom:10px}
+details.rules summary{list-style:none;cursor:pointer;font-family:'Cinzel',serif;font-size:12px;letter-spacing:.08em;
+  color:var(--muted);text-align:center;padding:8px}
+details.rules summary::-webkit-details-marker{display:none}
+details.rules .body{font-size:12.5px;line-height:1.55;color:var(--ink2);padding:4px 4px 8px}
+details.rules .body b{color:var(--ink)}
+details.rules .body p{margin:0 0 9px}
+
+/* ---------- setup / overlays ---------- */
+.overlay{position:fixed;inset:0;z-index:50;display:none;flex-direction:column;
+  background:linear-gradient(160deg,#f0e6d0,#e0d0b0);padding:calc(18px + var(--safe-t)) 16px calc(18px + var(--safe-b));overflow-y:auto}
+.overlay.show{display:flex}
+.sheet{max-width:520px;margin:auto;width:100%}
+.logo{text-align:center;margin:6px 0 22px}
+.logo .mk{width:54px;height:54px;margin-bottom:10px}
+.logo h2{font-family:'Cinzel',serif;font-weight:900;font-size:30px;letter-spacing:.07em;margin:0;color:var(--crimson-d)}
+.logo .sub{font-family:'Cinzel',serif;letter-spacing:.34em;font-size:11px;color:var(--gold-d);margin-top:5px}
+.logo .by{font-size:11.5px;color:var(--muted);margin-top:9px;font-style:italic}
+
+.field{margin-bottom:20px}
+.field>label{font-family:'Cinzel',serif;font-size:12px;letter-spacing:.1em;color:var(--ink2);display:block;margin-bottom:9px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.opt{position:relative}
+.opt input{position:absolute;opacity:0;inset:0}
+.opt label{display:block;text-align:center;padding:13px 8px;border-radius:12px;border:1.5px solid var(--line);
+  background:#f4ecd8;transition:.15s;cursor:pointer}
+.opt label b{font-family:'Cinzel',serif;font-size:15px;display:block;color:var(--ink)}
+.opt label span{font-size:11px;color:var(--muted);display:block;margin-top:3px}
+.opt input:checked+label{border-color:var(--crimson);background:linear-gradient(#fbeede,#f3dcc0);
+  box-shadow:0 0 0 2px rgba(156,43,34,.18),0 4px 10px var(--shadow)}
+.opt input:checked+label b{color:var(--crimson-d)}
+
+.modes{display:flex;flex-direction:column;gap:9px}
+.modeopt{display:flex;align-items:center;gap:11px;text-align:left;width:100%;padding:13px 14px;border-radius:12px;
+  border:1.5px solid var(--line);background:#f4ecd8;cursor:pointer;transition:.15s}
+.modeopt .mtag{flex:none;width:30px;height:30px;border-radius:8px;display:grid;place-items:center;font-size:16px;
+  background:#ece0c4;border:1px solid var(--line)}
+.modeopt .mtx{min-width:0}
+.modeopt b{font-family:'Cinzel',serif;font-size:15px;display:block;color:var(--ink);line-height:1.1}
+.modeopt span{font-size:11px;color:var(--muted);display:block;margin-top:2px}
+.modeopt.sel{border-color:var(--crimson);background:linear-gradient(#fbeede,#f3dcc0);box-shadow:0 0 0 2px rgba(156,43,34,.18),0 4px 10px var(--shadow)}
+.modeopt.sel b{color:var(--crimson-d)}
+.difflist{display:flex;flex-direction:column;gap:7px}
+.diffopt{display:flex;align-items:center;justify-content:space-between;width:100%;padding:12px 15px;border-radius:11px;
+  border:1.5px solid var(--line);background:#f4ecd8;cursor:pointer;transition:.15s}
+.diffopt b{font-family:'Cinzel',serif;font-size:15px;color:var(--ink)}
+.diffopt .dt{font-size:12px;color:var(--muted)}
+.diffopt.sel{border-color:var(--crimson);background:linear-gradient(#fbeede,#f3dcc0);box-shadow:0 0 0 2px rgba(156,43,34,.18),0 4px 10px var(--shadow)}
+.diffopt.sel b,.diffopt.sel .dt{color:var(--crimson-d)}
+
+.secretbox{margin-top:11px;padding:10px 12px;border-radius:11px;background:linear-gradient(100deg,#fbe9d4,#f3d2b0);
+  border:1px solid var(--gold)}
+.secretbox .sline{font-size:14px;color:var(--ink);font-family:'Spectral',serif}
+.secretbox .sline b{font-family:'Cinzel',serif;color:var(--crimson-d)}
+.secretbox .sdie{display:inline-block;margin-left:6px;font-size:12px;color:var(--muted)}
+.secretbox .snote{font-size:11px;color:var(--muted);font-style:italic;margin-top:5px}
+.secretbox button{margin-top:8px}
+
+.stepper{display:flex;align-items:center;gap:14px;justify-content:center;
+  background:#f4ecd8;border:1.5px solid var(--line);border-radius:12px;padding:10px}
+.stepper button{width:42px;height:42px;border-radius:10px;background:#ece0c4;border:1px solid var(--line);
+  font-size:24px;font-weight:700;color:var(--ink2);display:grid;place-items:center;line-height:1}
+.stepper button:active{background:#e0d0ac}
+.stepper .v{font-family:'Cinzel',serif;font-weight:900;font-size:30px;color:var(--crimson-d);min-width:40px;text-align:center}
+
+.hint{font-size:11.5px;color:var(--muted);font-style:italic;margin-top:7px;text-align:center;line-height:1.4}
+
+/* menu sheet */
+.menu .sheet{max-width:420px}
+.menu h3{font-family:'Cinzel',serif;text-align:center;color:var(--crimson-d);letter-spacing:.05em;margin:4px 0 18px}
+.menu .btn{margin-bottom:11px}
+.kv{display:flex;justify-content:space-between;font-size:13px;color:var(--ink2);padding:7px 2px;border-bottom:1px dashed var(--line)}
+.kv b{font-family:'Cinzel',serif;color:var(--ink)}
+
+/* tabuleiro de setup */
+.setup-modal .sheet{max-width:430px}
+.setup-modal h3{font-family:'Cinzel',serif;text-align:center;color:var(--crimson-d);letter-spacing:.05em;margin:4px 0 6px}
+.setup-modal .sub{text-align:center;font-size:12px;color:var(--muted);font-style:italic;margin-bottom:16px;line-height:1.45}
+.board{display:grid;gap:6px;margin:0 auto 14px;max-width:330px}
+.board .cell{aspect-ratio:1;display:grid;place-items:center;border-radius:9px;border:1.5px solid var(--line);
+  background:#f4ecd8;font-family:'Cinzel',serif;font-weight:700;font-size:18px;color:var(--ink)}
+.board .cell.f{background:linear-gradient(#bfe0f0,#9cc8e0);border-color:#6aa8c8;color:#133b4d}
+.board .cell.bm{background:linear-gradient(#eccbc4,#dcab9f);border-color:#b07a6a;color:#5a241c}
+.board .cell.th{background:linear-gradient(#dbe7c6,#bcd29a);border-color:#8aa86a;color:#33471f}
+.board-legend{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-bottom:16px}
+.board-legend i{display:inline-block;width:11px;height:11px;border-radius:3px;vertical-align:-1px;margin-right:5px}
+.board-open-wrap{text-align:center;margin-bottom:12px}
+
+@keyframes pop{0%{transform:scale(.85);opacity:0}60%{transform:scale(1.04)}100%{transform:scale(1);opacity:1}}
+.fade{animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.langtog{display:inline-flex;border:1.5px solid var(--line);border-radius:9px;overflow:hidden;background:#f4ecd8}
+.langtog button{padding:6px 12px;font-size:12px;font-weight:700;font-family:'Cinzel',serif;color:var(--ink2);background:transparent;letter-spacing:.04em;line-height:1}
+.langtog button.on{background:var(--crimson);color:#f7e9d0}
+.setup-top{display:flex;justify-content:center;margin-bottom:14px}
+.based{font-size:12px;color:var(--muted);font-style:italic;margin-top:7px;line-height:1.4}
+.based a{color:var(--crimson-d);text-decoration:none;border-bottom:1px dotted var(--crimson);font-weight:600}
+.credits{margin:22px auto 8px;padding:15px 18px;max-width:560px;text-align:center;font-size:11.5px;line-height:1.65;color:var(--muted);border-top:1px solid var(--line)}
+.credits a{color:var(--crimson-d);text-decoration:none;border-bottom:1px dotted var(--crimson);font-weight:600}
+.credits .dev{margin-top:5px}
+.hbtns .langtog{margin-right:2px}
+.hbtns .langtog button{padding:6px 8px;font-size:11px}
+
+.empty{text-align:center;color:var(--muted);font-style:italic;padding:20px;font-size:14px}
+</style>
+</head>
+<body>
+
+<!-- ============ SETUP ============ -->
+<div class="overlay show" id="setup">
+  <div class="sheet">
+    <div class="setup-top">
+      <div class="langtog">
+        <button data-lang="pt">PT</button><button data-lang="en">EN</button>
+      </div>
+    </div>
+    <div class="logo">
+      <svg class="mk" viewBox="0 0 48 48" aria-hidden="true"><g fill="#9c2b22"><path d="M24 4l4.6 3.1 5.5-.6 2.4 5 5 2.4-.6 5.5L43.4 24l3.1 4.6-5 2.4-2.4 5-5.5-.6L24 38.9l-4.6 3.1-5.5-.6-2.4-5-5-2.4.6-5.5L1.6 24l-3.1-4.6 5-2.4 2.4-5 5.5.6z" transform="translate(2 2) scale(.92)"/></g><circle cx="24" cy="24" r="9" fill="#f0e6d0"/><circle cx="24" cy="24" r="4.2" fill="#9c2b22"/></svg>
+      <h2>ISTANBUL</h2>
+      <div class="sub">AUTOMA</div>
+      <div class="based" data-i18n-html="based_on"></div>
+    </div>
+
+    <div class="field">
+      <label data-i18n="setup_mode">Modo de jogo</label>
+      <div class="modes" id="modeOpts"></div>
+    </div>
+
+    <div class="field">
+      <label data-i18n="setup_diff">Dificuldade</label>
+      <div class="difflist" id="diffOpts"></div>
+    </div>
+
+    <div class="field">
+      <label data-i18n="setup_fine">Ajuste fino (± cartas de movimento)</label>
+      <div class="stepper">
+        <button id="fineMinus" aria-label="menos">−</button>
+        <div class="v" id="fineVal">0</div>
+        <button id="finePlus" aria-label="mais">+</button>
+      </div>
+      <div class="hint" data-i18n="setup_fine_hint">Calibra sem trocar de faixa. Ganhou fácil → aumente; apanhou → diminua.</div>
+    </div>
+
+    <div class="field">
+      <label data-i18n="setup_goal">Objetivo de Rubis (para sinalizar fim de jogo)</label>
+      <div class="stepper">
+        <button id="goalMinus" aria-label="menos">−</button>
+        <div class="v" id="goalVal">6</div>
+        <button id="goalPlus" aria-label="mais">+</button>
+      </div>
+      <div class="hint" data-i18n="setup_goal_hint">Com 2 jogadores / com expansões são 6 rubis. Ajuste conforme a sua edição.</div>
+    </div>
+
+    <button class="btn primary block lg" id="buildBtn" data-i18n="setup_build">Montar baralho &amp; jogar</button>
+
+    <button class="btn block" id="boardSetupBtn" data-i18n="setup_random" style="margin-top:10px">🎲 Só randomizar o tabuleiro</button>
+    <div class="hint" data-i18n="setup_random_hint">Para montar uma partida (até com amigos, sem o Automa). Usa o modo selecionado acima como tamanho do tabuleiro.</div>
+
+    <div class="credits">
+      <div class="rules-credit" data-i18n-html="footer_rules"></div>
+      <div class="dev" data-i18n-html="footer_dev"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MENU ============ -->
+<div class="overlay menu" id="menu">
+  <div class="sheet">
+    <h3 data-i18n="menu_title">Menu</h3>
+    <div class="panel" style="margin-bottom:16px">
+      <div class="kv"><span data-i18n="menu_mode">Modo</span><b id="mMode">—</b></div>
+      <div class="kv"><span data-i18n="menu_diff">Dificuldade</span><b id="mDiff">—</b></div>
+      <div class="kv"><span data-i18n="menu_round">Rodada atual</span><b id="mRound">—</b></div>
+      <div class="kv"><span data-i18n="menu_left">Cartas restantes</span><b id="mLeft">—</b></div>
+      <div class="kv" style="border-bottom:none"><span data-i18n="menu_ruby">Rubis do Automa</span><b id="mRuby">—</b></div>
+    </div>
+    <button class="btn block" id="resumeBtn" data-i18n="menu_resume">Voltar ao jogo</button>
+    <button class="btn block primary" id="newBtn" data-i18n="menu_new">Novo jogo</button>
+  </div>
+</div>
+
+<!-- modal do tabuleiro (setup) -->
+<div class="overlay setup-modal" id="boardModal">
+  <div class="sheet">
+    <h3 data-i18n="board_title">Tabuleiro (setup)</h3>
+    <div class="sub" id="boardSub"></div>
+    <div class="board" id="boardGrid"></div>
+    <div class="board-legend">
+      <span><i style="background:#9cc8e0"></i><span data-i18n="board_fountain">Fonte (7)</span></span>
+      <span><i style="background:#dcab9f"></i><span data-i18n="board_bm">Mercado Negro (8)</span></span>
+      <span><i style="background:#bcd29a"></i><span data-i18n="board_th">Casa de Chá (9)</span></span>
+    </div>
+    <button class="btn block" id="boardReroll" data-i18n="board_reroll" style="margin-bottom:10px">🎲 Sortear de novo</button>
+    <button class="btn block primary" id="boardClose" data-i18n="board_close">Fechar</button>
+  </div>
+</div>
+
+<!-- ============ GAME ============ -->
+<header>
+  <div class="hbar">
+    <div class="brand">
+      <svg class="mk" viewBox="0 0 48 48" aria-hidden="true"><g fill="#d8b76b"><path d="M24 4l4.6 3.1 5.5-.6 2.4 5 5 2.4-.6 5.5L43.4 24l3.1 4.6-5 2.4-2.4 5-5.5-.6L24 38.9l-4.6 3.1-5.5-.6-2.4-5-5-2.4.6-5.5L1.6 24l-3.1-4.6 5-2.4 2.4-5 5.5.6z" transform="translate(2 2) scale(.92)"/></g><circle cx="24" cy="24" r="9" fill="#7a1f18"/><circle cx="24" cy="24" r="4.2" fill="#d8b76b"/></svg>
+      <h1>ISTANBUL<small>AUTOMA</small></h1>
+    </div>
+    <div class="hbtns">
+      <div class="langtog"><button data-lang="pt">PT</button><button data-lang="en">EN</button></div>
+      <button class="iconbtn" id="diceBtnTop" aria-label="Rolar dados"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.5" cy="8.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="15.5" cy="8.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="8.5" cy="15.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="15.5" cy="15.5" r="1.3" fill="currentColor" stroke="none"/></svg></button>
+      <button class="iconbtn" id="menuBtn" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round"/></svg></button>
+    </div>
+  </div>
+  <div class="roundstrip">
+    <span class="lbl"><span data-i18n="round_lbl">RODADA</span> <span id="roundNow">0</span>/<span id="roundTot">0</span></span>
+    <div class="progress"><i id="progBar" style="width:0%"></i></div>
+    <span class="pill" id="leftPill">— restam</span>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="board-open-wrap">
+    <button class="btn ghost" id="boardBtn" data-i18n="board_open" style="padding:8px 16px;font-size:13px">🎲 Tabuleiro (setup)</button>
+  </div>
+
+  <!-- final ruby banner -->
+  <div class="finalbanner" id="finalBanner">
+    <svg viewBox="0 0 24 24"><path d="M5 3h14l3 6-10 12L2 9z" fill="#c4242c" stroke="#f7e1c5" stroke-width="1"/><path d="M5 3l3 6h-6zM19 3l-3 6h6zM12 21L9 9h6z" fill="#f06b6f" opacity=".55"/></svg>
+    <div><b data-i18n="final_title">Janela do Rubi Final</b><span data-i18n="final_sub">O Automa pode marcar o rubi final a qualquer momento agora.</span></div>
+  </div>
+
+  <!-- AI status -->
+  <div class="panel">
+    <div class="status">
+      <div class="rubybox">
+        <div class="ttl" data-i18n="status_title">RUBIS DO AUTOMA</div>
+        <div class="rubycount">
+          <span class="num" id="rubyNum">0</span>
+          <div class="adj">
+            <button id="rubyPlus" aria-label="mais rubi">+</button>
+            <button id="rubyMinus" aria-label="menos rubi">−</button>
+          </div>
+        </div>
+      </div>
+      <div class="chips">
+        <div class="chip">
+          <span class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--gold-d)" stroke-width="1.7"><rect x="3" y="9" width="13" height="9" rx="1.5"/><circle cx="7" cy="20" r="1.8"/><circle cx="13" cy="20" r="1.8"/><path d="M16 11h3l2 4v3h-5" /></svg></span>
+          <span class="nm" data-i18n="chip_cart">Extensões de carrinho</span>
+          <span class="dots" id="cartDots"></span>
+        </div>
+        <div class="chip">
+          <span class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--gold-d)" stroke-width="1.7"><path d="M5 20V11l7-6 7 6v9z"/><path d="M9 20v-5h6v5"/></svg></span>
+          <span class="nm" data-i18n="chip_small">Mesquita Pequena</span>
+          <span class="dots" id="smallDots"></span>
+        </div>
+        <div class="chip">
+          <span class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--gold-d)" stroke-width="1.7"><path d="M4 20V10l8-6 8 6v10z"/><circle cx="12" cy="9.5" r="2"/><path d="M9 20v-4h6v4"/></svg></span>
+          <span class="nm" data-i18n="chip_great">Mesquita Grande</span>
+          <span class="dots" id="greatDots"></span>
+        </div>
+        <div class="chip" id="tavernChip" style="display:none">
+          <span class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--gold-d)" stroke-width="1.7"><path d="M6 4h10l1 5a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5z"/><path d="M17 6h2a2 2 0 0 1 0 4h-2"/><path d="M9 19h6"/><path d="M12 14v5"/></svg></span>
+          <span class="nm" data-i18n="chip_tavern">Azulejos de Taverna</span>
+          <span class="dots" id="tavernDots"></span>
+        </div>
+      </div>
+    </div>
+    <div class="goalflag" id="goalFlag" data-i18n="goalflag">⚑ O Automa atingiu o objetivo de rubis!</div>
+  </div>
+
+  <!-- card stage -->
+  <div class="panel">
+    <div class="stage">
+      <div class="cardholder" id="cardHolder">
+        <!-- deck back shown pre-flip -->
+        <div class="card3d deckback" id="deckBack"><img src="assets/back.webp" alt="Verso do baralho Automa"></div>
+        <div class="card3d" id="cardFront" style="display:none"><img id="cardImg" src="" alt="Carta do Automa"></div>
+      </div>
+      <div class="cardcap" id="cardCap">TOQUE O BARALHO PARA O TURNO DO AUTOMA</div>
+    </div>
+  </div>
+
+  <!-- instruction -->
+  <div class="panel instr" id="instrPanel" style="display:none">
+    <div class="rubywin" id="rubyWin" style="display:none">
+      <svg viewBox="0 0 24 24"><path d="M5 3h14l3 6-10 12L2 9z" fill="#c4242c" stroke="#8e161d" stroke-width=".8"/><path d="M5 3l3 6h-6zM19 3l-3 6h6zM12 21L9 9h6z" fill="#f06b6f" opacity=".5"/></svg>
+      <span id="rubyWinText">+1 Rubi para o Automa!</span>
+    </div>
+    <div class="place">
+      <div class="placeno" id="placeNo">—</div>
+      <div class="nm"><b id="placeNamePt">—</b><span id="placeNameEn">—</span></div>
+    </div>
+    <div class="action" id="actionText">—</div>
+    <div class="secretbox" id="secretBox" style="display:none">
+      <div class="sline"><span data-i18n="secret_take">Tire o rubi de:</span> <b id="secretTrack">—</b><span class="sdie" id="secretDie"></span></div>
+      <button class="btn" id="secretReroll" style="padding:8px 13px;font-size:13px" data-i18n="secret_reroll">🎲 Sortear de novo</button>
+      <div class="snote" data-i18n="secret_note">Se essa trilha já estiver vazia, pegue o rubi de outra das três (13 / 16 / 20).</div>
+    </div>
+    <div class="note" id="noteText" style="display:none"></div>
+  </div>
+
+  <!-- reminder + dice -->
+  <div class="panel" id="reminderPanel" style="display:none">
+    <div class="reminder">
+      <span class="rk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg></span>
+      <div data-i18n-html="reminder">No local onde o Automa parar: se houver <b>Mercador neutro, Governador ou Contrabandista</b>, role os 2 dados e mova essa peça. Se o <b>seu Familiar</b> estiver lá, mova-o para a <b>Delegacia</b>.</div>
+    </div>
+    <div class="dicerow">
+      <div class="dice"><div class="die" id="die1"></div><div class="die" id="die2"></div></div>
+      <button class="btn" id="rollBtn" style="padding:11px 14px" data-i18n="roll_btn">Rolar 2 dados</button>
+      <span class="dsum" id="diceSum"></span>
+    </div>
+  </div>
+
+  <!-- actions -->
+  <div class="actions">
+    <button class="btn ghost" id="undoBtn" disabled data-i18n="undo">↩ Desfazer</button>
+    <button class="btn primary lg" id="flipBtn" style="flex:2">Virar próxima carta</button>
+  </div>
+
+  <details class="rules">
+    <summary data-i18n="rules_summary">ℹ︎ Regras &amp; interpretações</summary>
+    <div class="body" data-i18n-html="rules_html">
+      <p><b>O Automa</b> não coleta cartas de Bônus, recursos nem Liras — só Azulejos (Mesquita/Taverna) e Extensões de carrinho.</p>
+      <p><b>Rubi imediato:</b> Vendedor de Pedras, Palácio, Casa de Café (M&amp;B) e Sociedade Secreta (L&amp;S) → 1 Rubi na hora.</p>
+      <p><b>Pares (1 Rubi cada):</b> 2 azulejos da Mesquita Pequena · 2 da Grande · 2 da <b>Taverna</b> · 3 extensões de Carroceiro.</p>
+      <p><b>Sociedade Secreta:</b> o app <b>sorteia</b> de qual trilha sai o rubi — Palácio (13), Vendedor (16) ou Casa de Café (20). Trilha vazia? Pegue de outra.</p>
+      <p><b>O baralho garante exatamente 6 rubis</b> ao longo do jogo (mantido das expansões), mas você nunca sabe de quais fontes — o objetivo é chegar a 6 antes do Automa.</p>
+      <p><b>Encontros:</b> se o Automa parar onde há Mercador neutro/Governador/Contrabandista, role 2 dados e mova a peça. Se parar sobre o <b>seu</b> Familiar, mova-o para a Delegacia (só vale para o Automa).</p>
+      <p><b>Caravançará:</b> texto da carta (compra 1 Bônus → pilha de descarte). <b>Catacumbas (25):</b> o Automa só move, sem ação.</p>
+      <p>O contador de Rubis é automático, mas você pode ajustar com + / − a qualquer momento. Regras das expansões: ruleset não-oficial de Chris Cimo / Kamarashev (BGG).</p>
+    </div>
+  </details>
+
+  <div class="credits">
+    <div class="rules-credit" data-i18n-html="footer_rules"></div>
+    <div class="dev" data-i18n-html="footer_dev"></div>
+  </div>
+
+</div>
+
+<script>
+/* ============================================================
+   ISTANBUL · AUTOMA  — lógica
+   ============================================================ */
+
+/* ---- persistência segura (localStorage com fallback) ---- */
+const Store = (() => {
+  let ok = true, mem = {};
+  try { localStorage.setItem('__t','1'); localStorage.removeItem('__t'); }
+  catch(e){ ok = false; }
+  return {
+    get:k=>{ try{return ok?localStorage.getItem(k):(mem[k]??null);}catch(e){return mem[k]??null;} },
+    set:(k,v)=>{ try{ ok?localStorage.setItem(k,v):(mem[k]=v);}catch(e){mem[k]=v;} },
+    del:k=>{ try{ ok?localStorage.removeItem(k):(delete mem[k]);}catch(e){delete mem[k];} }
+  };
+})();
+const SAVE_KEY = 'istanbul-automa-v2';
+const LANG_KEY = 'istanbul-automa-lang';
+let lang = 'pt';
+
+/* ---- ações das cartas em inglês (por categoria) ---- */
+const ACT_EN = {
+  gemstone:"Place the Automa's pawn on the Gemstone Dealer and score <b>1 Ruby</b> (take the first ruby from left to right).",
+  sultan:"Place the Automa's pawn on the Sultan's Palace and score <b>1 Ruby</b> (take the first ruby from left to right).",
+  'mosque-small':"Move the Automa to the Small Mosque, take the <b>tile shown on the card</b> and place it next to the wheelbarrow. Every <b>pair</b> of Small Mosque tiles earns it 1 Ruby.",
+  'mosque-great':"Move the Automa to the Great Mosque, take the <b>tile shown on the card</b> and place it next to the wheelbarrow. Every <b>pair</b> of Great Mosque tiles earns it 1 Ruby.",
+  wainwright:"Add <b>1 wheelbarrow extension</b> to the Automa's wheelbarrow. On the <b>3rd extension</b>, it earns 1 Ruby.",
+  warehouse:"The Automa <b>collects no goods</b>. Just move the pawn to the warehouse.",
+  post:"Advance the <b>mail indicator</b> like a normal player — <b>without</b> collecting goods or Lira.",
+  caravan:"Draw <b>1 Bonus card</b> and place it face-up on the <b>discard pile</b>.",
+  blackmarket:"The Automa <b>does not perform</b> the location's action. Just move the pawn there.",
+  teahouse:"The Automa <b>does not perform</b> the location's action. Just move the pawn there.",
+  market:"Move the <b>top Demand tile</b> to the bottom of the stack.",
+  police:"If the Automa's <b>Family member</b> is here: roll <b>2 dice</b> and move it like the Governor / Smuggler / neutral Merchant. If not: just move the Automa to the Police Station (no action).",
+  coffeehouse:"Place the Automa's pawn on the Coffee House and score <b>1 Ruby</b> (take the next ruby on the track, 6→10).",
+  tavern:"Move the Automa to the Tavern and take 1 <b>Tavern tile</b> (next to the wheelbarrow). Every <b>pair</b> of Tavern tiles earns it 1 Ruby.",
+  roasting:"Move the Automa to the Roasting Plant. It <b>collects nothing</b> (no coffee).",
+  guild:"Draw <b>1 Guild card</b> and place it face-up on the <b>discard pile</b> (same as the Caravansary, but with a Guild card).",
+  secretsociety:"Place the Automa's pawn on the Secret Society and score <b>1 Ruby</b>. Draw which track the ruby comes from:",
+  embassy:"Move the Automa to the Embassy. It <b>collects nothing</b> (no Letters).",
+  kiosk:"Move the Automa to the Kiosk: flip 2 Kiosk tiles, discard the 1st and the Automa keeps the 2nd <i>(no scoring)</i>.",
+  auction:"Move the Automa to the Auction House: reveal <b>2 Bonus cards</b> and roll <b>1d6 +1</b> = price for both. <b>You</b> decide to pay and keep both, or discard them.",
+  catacombs:"Move the Automa to the Catacombs. <b>No action.</b>",
+};
+const PLACE_EN_FALLBACK = {}; // placeEn já existe em cada carta
+
+/* ---- rótulos de modo por idioma ---- */
+const MODE_T = {
+  pt:{ base:{label:'Base', sub:'16 locais · Kamarashev'}, mb:{label:'Mocha & Baksheesh', sub:'+ café, taverna, guilda (17–20)'}, all:{label:'Grand Bazaar (tudo)', sub:'+ Letters & Seals (21–25)'} },
+  en:{ base:{label:'Base', sub:'16 locations · Kamarashev'}, mb:{label:'Mocha & Baksheesh', sub:'+ coffee, tavern, guild (17–20)'}, all:{label:'Grand Bazaar (all)', sub:'+ Letters & Seals (21–25)'} },
+};
+
+/* ---- textos da interface ---- */
+const L = {
+ pt:{
+  based_on:'baseado nas regras de <a href="https://boardgamegeek.com/profile/kamarashev" target="_blank" rel="noopener">@kamarashev</a> (bgg)',
+  setup_mode:'Modo de jogo', setup_diff:'Dificuldade', setup_fine:'Ajuste fino (± cartas de movimento)',
+  setup_fine_hint:'Calibra sem trocar de faixa. Ganhou fácil → aumente; apanhou → diminua.',
+  setup_goal:'Objetivo de Rubis (para sinalizar fim de jogo)',
+  setup_goal_hint:'Com 2 jogadores / com expansões são 6 rubis. Ajuste conforme a sua edição.',
+  setup_build:'Montar baralho & jogar', rounds:'rodadas',
+  menu_title:'Menu', menu_mode:'Modo', menu_diff:'Dificuldade', menu_round:'Rodada atual', menu_left:'Cartas restantes', menu_ruby:'Rubis do Automa', menu_resume:'Voltar ao jogo', menu_new:'Novo jogo',
+  round_lbl:'RODADA', left_suffix:'restam',
+  final_title:'Janela do Rubi Final', final_sub:'O Automa pode marcar o rubi final a qualquer momento agora.',
+  status_title:'RUBIS DO AUTOMA', chip_cart:'Extensões de carrinho', chip_small:'Mesquita Pequena', chip_great:'Mesquita Grande', chip_tavern:'Azulejos de Taverna',
+  goalflag:'⚑ O Automa atingiu o objetivo de rubis!',
+  deck_prompt:'TOQUE O BARALHO PARA O TURNO DO AUTOMA',
+  secret_take:'Tire o rubi de:', secret_reroll:'🎲 Sortear de novo', secret_note:'Se essa trilha já estiver vazia, pegue o rubi de outra das três (13 / 16 / 20).',
+  reminder:'No local onde o Automa parar: se houver <b>Mercador neutro, Governador ou Contrabandista</b>, role os 2 dados e mova essa peça. Se o <b>seu Familiar</b> estiver lá, mova-o para a <b>Delegacia</b>.',
+  roll_btn:'Rolar 2 dados', undo:'↩ Desfazer',
+  flip_first:'Virar 1ª carta', flip_next:'Virar próxima carta', flip_empty:'Baralho vazio',
+  rules_summary:'ℹ︎ Regras & interpretações',
+  ruby_win_default:'+1 Rubi para o Automa!', ruby_win_wain:'3ª extensão → +1 Rubi para o Automa!',
+  ruby_win_small:'Par da Mesquita Pequena → +1 Rubi!', ruby_win_great:'Par da Mesquita Grande → +1 Rubi!', ruby_win_tavern:'Par da Taverna → +1 Rubi!',
+  note_tavern:'Azulejo guardado. Ainda falta o par da Taverna para virar Rubi.',
+  note_mosque:'Azulejo guardado. Ainda falta o par desta mesquita para virar Rubi.',
+  confirm_new:'Começar um novo jogo? O progresso atual será perdido.',
+  board_open:'🎲 Tabuleiro (setup)', board_title:'Tabuleiro (setup)',
+  board_sub:'Disposição sorteada das peças ({d}). Monte o tabuleiro físico assim.',
+  board_fountain:'Fonte (7)', board_bm:'Mercado Negro (8)', board_th:'Casa de Chá (9)',
+  board_reroll:'🎲 Sortear de novo', board_close:'Fechar',
+  setup_random:'🎲 Só randomizar o tabuleiro', setup_random_hint:'Para montar uma partida (até com amigos, sem o Automa). Usa o modo selecionado acima como tamanho do tabuleiro.',
+  diff:{veryeasy:'Muito Fácil', easy:'Fácil', medium:'Médio', hard:'Difícil', veryhard:'Muito Difícil'},
+  secret:['Palácio do Sultão (13)','Vendedor de Pedras (16)','Casa de Café (20)'],
+  footer_rules:'Baralho Automa não-oficial — baseado nas regras de <a href="https://boardgamegeek.com/profile/kamarashev" target="_blank" rel="noopener">@kamarashev</a> (BGG): <i>Istanbul – Solo Automa Deck (Unofficial)</i>.',
+  footer_dev:'App desenvolvido por <a href="https://github.com/bira37" target="_blank" rel="noopener">bira37</a>.',
+  rules_html:'<p><b>O Automa</b> não coleta cartas de Bônus, recursos nem Liras — só Azulejos (Mesquita/Taverna) e Extensões de carrinho.</p>'+
+    '<p><b>Rubi imediato:</b> Vendedor de Pedras, Palácio, Casa de Café (M&amp;B) e Sociedade Secreta (L&amp;S) → 1 Rubi na hora.</p>'+
+    '<p><b>Pares (1 Rubi cada):</b> 2 azulejos da Mesquita Pequena · 2 da Grande · 2 da <b>Taverna</b> · 3 extensões de Carroceiro.</p>'+
+    '<p><b>Sociedade Secreta:</b> o app <b>sorteia</b> de qual trilha sai o rubi — Palácio (13), Vendedor (16) ou Casa de Café (20). Trilha vazia? Pegue de outra.</p>'+
+    '<p><b>O baralho garante exatamente 6 rubis</b> ao longo do jogo (mantido das expansões), mas você nunca sabe de quais fontes — o objetivo é chegar a 6 antes do Automa.</p>'+
+    '<p><b>Encontros:</b> se o Automa parar onde há Mercador neutro/Governador/Contrabandista, role 2 dados e mova a peça. Se parar sobre o <b>seu</b> Familiar, mova-o para a Delegacia (só vale para o Automa).</p>'+
+    '<p><b>Caravançará:</b> texto da carta (compra 1 Bônus → pilha de descarte). <b>Catacumbas (25):</b> o Automa só move, sem ação.</p>'+
+    '<p>O contador de Rubis é automático, mas você pode ajustar com + / − a qualquer momento. Regras das expansões: ruleset não-oficial de Chris Cimo / Kamarashev (BGG).</p>',
+ },
+ en:{
+  based_on:'based on <a href="https://boardgamegeek.com/profile/kamarashev" target="_blank" rel="noopener">@kamarashev</a> (bgg) rules',
+  setup_mode:'Game mode', setup_diff:'Difficulty', setup_fine:'Fine-tune (± movement cards)',
+  setup_fine_hint:'Tune without switching tiers. Won easily → raise it; got crushed → lower it.',
+  setup_goal:'Ruby goal (to flag the end of the game)',
+  setup_goal_hint:"It's 6 rubies for 2 players / with expansions. Adjust to your edition.",
+  setup_build:'Build deck & play', rounds:'rounds',
+  menu_title:'Menu', menu_mode:'Mode', menu_diff:'Difficulty', menu_round:'Current round', menu_left:'Cards left', menu_ruby:"Automa's rubies", menu_resume:'Back to game', menu_new:'New game',
+  round_lbl:'ROUND', left_suffix:'left',
+  final_title:'Final Ruby Window', final_sub:'The Automa can score its final ruby at any moment now.',
+  status_title:"AUTOMA'S RUBIES", chip_cart:'Wheelbarrow extensions', chip_small:'Small Mosque', chip_great:'Great Mosque', chip_tavern:'Tavern tiles',
+  goalflag:'⚑ The Automa reached the ruby goal!',
+  deck_prompt:"TAP THE DECK FOR THE AUTOMA'S TURN",
+  secret_take:'Take the ruby from:', secret_reroll:'🎲 Draw again', secret_note:'If that track is already empty, take the ruby from another of the three (13 / 16 / 20).',
+  reminder:"Wherever the Automa stops: if there's a <b>neutral Merchant, Governor or Smuggler</b>, roll the 2 dice and move that token. If <b>your Family member</b> is there, move it to the <b>Police Station</b>.",
+  roll_btn:'Roll 2 dice', undo:'↩ Undo',
+  flip_first:'Flip 1st card', flip_next:'Flip next card', flip_empty:'Deck empty',
+  rules_summary:'ℹ︎ Rules & interpretations',
+  ruby_win_default:'+1 Ruby for the Automa!', ruby_win_wain:'3rd extension → +1 Ruby for the Automa!',
+  ruby_win_small:'Small Mosque pair → +1 Ruby!', ruby_win_great:'Great Mosque pair → +1 Ruby!', ruby_win_tavern:'Tavern pair → +1 Ruby!',
+  note_tavern:'Tile stored. Still need the Tavern pair to become a Ruby.',
+  note_mosque:"Tile stored. Still need this mosque's pair to become a Ruby.",
+  confirm_new:'Start a new game? Current progress will be lost.',
+  board_open:'🎲 Board (setup)', board_title:'Board (setup)',
+  board_sub:'Randomized tile layout ({d}). Set up your physical board like this.',
+  board_fountain:'Fountain (7)', board_bm:'Black Market (8)', board_th:'Tea House (9)',
+  board_reroll:'🎲 Reshuffle', board_close:'Close',
+  setup_random:'🎲 Just randomize the board', setup_random_hint:'To set up a game (even with friends, no Automa). Uses the mode selected above as the board size.',
+  diff:{veryeasy:'Very Easy', easy:'Easy', medium:'Medium', hard:'Hard', veryhard:'Very Hard'},
+  secret:["Sultan's Palace (13)",'Gemstone Dealer (16)','Coffee House (20)'],
+  footer_rules:'Unofficial Automa deck — based on the rules by <a href="https://boardgamegeek.com/profile/kamarashev" target="_blank" rel="noopener">@kamarashev</a> (BGG): <i>Istanbul – Solo Automa Deck (Unofficial)</i>.',
+  footer_dev:'App developed by <a href="https://github.com/bira37" target="_blank" rel="noopener">bira37</a>.',
+  rules_html:'<p><b>The Automa</b> collects no Bonus cards, goods or Lira — only Tiles (Mosque/Tavern) and wheelbarrow extensions.</p>'+
+    '<p><b>Immediate ruby:</b> Gemstone Dealer, Sultan\'s Palace, Coffee House (M&amp;B) and Secret Society (L&amp;S) → 1 Ruby right away.</p>'+
+    '<p><b>Pairs (1 Ruby each):</b> 2 Small Mosque tiles · 2 Great Mosque · 2 <b>Tavern</b> · 3 Wainwright extensions.</p>'+
+    '<p><b>Secret Society:</b> the app <b>draws</b> which track the ruby comes from — Sultan\'s Palace (13), Gemstone Dealer (16) or Coffee House (20). Track empty? Take from another.</p>'+
+    '<p><b>The deck guarantees exactly 6 rubies</b> over the game (kept from the expansions), but you never know from which sources — the goal is to reach 6 before the Automa.</p>'+
+    '<p><b>Encounters:</b> if the Automa stops where a neutral Merchant/Governor/Smuggler is, roll 2 dice and move the token. If it lands on <b>your</b> Family member, send it to the Police Station (Automa only).</p>'+
+    '<p><b>Caravansary:</b> card text (draw 1 Bonus → discard pile). <b>Catacombs (25):</b> the Automa only moves, no action.</p>'+
+    '<p>The ruby counter is automatic, but you can adjust it with + / − anytime. Expansion rules: unofficial ruleset by Chris Cimo / Kamarashev (BGG).</p>',
+ }
+};
+
+/* ---- dados das cartas ---- */
+const CAT = {
+  gemstone:    {placePt:'Vendedor de Pedras', placeEn:'Gemstone Dealer', place:16, ruby:true,
+    action:'Coloque o peão do Automa no Vendedor de Pedras e marque <b>1 Rubi</b> (pegue o primeiro rubi da esquerda para a direita).'},
+  sultan:      {placePt:'Palácio do Sultão', placeEn:"Sultan's Palace", place:13, ruby:true,
+    action:'Coloque o peão do Automa no Palácio do Sultão e marque <b>1 Rubi</b> (pegue o primeiro rubi da esquerda para a direita).'},
+  'mosque-small':{placePt:'Mesquita Pequena', placeEn:'Small Mosque', place:14,
+    action:'Mova o Automa até a Mesquita Pequena, pegue o <b>azulejo mostrado na carta</b> e coloque ao lado do carrinho de mão. A cada <b>par</b> de azulejos da Mesquita Pequena, ele ganha 1 Rubi.'},
+  'mosque-great':{placePt:'Mesquita Grande', placeEn:'Great Mosque', place:15,
+    action:'Mova o Automa até a Mesquita Grande, pegue o <b>azulejo mostrado na carta</b> e coloque ao lado do carrinho de mão. A cada <b>par</b> de azulejos da Mesquita Grande, ele ganha 1 Rubi.'},
+  wainwright:  {placePt:'Carroceiro', placeEn:'Wainwright', place:1,
+    action:'Adicione <b>1 extensão de carrinho</b> ao carrinho de mão do Automa. Ao juntar <b>3 extensões</b>, ele ganha 1 Rubi.'},
+  warehouse:   {move:true,
+    action:'O Automa <b>não coleta recursos</b>. Apenas mova o peão até o armazém.'},
+  post:        {placePt:'Correio', placeEn:'Post Office', place:5, move:true,
+    action:'Avance o <b>indicador de correspondência</b> como um jogador normal — <b>sem</b> coletar mercadorias nem Liras.'},
+  caravan:     {placePt:'Caravançará', placeEn:'Caravansary', place:6, move:true,
+    action:'Compre <b>1 carta de Bônus</b> e coloque-a virada para cima na <b>pilha de descarte</b>.'},
+  blackmarket: {placePt:'Mercado Negro', placeEn:'Black Market', place:8, move:true,
+    action:'O Automa <b>não realiza</b> a ação do local. Apenas mova o peão até lá.'},
+  teahouse:    {placePt:'Casa de Chá', placeEn:'Tea House', place:9, move:true,
+    action:'O Automa <b>não realiza</b> a ação do local. Apenas mova o peão até lá.'},
+  market:      {move:true,
+    action:'Mova o <b>azulejo de Demanda do topo</b> para o fundo da pilha.'},
+  police:      {placePt:'Delegacia', placeEn:'Police Station', place:12, move:true,
+    action:'Se o Familiar <b>do Automa</b> estiver aqui: role os <b>2 dados</b> e mova-o como Governador / Contrabandista / Mercador neutro. Se <b>não</b> estiver: apenas mova o Automa até a Delegacia (sem ação).'},
+  // --- Mocha & Baksheesh ---
+  coffeehouse: {placePt:'Casa de Café', placeEn:'Coffee House', place:20, ruby:true, img:'coffee-house', exp:'mb',
+    action:'Coloque o peão do Automa na Casa de Café e marque <b>1 Rubi</b> (pegue o próximo rubi da trilha, 6→10).'},
+  tavern:      {placePt:'Taverna', placeEn:'Tavern', place:19, img:'tavern', exp:'mb',
+    action:'Mova o Automa até a Taverna e pegue 1 <b>azulejo de Taverna</b> (ao lado do carrinho). A cada <b>par</b> de azulejos de Taverna, ele ganha 1 Rubi.'},
+  roasting:    {placePt:'Torrefação', placeEn:'Roasting Plant', place:17, move:true, img:'roasting-plant', exp:'mb',
+    action:'Mova o Automa até a Torrefação. Ele <b>não coleta nada</b> (sem café).'},
+  guild:       {placePt:'Casa de Guilda', placeEn:'Guild Hall', place:18, move:true, img:'guild-hall', exp:'mb',
+    action:'Compre <b>1 carta de Guilda</b> e coloque-a virada para cima na <b>pilha de descarte</b> (igual ao Caravançará, mas com uma carta de Guilda).'},
+  // --- Letters & Seals ---
+  secretsociety:{placePt:'Sociedade Secreta', placeEn:'Secret Society', place:24, ruby:true, secret:true, img:'secret-society', exp:'ls',
+    action:'Coloque o peão do Automa na Sociedade Secreta e marque <b>1 Rubi</b>. Sorteie de qual trilha o rubi sai:'},
+  embassy:     {placePt:'Embaixada', placeEn:'Embassy', place:21, move:true, img:'embassy', exp:'ls',
+    action:'Mova o Automa até a Embaixada. Ele <b>não coleta nada</b> (sem cartas de Carta/Letter).'},
+  kiosk:       {placePt:'Quiosque', placeEn:'Kiosk', place:22, move:true, img:'kiosk', exp:'ls',
+    action:'Mova o Automa até o Quiosque: vire 2 azulejos de Kiosk, descarte o 1º e o Automa fica com o 2º <i>(sem pontuar)</i>.'},
+  auction:     {placePt:'Casa de Leilão', placeEn:'Auction House', place:23, move:true, img:'auction-house', exp:'ls',
+    action:'Mova o Automa até o Leilão: revele <b>2 cartas de Bônus</b> e role <b>1d6 +1</b> = preço das duas. <b>Você</b> decide pagar e ficar com as duas, ou descartá-las.'},
+  catacombs:   {placePt:'Catacumbas', placeEn:'Catacombs', place:25, move:true, img:'catacombs', exp:'ls',
+    action:'Mova o Automa até as Catacumbas. <b>Sem ação.</b>'},
+};
+function mk(cat, ov={}){ return Object.assign({cat}, CAT[cat], ov); }
+const CARDS = {};
+// base (cartas recortadas do PDF: ai-1..ai-45)
+[1,2,3].forEach(n=>CARDS['AI-'+n]=mk('gemstone'));
+[4,5,6].forEach(n=>CARDS['AI-'+n]=mk('sultan'));
+[7,8].forEach(n=>CARDS['AI-'+n]=mk('mosque-small'));
+[9,10].forEach(n=>CARDS['AI-'+n]=mk('mosque-great'));
+[11,12,13].forEach(n=>CARDS['AI-'+n]=mk('wainwright'));
+[14,15,16].forEach(n=>CARDS['AI-'+n]=mk('warehouse',{placePt:'Armazém de Tecidos', placeEn:'Fabric Warehouse', place:2}));
+[17,18,19].forEach(n=>CARDS['AI-'+n]=mk('warehouse',{placePt:'Armazém de Especiarias', placeEn:'Spice Warehouse', place:3}));
+[20,21,22].forEach(n=>CARDS['AI-'+n]=mk('warehouse',{placePt:'Armazém de Frutas', placeEn:'Fruit Warehouse', place:4}));
+[23,24,25].forEach(n=>CARDS['AI-'+n]=mk('post'));
+[26,27,28].forEach(n=>CARDS['AI-'+n]=mk('caravan'));
+[29,30,31].forEach(n=>CARDS['AI-'+n]=mk('blackmarket'));
+[32,33,34].forEach(n=>CARDS['AI-'+n]=mk('teahouse'));
+[35,36,37].forEach(n=>CARDS['AI-'+n]=mk('market',{placePt:'Mercado Grande', placeEn:'Large Market', place:10}));
+[38,39,40,41].forEach(n=>CARDS['AI-'+n]=mk('market',{placePt:'Mercado Pequeno', placeEn:'Small Market', place:11}));
+[42,43,44,45].forEach(n=>CARDS['AI-'+n]=mk('police'));
+// expansão Mocha & Baksheesh
+[1,2,3].forEach(n=>CARDS['CH-'+n]=mk('coffeehouse'));
+CARDS['TV-1']=mk('tavern',{img:'tavern-a'});
+CARDS['TV-2']=mk('tavern',{img:'tavern-b'});
+[1,2,3,4].forEach(n=>CARDS['RP-'+n]=mk('roasting'));
+[1,2,3].forEach(n=>CARDS['GH-'+n]=mk('guild'));
+// expansão Letters & Seals
+[1,2,3].forEach(n=>CARDS['SS-'+n]=mk('secretsociety'));
+[1,2,3,4,5].forEach(n=>CARDS['EM-'+n]=mk('embassy'));
+[1,2].forEach(n=>CARDS['KI-'+n]=mk('kiosk'));
+[1,2].forEach(n=>CARDS['AU-'+n]=mk('auction'));
+['CT-1'].forEach(id=>CARDS[id]=mk('catacombs'));
+
+/* ---- modos & dificuldades ---- */
+const BASE_MOV = (()=>{const a=[];for(let i=14;i<=45;i++)a.push('AI-'+i);return a;})();
+const MB_MOV   = ['RP-1','RP-2','RP-3','RP-4','GH-1','GH-2','GH-3'];
+const LS_MOV   = ['EM-1','EM-2','EM-3','EM-4','EM-5','KI-1','KI-2','AU-1','AU-2','CT-1'];
+const GEM_SUL  = ['AI-1','AI-2','AI-3','AI-4','AI-5','AI-6'];
+const GRP_BASE = [['AI-7','AI-8'], ['AI-9','AI-10'], ['AI-11','AI-12','AI-13']];
+
+const MODES = {
+  base: { label:'Base', tag:'⌂', sub:'16 locais · Kamarashev',
+    immediate: GEM_SUL.slice(),
+    groups: GRP_BASE,
+    movePool: BASE_MOV.slice(),
+    move:{veryeasy:28, easy:24, medium:20, hard:18, veryhard:14} },
+  mb: { label:'Mocha & Baksheesh', tag:'☕', sub:'+ café, taverna, guilda (17–20)',
+    immediate: GEM_SUL.concat(['CH-1','CH-2','CH-3']),
+    groups: GRP_BASE.concat([['TV-1','TV-2']]),
+    movePool: BASE_MOV.concat(MB_MOV),
+    move:{veryeasy:24, easy:22, medium:20, hard:18, veryhard:16} },
+  all: { label:'Grand Bazaar (tudo)', tag:'✶', sub:'+ Letters & Seals (21–25)',
+    immediate: GEM_SUL.concat(['CH-1','CH-2','CH-3','SS-1','SS-2','SS-3']),
+    groups: GRP_BASE.concat([['TV-1','TV-2']]),
+    movePool: BASE_MOV.concat(MB_MOV, LS_MOV),
+    move:{veryeasy:29, easy:27, medium:25, hard:23, veryhard:21} },
+};
+const WINDOW = {veryeasy:6, easy:6, medium:5, hard:5, veryhard:3};
+const DIFFS = ['veryeasy','easy','medium','hard','veryhard'];
+function trackFromDie(d){ return d<=2 ? 0 : (d<=4 ? 1 : 2); }
+
+/* ---- util ---- */
+// inteiro uniforme 0..max-1, sem viés (crypto + rejection sampling; fallback Math.random)
+function randInt(max){
+  if(max<=1) return 0;
+  const c = (typeof crypto!=='undefined' && crypto.getRandomValues) ? crypto : null;
+  if(c){
+    const range = 0x100000000;              // 2^32
+    const limit = range - (range % max);    // descarta o "resto" que causaria viés
+    const buf = new Uint32Array(1); let x;
+    do { c.getRandomValues(buf); x = buf[0]; } while(x >= limit);
+    return x % max;
+  }
+  return Math.floor(Math.random()*max);
+}
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=randInt(i+1);[a[i],a[j]]=[a[j],a[i]];} return a; }
+
+/* ---- randomizador de setup do tabuleiro ---- */
+// regras: Fonte(7) interna (centro exato no 5x5); Mercado Negro(8) e Casa de Chá(9)
+// a ≥3 de distância, nunca na mesma linha ou coluna.
+function buildBoard(mode){
+  let rows,cols,maxn;
+  if(mode==='base'){ rows=4; cols=4; maxn=16; }
+  else if(mode==='mb'){ rows=4; cols=5; maxn=20; }
+  else { rows=5; cols=5; maxn=25; }
+  for(let t=0;t<5000;t++){
+    const grid=Array.from({length:rows},()=>Array(cols).fill(0));
+    let fr,fc;
+    if(mode==='all'){ fr=2; fc=2; }                       // fonte no centro exato (5x5)
+    else { const rr=[],cc=[];
+      for(let r=1;r<rows-1;r++) rr.push(r);
+      for(let c=1;c<cols-1;c++) cc.push(c);
+      fr=rr[randInt(rr.length)]; fc=cc[randInt(cc.length)]; }  // fonte interna
+    grid[fr][fc]=7;
+    const rest=shuffle(Array.from({length:maxn},(_,i)=>i+1).filter(n=>n!==7));
+    const empty=[]; for(let r=0;r<rows;r++)for(let c=0;c<cols;c++) if(!grid[r][c]) empty.push([r,c]);
+    rest.forEach((n,i)=>{ grid[empty[i][0]][empty[i][1]]=n; });
+    let p8,p9;
+    for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){ if(grid[r][c]===8)p8=[r,c]; if(grid[r][c]===9)p9=[r,c]; }
+    const dr=Math.abs(p8[0]-p9[0]), dc=Math.abs(p8[1]-p9[1]);
+    if(dr===0 || dc===0) continue;        // não na mesma linha/coluna
+    if(dr+dc < 3) continue;               // distância ≥ 3
+    return {grid, rows, cols};
+  }
+  return {grid:[[7]], rows:1, cols:1};
+}
+let BOARD=null, BOARD_MODE='base', BOARD_INGAME=false;
+function renderBoard(){
+  if(!BOARD) return;
+  const b=BOARD, g=$('boardGrid');
+  g.style.gridTemplateColumns='repeat('+b.cols+',1fr)';
+  g.innerHTML='';
+  for(let r=0;r<b.rows;r++)for(let c=0;c<b.cols;c++){
+    const n=b.grid[r][c];
+    const d=document.createElement('div');
+    d.className='cell'+(n===7?' f':n===8?' bm':n===9?' th':'');
+    d.textContent=n;
+    g.appendChild(d);
+  }
+  $('boardSub').textContent = L[lang].board_sub.replace('{d}', b.cols+'×'+b.rows);
+}
+function openBoardGame(){            // tabuleiro do jogo de automa em andamento
+  if(!S) return;
+  if(!S.board) S.board=buildBoard(S.mode);
+  BOARD=S.board; BOARD_MODE=S.mode; BOARD_INGAME=true;
+  renderBoard(); $('boardModal').classList.add('show');
+}
+function openBoardSetup(){           // randomizer avulso (tela inicial, sem automa)
+  BOARD_MODE=selMode; BOARD=buildBoard(selMode); BOARD_INGAME=false;
+  renderBoard(); $('boardModal').classList.add('show');
+}
+function rerollBoard(){
+  BOARD=buildBoard(BOARD_MODE);
+  if(BOARD_INGAME && S){ S.board=BOARD; save(); }
+  renderBoard();
+}
+
+function sideSize(mode){ return MODES[mode].groups.reduce((s,g)=>s+g.length-1, 0); }
+function movCount(mode, diff, fine){
+  const cfg=MODES[mode];
+  let n = cfg.move[diff] + (fine||0);
+  return Math.max(WINDOW[diff], Math.min(n, cfg.movePool.length));
+}
+function deckTotal(mode, diff, fine){ return movCount(mode,diff,fine) + 6 + sideSize(mode); }
+
+/* ---- construção do baralho (motor do Kamarashev, generalizado p/ expansões) ---- */
+function buildDeck(mode, diff, fine){
+  const cfg = MODES[mode], win = WINDOW[diff];
+  // Baralho de Pontuação de Rubi: imediatos + 1 representante de cada grupo
+  let scoring = cfg.immediate.slice();
+  let side = [];
+  cfg.groups.forEach(g => { const s = shuffle(g); scoring.push(s[0]); side.push(...s.slice(1)); });
+  scoring = shuffle(scoring).slice(0, 6);          // garante exatamente 6 rubis no baralho todo
+
+  // Baralho de Movimento
+  let mov = shuffle(cfg.movePool).slice(0, movCount(mode,diff,fine));
+
+  // Baralho do Rubi Final (vai no fundo): (janela−1) movimento + 1 pontuação
+  const finalMov  = mov.splice(0, win - 1);
+  const finalRuby = scoring.splice(0, 1);
+  const finalDeck = shuffle([...finalMov, ...finalRuby]);
+
+  // Resto (topo)
+  const main = shuffle([...scoring, ...mov, ...side]);
+  return [...main, ...finalDeck];   // index 0 = topo (1ª carta virada)
+}
+
+/* ---- estado ---- */
+let S = null;
+function freshAI(){ return {rubies:0, cart:0, small:0, great:0, tavern:0}; }
+
+function newGame(mode, diff, fine, goal){
+  const deck = buildDeck(mode, diff, fine);
+  S = {
+    mode, diff, fine, goal,
+    deck, pos:0,
+    ai: freshAI(),
+    window: WINDOW[diff],
+    hist: [],          // pilha de snapshots p/ desfazer
+    lastRuby: 0,       // rubis ganhos na última virada
+    secretDie: 0,      // 1..6 quando a última carta é Secret Society (0 = não)
+    board: buildBoard(mode),  // disposição sorteada das peças
+  };
+  save(); renderAll(); showGame(); openBoardGame();
+}
+
+function save(){ if(S) Store.set(SAVE_KEY, JSON.stringify(S)); }
+function load(){ try{ const r=Store.get(SAVE_KEY); return r?JSON.parse(r):null; }catch(e){ return null; } }
+
+/* ---- mecânica de virar ---- */
+function flip(){
+  if(!S || S.pos >= S.deck.length) return;
+  S.hist.push(JSON.stringify({pos:S.pos, ai:S.ai, lastRuby:S.lastRuby, secretDie:S.secretDie}));
+  if(S.hist.length>80) S.hist.shift();
+
+  const id = S.deck[S.pos];
+  S.pos++;
+  const c = CARDS[id];
+  let gained = 0; S.secretDie = 0;
+  if(c.cat==='gemstone'||c.cat==='sultan'||c.cat==='coffeehouse'){ S.ai.rubies++; gained=1; }
+  else if(c.cat==='secretsociety'){ S.ai.rubies++; gained=1; S.secretDie = 1+randInt(6); }
+  else if(c.cat==='wainwright'){ if(S.ai.cart<3){ S.ai.cart++; if(S.ai.cart===3){ S.ai.rubies++; gained=1; } } }
+  else if(c.cat==='mosque-small'){ S.ai.small++; if(S.ai.small%2===0){ S.ai.rubies++; gained=1; } }
+  else if(c.cat==='mosque-great'){ S.ai.great++; if(S.ai.great%2===0){ S.ai.rubies++; gained=1; } }
+  else if(c.cat==='tavern'){ S.ai.tavern++; if(S.ai.tavern%2===0){ S.ai.rubies++; gained=1; } }
+  S.lastRuby = gained;
+
+  save();
+  showCard(id, gained, true);
+  renderStatus(); renderRound();
+}
+
+function undo(){
+  if(!S || !S.hist.length) return;
+  const snap = JSON.parse(S.hist.pop());
+  S.pos = snap.pos; S.ai = snap.ai; S.lastRuby = snap.lastRuby; S.secretDie = snap.secretDie||0;
+  save();
+  if(S.pos===0){ showDeckBack(); }
+  else { showCard(S.deck[S.pos-1], 0, false); }
+  renderStatus(); renderRound();
+}
+
+/* ---- render ---- */
+const $ = id => document.getElementById(id);
+
+function renderAll(){ renderStatus(); renderRound(); 
+  if(S.pos===0) showDeckBack(); else showCard(S.deck[S.pos-1], 0, false); }
+
+function dots(el, n, max, cls){
+  el.innerHTML='';
+  for(let i=0;i<max;i++){ const d=document.createElement('i'); if(i<n){d.className='on '+(cls||'');} el.appendChild(d); }
+}
+function renderStatus(){
+  $('rubyNum').textContent = S.ai.rubies;
+  dots($('cartDots'), S.ai.cart, 3);
+  dots($('smallDots'), S.ai.small, 2, 'tile');
+  dots($('greatDots'), S.ai.great, 2, 'tile');
+  const hasTav = S.mode !== 'base';
+  $('tavernChip').style.display = hasTav ? '' : 'none';
+  if(hasTav) dots($('tavernDots'), S.ai.tavern, 2, 'tile');
+  const hit = S.ai.rubies >= S.goal;
+  $('goalFlag').classList.toggle('show', hit);
+  $('undoBtn').disabled = !(S.hist && S.hist.length);
+}
+function renderRound(){
+  const tot = S.deck.length, now = S.pos;
+  $('roundNow').textContent = now;
+  $('roundTot').textContent = tot;
+  const left = tot - now;
+  $('leftPill').textContent = left + ' ' + L[lang].left_suffix;
+  $('progBar').style.width = (tot? (now/tot*100):0) + '%';
+  // janela do rubi final: últimas N rodadas
+  const inWindow = now > 0 && now >= (tot - S.window + 1);
+  $('finalBanner').classList.toggle('show', inWindow);
+  $('flipBtn').disabled = now >= tot;
+  $('flipBtn').textContent = now>=tot ? L[lang].flip_empty : (now===0 ? L[lang].flip_first : L[lang].flip_next);
+}
+
+function showDeckBack(){
+  $('deckBack').style.display='';
+  $('cardFront').style.display='none';
+  $('cardCap').textContent=L[lang].deck_prompt;
+  $('instrPanel').style.display='none';
+  $('reminderPanel').style.display='none';
+}
+
+function showCard(id, gained, animate){
+  const c = CARDS[id];
+  $('deckBack').style.display='none';
+  const front=$('cardFront'); front.style.display='';
+  const img = c.img || id.toLowerCase();
+  $('cardImg').src = 'assets/'+img+'.webp';
+  $('cardImg').alt = (c.placePt||c.placeEn||id);
+  $('cardCap').textContent = c.exp ? (c.exp==='mb'?'MOCHA & BAKSHEESH':'LETTERS & SEALS')
+                                   : id.toUpperCase().replace('AI-','AI · ');
+  if(animate){ front.classList.remove('flipping'); void front.offsetWidth; front.classList.add('flipping'); }
+
+  // instrução
+  $('instrPanel').style.display=''; $('instrPanel').classList.remove('fade'); void $('instrPanel').offsetWidth; $('instrPanel').classList.add('fade');
+  const pn=$('placeNo');
+  pn.textContent = (c.place!=null? c.place : '·');
+  pn.className = 'placeno' + (c.move?' mv':'');
+  const nameA = lang==='en' ? (c.placeEn||c.placePt) : (c.placePt||c.placeEn);
+  const nameB = lang==='en' ? (c.placePt||'')        : (c.placeEn||'');
+  $('placeNamePt').textContent = nameA || '—';
+  $('placeNameEn').textContent = nameB || '';
+  $('actionText').innerHTML = (lang==='en' && ACT_EN[c.cat]) ? ACT_EN[c.cat] : c.action;
+
+  // rubi ganho
+  const rw=$('rubyWin');
+  if(gained>0){
+    rw.style.display='';
+    let txt=L[lang].ruby_win_default;
+    if(c.cat==='wainwright') txt=L[lang].ruby_win_wain;
+    if(c.cat==='mosque-small') txt=L[lang].ruby_win_small;
+    if(c.cat==='mosque-great') txt=L[lang].ruby_win_great;
+    if(c.cat==='tavern') txt=L[lang].ruby_win_tavern;
+    $('rubyWinText').textContent = txt;
+  } else rw.style.display='none';
+
+  // sorteio da Secret Society
+  const sb=$('secretBox');
+  if(c.cat==='secretsociety' && S.secretDie){
+    sb.style.display='';
+    renderSecret();
+  } else sb.style.display='none';
+
+  // nota de azulejo solto (mesquita/taverna sem par ainda)
+  const nt=$('noteText');
+  if((c.cat==='mosque-small'||c.cat==='mosque-great'||c.cat==='tavern') && gained===0){
+    nt.style.display=''; nt.textContent = c.cat==='tavern' ? L[lang].note_tavern : L[lang].note_mosque;
+  } else nt.style.display='none';
+
+  // lembrete + dados (sempre úteis; destaque em Delegacia)
+  $('reminderPanel').style.display='';
+}
+
+function renderSecret(){
+  const idx = trackFromDie(S.secretDie);
+  $('secretTrack').textContent = L[lang].secret[idx];
+  $('secretDie').textContent = '🎲 ' + S.secretDie;
+}
+
+/* ---- i18n ---- */
+function applyI18n(){
+  const d = L[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el=>{ const k=el.getAttribute('data-i18n'); if(d[k]!=null) el.textContent=d[k]; });
+  document.querySelectorAll('[data-i18n-html]').forEach(el=>{ const k=el.getAttribute('data-i18n-html'); if(d[k]!=null) el.innerHTML=d[k]; });
+  document.documentElement.lang = lang;
+  document.querySelectorAll('.langtog button').forEach(b=>b.classList.toggle('on', b.dataset.lang===lang));
+}
+function setLang(l){
+  if(l!==lang){ lang=l; Store.set(LANG_KEY, l); }
+  applyI18n();
+  renderSetup();
+  if(S){ renderStatus(); renderRound(); if(S.pos===0) showDeckBack(); else showCard(S.deck[S.pos-1], 0, false); }
+  if(BOARD) renderBoard();
+}
+
+/* ---- dados ---- */
+const PIPS = { 1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8] };
+function drawDie(el, v){
+  el.innerHTML='';
+  for(let i=0;i<9;i++){ const b=document.createElement('b'); if(PIPS[v].includes(i)) b.className='on'; el.appendChild(b); }
+}
+function rollDice(){
+  const d1=$('die1'), d2=$('die2');
+  [d1,d2].forEach(d=>{d.classList.remove('roll'); void d.offsetWidth; d.classList.add('roll');});
+  let ticks=0;
+  const iv=setInterval(()=>{
+    drawDie(d1, 1+randInt(6)); drawDie(d2, 1+randInt(6)); ticks++;
+    if(ticks>6){ clearInterval(iv);
+      const a=1+randInt(6), b=1+randInt(6);
+      drawDie(d1,a); drawDie(d2,b);
+      $('diceSum').innerHTML='Total <b>'+(a+b)+'</b>';
+    }
+  },55);
+}
+
+/* ---- navegação de telas ---- */
+function showGame(){ $('setup').classList.remove('show'); $('menu').classList.remove('show'); }
+function showSetup(){ $('setup').classList.add('show'); $('menu').classList.remove('show'); }
+function openMenu(){
+  if(!S) return;
+  $('mMode').textContent = MODE_T[lang][S.mode].label;
+  $('mDiff').textContent = L[lang].diff[S.diff] + (S.fine? (S.fine>0?' (+'+S.fine+')':' ('+S.fine+')') : '');
+  $('mRound').textContent = S.pos+' / '+S.deck.length;
+  $('mLeft').textContent = (S.deck.length - S.pos);
+  $('mRuby').textContent = S.ai.rubies + ' / ' + S.goal;
+  $('menu').classList.add('show');
+}
+
+/* ---- bind ---- */
+// setup state
+let selMode = 'all', selDiff = 'medium', selFine = 0, goal = 6;
+
+function renderSetup(){
+  // modos
+  const mo = $('modeOpts'); mo.innerHTML='';
+  ['base','mb','all'].forEach(m=>{
+    const cfg = MODES[m], t = MODE_T[lang][m];
+    const el = document.createElement('button');
+    el.className = 'modeopt' + (m===selMode?' sel':'');
+    el.innerHTML = `<span class="mtag">${cfg.tag}</span><span class="mtx"><b>${t.label}</b><span>${t.sub}</span></span>`;
+    el.onclick = ()=>{ selMode=m; renderSetup(); };
+    mo.appendChild(el);
+  });
+  // dificuldades (com total de rodadas do modo atual)
+  const di = $('diffOpts'); di.innerHTML='';
+  DIFFS.forEach(d=>{
+    const el = document.createElement('button');
+    el.className = 'diffopt' + (d===selDiff?' sel':'');
+    el.innerHTML = `<b>${L[lang].diff[d]}</b><span class="dt">${deckTotal(selMode,d,selFine)} ${L[lang].rounds}</span>`;
+    el.onclick = ()=>{ selDiff=d; renderSetup(); };
+    di.appendChild(el);
+  });
+  $('fineVal').textContent = (selFine>0?'+':'') + selFine;
+  $('goalVal').textContent = goal;
+}
+
+$('fineMinus').onclick=()=>{ selFine=Math.max(-4,selFine-1); renderSetup(); };
+$('finePlus').onclick =()=>{ selFine=Math.min(4,selFine+1); renderSetup(); };
+$('goalMinus').onclick=()=>{ goal=Math.max(3,goal-1); renderSetup(); };
+$('goalPlus').onclick =()=>{ goal=Math.min(9,goal+1); renderSetup(); };
+
+$('buildBtn').onclick=()=>{ newGame(selMode, selDiff, selFine, goal); };
+$('flipBtn').onclick = flip;
+$('deckBack').onclick = ()=>{ if(S && S.pos===0) flip(); };
+$('cardFront').onclick = ()=>{ if(S && S.pos < S.deck.length) flip(); };
+$('undoBtn').onclick = undo;
+$('rubyPlus').onclick =()=>{ if(!S)return; S.ai.rubies++; save(); renderStatus(); };
+$('rubyMinus').onclick=()=>{ if(!S)return; S.ai.rubies=Math.max(0,S.ai.rubies-1); save(); renderStatus(); };
+$('rollBtn').onclick = rollDice;
+$('secretReroll').onclick = ()=>{ if(!S)return; S.secretDie=1+randInt(6); save(); renderSecret(); };
+$('diceBtnTop').onclick = ()=>{ if(S){ document.querySelector('.wrap').scrollIntoView({behavior:'smooth'}); rollDice(); } };
+$('menuBtn').onclick = openMenu;
+$('boardBtn').onclick = openBoardGame;
+$('boardSetupBtn').onclick = openBoardSetup;
+$('boardReroll').onclick = rerollBoard;
+$('boardClose').onclick = ()=>$('boardModal').classList.remove('show');
+$('resumeBtn').onclick = showGame;
+$('newBtn').onclick = ()=>{ if(confirm(L[lang].confirm_new)){ Store.del(SAVE_KEY); renderSetup(); showSetup(); } };
+
+// seletor de idioma (PT/EN) — header e setup
+document.querySelectorAll('.langtog button').forEach(b=>{ b.onclick = ()=> setLang(b.dataset.lang); });
+
+// inicialização dos dados em branco
+drawDie($('die1'),1); drawDie($('die2'),1);
+lang = (Store.get(LANG_KEY)==='en') ? 'en' : 'pt';
+applyI18n();
+renderSetup();
+
+/* ---- retomar jogo salvo ---- */
+(function init(){
+  const saved = load();
+  if(saved && saved.deck && saved.deck.length){
+    S = saved;
+    if(!S.hist) S.hist=[];
+    if(!S.mode) S.mode='base';
+    if(S.fine==null) S.fine=0;
+    if(!S.ai) S.ai=freshAI();
+    if(S.ai.tavern==null) S.ai.tavern=0;
+    if(!S.window) S.window = WINDOW[S.diff]||5;
+    if(S.secretDie==null) S.secretDie=0;
+    if(!S.board) S.board=buildBoard(S.mode);
+    renderAll(); showGame();
+  } else {
+    showSetup();
+  }
+})();
+</script>
+</body>
+</html>
